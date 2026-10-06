@@ -1,4 +1,4 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>YÊU NHAU CÓ GÌ VUI? — V22</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:#11111d;font-family:system-ui,sans-serif}body{display:flex;justify-content:center}#game{width:min(430px,100vw);background:#222235;min-height:100vh;color:#292638}#hud{background:#303148;color:#fff;padding:10px;border-bottom:3px solid #171724}.brand{font-size:19px;font-weight:1000}.meta{display:flex;justify-content:space-between;font-size:12px;font-weight:900}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:7px}.stat{font-size:9px;background:#202131;border:2px solid #494b61;border-radius:8px;padding:4px}.bar{height:5px;background:#111;border-radius:5px}.bar i{display:block;height:100%}#world{position:relative;aspect-ratio:9/12;overflow:hidden;background:#d9c5aa}#room{position:absolute;inset:0}.wall{position:absolute;inset:0 0 auto;height:17%;background:#d9c5aa;border-bottom:4px solid #9e8065}.floor{position:absolute;inset:17% 0 0;background:#c7aa89;background-image:linear-gradient(#b58b69 2px,transparent 2px),linear-gradient(90deg,#b58b69 2px,transparent 2px);background-size:24px 24px}.window{position:absolute;left:5%;top:3%;width:36%;height:14%;background:#80a9b7;border:5px solid #292638;z-index:1}.lamp{position:absolute;left:39%;top:15%;width:9%;height:8%;background:#f7d58a;border:4px solid #292638;border-radius:50%;z-index:2}.rug{position:absolute;right:4%;bottom:21%;width:44%;height:10%;background:#b98293;border:4px solid #8e6171;border-radius:8px;z-index:2}.asset{position:absolute;z-index:3}.char{z-index:5;transform:scale(.78);transform-origin:50% 100%;filter:drop-shadow(0 3px 0 #29263855);image-rendering:pixelated}.char.walking{transform:scale(.78)}.char.talking{transform:scale(.78)}.hot{position:absolute;border:0;background:transparent;z-index:10;touch-action:manipulation}.hot:active{background:#ffffff12}#toast{position:absolute;z-index:30;top:8px;left:50%;transform:translateX(-50%);background:#292638;color:white;border:3px solid #777;border-radius:12px;padding:7px 10px;font-size:11px;font-weight:900;display:none;max-width:90%;text-align:center}#modal{display:none;position:absolute;inset:0;background:#12121dcc;z-index:20;align-items:flex-end}.sheet{width:100%;max-height:90%;overflow:auto;background:#fff1d7;border:3px solid #292638;border-bottom:0;border-radius:18px 18px 0 0;padding:12px}.btn,.choice{width:100%;border:0;border-radius:10px;padding:10px;margin-top:7px;font-weight:900}.btn{background:#5e9fd8;color:#fff}.pink{background:#e77da5}.green{background:#70a36b}.gold{background:#e2ad3f}.choice{background:white;border:2px solid #d6c1a0;text-align:left}.cards{display:grid;grid-template-columns:1fr 1fr;gap:7px}.card{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:8px}nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:6px;background:#161622}nav button{border:2px solid #494b61;background:#2d2e43;color:#fff;border-radius:10px;padding:8px 2px;font-size:10px;font-weight:950}nav button.active{background:#e77da5;color:#352432}
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>YÊU NHAU CÓ GÌ VUI? — V25</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:#11111d;font-family:system-ui,sans-serif}body{display:flex;justify-content:center}#game{width:min(430px,100vw);background:#222235;min-height:100vh;color:#292638}#hud{background:#303148;color:#fff;padding:10px;border-bottom:3px solid #171724}.brand{font-size:19px;font-weight:1000}.meta{display:flex;justify-content:space-between;font-size:12px;font-weight:900}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:7px}.stat{font-size:9px;background:#202131;border:2px solid #494b61;border-radius:8px;padding:4px}.bar{height:5px;background:#111;border-radius:5px}.bar i{display:block;height:100%}#world{position:relative;aspect-ratio:9/12;overflow:hidden;background:#d9c5aa}#room{position:absolute;inset:0}.wall{position:absolute;inset:0 0 auto;height:17%;background:#d9c5aa;border-bottom:4px solid #9e8065}.floor{position:absolute;inset:17% 0 0;background:#c7aa89;background-image:linear-gradient(#b58b69 2px,transparent 2px),linear-gradient(90deg,#b58b69 2px,transparent 2px);background-size:24px 24px}.window{position:absolute;left:5%;top:3%;width:36%;height:14%;background:#80a9b7;border:5px solid #292638;z-index:1}.lamp{position:absolute;left:39%;top:15%;width:9%;height:8%;background:#f7d58a;border:4px solid #292638;border-radius:50%;z-index:2}.rug{position:absolute;right:4%;bottom:21%;width:44%;height:10%;background:#b98293;border:4px solid #8e6171;border-radius:8px;z-index:2}.asset{position:absolute;z-index:3}.char{z-index:5;transform:scale(.78);transform-origin:50% 100%;filter:drop-shadow(0 3px 0 #29263855);image-rendering:pixelated}.char.walking{transform:scale(.78)}.char.talking{transform:scale(.78)}.hot{position:absolute;border:0;background:transparent;z-index:10;touch-action:manipulation}.hot:active{background:#ffffff12}#toast{position:absolute;z-index:30;top:8px;left:50%;transform:translateX(-50%);background:#292638;color:white;border:3px solid #777;border-radius:12px;padding:7px 10px;font-size:11px;font-weight:900;display:none;max-width:90%;text-align:center}#modal{display:none;position:absolute;inset:0;background:#12121dcc;z-index:20;align-items:flex-end}.sheet{width:100%;max-height:90%;overflow:auto;background:#fff1d7;border:3px solid #292638;border-bottom:0;border-radius:18px 18px 0 0;padding:12px}.btn,.choice{width:100%;border:0;border-radius:10px;padding:10px;margin-top:7px;font-weight:900}.btn{background:#5e9fd8;color:#fff}.pink{background:#e77da5}.green{background:#70a36b}.gold{background:#e2ad3f}.choice{background:white;border:2px solid #d6c1a0;text-align:left}.cards{display:grid;grid-template-columns:1fr 1fr;gap:7px}.card{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:8px}nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:6px;background:#161622}nav button{border:2px solid #494b61;background:#2d2e43;color:#fff;border-radius:10px;padding:8px 2px;font-size:10px;font-weight:950}nav button.active{background:#e77da5;color:#352432}
 #boy,#girl{transition:left 900ms cubic-bezier(.2,.8,.2,1),top 900ms cubic-bezier(.2,.8,.2,1);will-change:left,top}
 .char.walking{animation:walkBob .22s steps(2,end) infinite}
 .char.talking{animation:talkBob .55s steps(2,end) infinite}
@@ -337,11 +337,11 @@ function startFreeActivity(type){if(S.scene!=='home')return;closeModal();if(S.fr
 async function freeActivityLoop(){if(!S.freeActive)return;const a=S.freeActive;const c=$(S.player);if(c)c.classList.add('working');const title=a.type==='cook'?'🍳 Đang nấu nướng':'📺 Đang xem TV';const panel=document.createElement('div');panel.className='homeAction';panel.id='freeActivityHUD';panel.style.left='3%';panel.style.top='4%';panel.innerHTML=`${title}<div class="freeTimer">60s</div><div class="aiLog" id="aiLog">🤖 Người yêu đang tự quyết định...</div>`;$('world').appendChild(panel);let last=Date.now();let elapsed=0;while(S.freeActive&&elapsed<60){await waitMs(1000);if(!S.freeActive)break;elapsed++;a.remain=60-elapsed;const t=$('freeActivityHUD');if(t){t.querySelector('.freeTimer').textContent=a.remain+'s';}if(elapsed%7===0)await partnerAI();}if(panel.parentNode)panel.remove();if(c)c.classList.remove('working');S.freeActive=null;S.busy=false;if(a.type==='tv'){$('.tv-screen').style.display='none';}effect('happy',3);effect('love',2);changeTime(60);hud();toast('⏱️ Hoạt động tự do kết thúc');homeSchedule()}
 async function partnerAI(){if(!S.partner||S.scene!=='home'||S.h>=7&&S.h<11||S.h>=14&&S.h<17)return;const choices=['tv','cook','table','pet','tidy','talk'];const pick=choices[Math.floor(Math.random()*choices.length)];const log=$('aiLog');const p=S.partner;if(pick==='tv'){await moveNPC(p,57,57,'Em xem TV một chút nhé 📺');tvOn();if(log)log.textContent='🤖 Người yêu tự chọn: xem TV';}else if(pick==='cook'){await moveNPC(p,23,49,'Để em phụ bếp 😋');if(log)log.textContent='🤖 Người yêu tự chọn: phụ nấu ăn';}else if(pick==='table'){await moveNPC(p,61,68,'Em ngồi chờ cơm ❤️');if(log)log.textContent='🤖 Người yêu tự chọn: ngồi bàn ăn';}else if(pick==='pet'){await moveNPC(p,70,68,'Miu ơi, lại đây nào 🐾');await petMove(70,65);if(log)log.textContent='🤖 Người yêu tự chọn: chơi với thú cưng';}else if(pick==='tidy'){const k=Object.keys(S.chores).find(x=>!S.chores[x]);if(k){const pos={dish:[68,61],laundry:[78,75],trash:[15,62],floor:[55,72]}[k];await moveNPC(p,pos[0],pos[1],'Để em dọn một chút 🧹');S.chores[k]=true;S.clean=clamp(S.clean+4);if(log)log.textContent='🤖 Người yêu tự chọn: dọn dẹp';}}else{await moveNPC(p,55,58,'Hôm nay ở nhà vui ghê ❤️');effect('love',1);if(log)log.textContent='🤖 Người yêu tự chọn: tâm sự';}}
 function coupleTalk(){effect('love',5);effect('trust',4);effect('happy',4);hud();say('Hôm nay của anh/em thế nào?',S.partner);toast('💬 Hai người nói chuyện với nhau')}
-const contacts={love:{name:'❤️ Người yêu',avatar:'👩',messages:[['Em: Anh đang làm gì đấy?','Anh: Anh đang ở nhà nè.'],['Em: Sao rep lâu thế? Ai vừa nhắn cho anh vậy? 😤','Anh: Không có ai đâu 😅'],['Em: Tối nay có nấu gì cho em không?','Anh: Có chứ ❤️']]},best:{name:'🧑 Bạn thân',avatar:'🧑',messages:[['Bạn: Tối nay đá bóng không?','Anh: Để xem lịch đã.'],['Bạn: Ông có người yêu rồi quên anh em à 😂','Anh: Không quên!']]},friend:{name:'👩 Bạn khác giới',avatar:'👩',messages:[['Bạn: Mai đi cà phê không?','Anh: Để tôi xem đã.'],['Bạn: Nhớ mang laptop nhé.','Anh: Ok.']]},family:{name:'👪 Gia đình',avatar:'👪',messages:[['Mẹ: Cuối tuần về ăn cơm nhé.','Con: Dạ.'],['Mẹ: Nhớ gọi cho mẹ.','Con: Vâng ạ.']]},coworker:{name:'💼 Đồng nghiệp',avatar:'🧑‍💼',messages:[['Đồng nghiệp: Mai họp 8h nhé.','Ok.'],['Đồng nghiệp: Gửi giúp file nhé.','Được.']]}};
+const contacts={love:{name:'❤️ Người yêu',avatar:'👩',messages:[['Em: Anh đang làm gì đấy?','Anh: Anh đang ở nhà nè.'],['Em: Sao rep lâu thế? Ai vừa nhắn cho anh vậy? 😤','Anh: Không có ai đâu 😅'],['Em: Tối nay có nấu gì cho em không?','Anh: Có chứ ❤️']]},best:{name:'🧑 Bạn thân',avatar:'🧑',messages:[['Bạn: Tối nay đá bóng không?','Anh: Để xem lịch đã.'],['Bạn: Ông có người yêu rồi quên anh em à 😂','Anh: Không quên!']]},friend:{name:'👩 Bạn khác giới',avatar:'👩',messages:[['Bạn: Mai đi trà sữa không?','Anh: Để tôi xem đã.'],['Bạn: Nhớ mang laptop nhé.','Anh: Ok.']]},family:{name:'👪 Gia đình',avatar:'👪',messages:[['Mẹ: Cuối tuần về ăn cơm nhé.','Con: Dạ.'],['Mẹ: Nhớ gọi cho mẹ.','Con: Vâng ạ.']]},coworker:{name:'💼 Đồng nghiệp',avatar:'🧑‍💼',messages:[['Đồng nghiệp: Mai họp 8h nhé.','Ok.'],['Đồng nghiệp: Gửi giúp file nhé.','Được.']]}};
 function phone(){show(`<h2>2. 📱 Điện thoại</h2><p>Tin nhắn đến bất chợt. Có nhiều người nhắn, không chỉ người yêu.</p><div class="cards"><button class="choice" onclick="inbox()">💬 Tin nhắn ${S.unread?'<span class="notif">'+S.unread+'</span>':''}</button><button class="choice" onclick="social()">📸 MXH</button><button class="choice" onclick="petMenu()">🐾 Thú cưng</button><button class="choice" onclick="finance()">🏦 Ngân hàng</button><button class="choice" onclick="status()">📊 Trạng thái</button><button class="choice" onclick="characterMenu()">👤 Nhân vật</button></div>`)}
 function inbox(){show(`<h2>3. 💬 Tin nhắn</h2>${Object.entries(contacts).map(([k,c])=>`<button class="choice" onclick="chat('${k}')">${c.avatar} <b>${c.name}</b>${S.inbox[k].length?'<span class="notif" style="float:right">'+S.inbox[k].length+'</span>':''}</button>`).join('')}`)}
 function chat(k){const c={...contacts[k]};if(k==='love')c.name='❤️ '+S.partnerName;const arr=S.inbox[k];let text=c.messages[S.messageSeq%c.messages.length];if(arr.length)text=arr.shift();S.unread=Math.max(0,S.unread-1);show(`<h2>${c.avatar} ${c.name}</h2><div class="chat"><div class="bubble">${text[0]}</div><div class="bubble me">${text[1]}</div></div><div style="display:flex;gap:6px;margin-top:8px"><input id="chatInput" maxlength="120" placeholder="Nhập tin nhắn..." style="flex:1;padding:11px;border:2px solid #dac4a4;border-radius:10px;font-size:13px"><button class="btn pink" style="width:90px;margin-top:0" onclick="sendMessage('${k}')">Gửi</button></div>${k==='love'?`<p><b>Phản hồi nhanh:</b></p>${btn('❤️ Anh chỉ nói chuyện với em.','replyLove("good")','choice')}${btn('😅 Bạn thôi mà.','replyLove("soft")','choice')}${btn('🙄 Đang bận, lát nói.','replyLove("bad")','choice')}`:''}${btn('⬅️ Danh sách','inbox()')}`)}
-function sendMessage(k){const input=$('chatInput');const text=(input?.value||'').trim();if(!text)return toast('Viết gì đó trước đã 😅');if(k==='love'){const low=text.toLowerCase();if(/(cà phê|caphe|đi chơi|tối nay)/.test(low)){effect('anger',4);effect('trust',-1)}else if(/(yêu|nhớ|thương|ăn chưa|nấu|về chưa)/.test(low)){effect('love',3);effect('trust',2);effect('anger',-2)}else effect('trust',1)}else effect('trust',1);S.messageSeq++;changeTime(2);hud();toast('📤 Đã gửi tin nhắn');chat(k)}
+function sendMessage(k){const input=$('chatInput');const text=(input?.value||'').trim();if(!text)return toast('Viết gì đó trước đã 😅');if(k==='love'){const low=text.toLowerCase();if(/(trà sữa|trasua|đi chơi|tối nay)/.test(low)){effect('anger',4);effect('trust',-1)}else if(/(yêu|nhớ|thương|ăn chưa|nấu|về chưa)/.test(low)){effect('love',3);effect('trust',2);effect('anger',-2)}else effect('trust',1)}else effect('trust',1);S.messageSeq++;changeTime(2);hud();toast('📤 Đã gửi tin nhắn');chat(k)}
 function replyLove(t){if(t==='good'){effect('trust',5);effect('love',3);effect('anger',-6)}if(t==='soft'){effect('trust',2);effect('anger',-1)}if(t==='bad'){effect('trust',-5);effect('anger',7)}changeTime(5);hud();toast(t==='bad'?'😤 Người yêu bắt đầu nghi ngờ':'❤️ Tin tưởng tăng');chat('love')}
 function genericReply(k){effect('trust',1);changeTime(2);hud();toast('Đã trả lời '+contacts[k].name);chat(k)}
 function randomMessage(){const keys=Object.keys(contacts);const k=keys[Math.floor(Math.random()*keys.length)];const c={...contacts[k]};if(k==='love')c.name='❤️ '+S.partnerName;const m=c.messages[Math.floor(Math.random()*c.messages.length)];S.inbox[k].push(m);S.unread++;fx('📱',82,15);toast('📱 '+c.name+' vừa nhắn');}
@@ -963,7 +963,7 @@ function v22MemoryMenu(){show(`<h2>🧠 KỶ NIỆM</h2>${S.v22.relationshipMemo
 
 const V22_SOCIAL=[
  ['📱','Người ta bảo “ăn gì cũng được” là quyền tự do. Cho tới khi phải chọn món.','😂 3 người đồng cảm','Ăn gì cũng được = câu hỏi khó nhất ngày nay.'],
- ['☕','Định uống cà phê 15 phút. Hai tiếng sau vẫn đang ngồi kể chuyện.','❤️ 8 người thích','Thời gian chỉ là một khái niệm.'],
+ ['🧋','Định uống trà sữa 15 phút. Hai tiếng sau vẫn đang ngồi kể chuyện.','❤️ 8 người thích','Thời gian chỉ là một khái niệm.'],
  ['💼','Sếp: “Việc này đơn giản lắm.”','😵 17 người thích','Câu nói khiến dân văn phòng mất ngủ.'],
  ['🐾','Boss: “Cho tôi ăn.” Người: “Đợi chút.” Boss: *nhìn bằng ánh mắt nhân sinh*','🐾 12 người thích','Mối quan hệ quyền lực đã rõ.'],
  ['❤️','Người yêu hỏi: “Anh có nghe em nói không?”','💀 31 người thích','Sai lầm chiến thuật.']
@@ -988,6 +988,7 @@ function v22PartnerAI(){if(S.scene!=='home'||S.v21?.activity||S.v21?.work)return
 
 function v22Save(){try{const copy=JSON.parse(JSON.stringify(S));delete copy.v21?.work;delete copy.v21?.activity;delete copy.cooking;localStorage.setItem('yeu_nhau_v22_save',JSON.stringify(copy));toast('💾 Đã lưu game trên thiết bị');v22Log('Đã lưu tiến trình');}catch(e){toast('Không thể lưu trên thiết bị')}}
 function v22Load(){try{const raw=localStorage.getItem('yeu_nhau_v22_save');if(!raw)return toast('Chưa có bản lưu');const data=JSON.parse(raw);Object.assign(S,data);S.cooking=null;S.v21=S.v21||{};S.v21.work=null;S.v21.activity=null;hud();v22RoomRefresh();toast('📂 Đã khôi phục tiến trình');}catch(e){toast('Bản lưu không hợp lệ')}}
+function v22CookStatus(){ if(typeof window.v21CookStatus==='function') return window.v21CookStatus(); }
 function v22RoomRefresh(){v21RoomLayout();v22Night();v22WeatherUI();v22CookStatus();}
 function v22Settings(){show(`<h2>⚙️ HỆ THỐNG</h2>${btn('💾 Lưu game','v22Save()','gold')}${btn('📂 Tải game','v22Load()','choice')}${btn('📊 Nhu cầu','v22NeedsPanel()','choice')}${btn('🧠 Kỷ niệm','v22MemoryMenu()','choice')}${btn('📔 Nhật ký','v22LifeLog()','choice')}${btn('🏆 Thành tựu','v22Achievements()','choice')}${btn('💡 Hóa đơn','v22Bills()','choice')}${btn('🛵 Phương tiện','v22Transport()','choice')}${btn('👕 Tủ đồ','v22Wardrobe()','choice')}`)}
 
@@ -996,7 +997,7 @@ function v22DateStartGuard(){v21Date();}
 function v22Phone(){show(`<h2>📱 ĐIỆN THOẠI</h2><div class="v22-grid">${btn('💬 Tin nhắn','v21Inbox()','choice')}${btn('📸 MXH / Trend','v22Social()','choice')}${btn('🐾 Thú cưng','petMenu()','choice')}${btn('🏦 Ngân hàng','finance()','choice')}${btn('📊 Nhu cầu','v22NeedsPanel()','choice')}${btn('🧠 Kỷ niệm','v22MemoryMenu()','choice')}${btn('📔 Nhật ký','v22LifeLog()','choice')}${btn('⚙️ Hệ thống','v22Settings()','choice')}</div>`)}
 
 function v22Install(){
- document.title='YÊU NHAU CÓ GÌ VUI? — V22';
+ document.title='YÊU NHAU CÓ GÌ VUI? — V23';
  v21Rebuild();
  // rebuild object hotspots to use the richer need-aware interactions
  const hs=$('hotspots');hs.innerHTML='';const add=(x,y,w,h,fn)=>hit(x,y,w,h,fn);
@@ -1143,4 +1144,484 @@ v22Install();
   setInterval(()=>{if(Math.random()<0.07&&S.scene!=='date'&&S.scene!=='office')v22Incoming()},30000);
 })();
 
-</script></body></html>
+
+/* ================= V23: FINAL ACTION / SIMULATION REPAIR ================= */
+(function(){
+  S.v23=S.v23||{activity:null,pose:{boy:'stand',girl:'stand'},lastBurned:null};
+  S.v23.pose=S.v23.pose||{boy:'stand',girl:'stand'};
+  S.pet=S.pet||{};S.pet.food=S.pet.food||{dry:0,wet:0,treat:0};
+
+  const style=document.createElement('style');
+  style.textContent=`
+  .char.sitting{transform:translateY(12%) scale(.76,.56)!important;transform-origin:50% 100%;filter:drop-shadow(0 4px 2px #0006)}
+  .char.lying{transform:translateY(8%) rotate(90deg) scale(.62,.62)!important;transform-origin:50% 50%;filter:drop-shadow(0 4px 2px #0006)}
+  .char.cookingPose{animation:workBob .45s steps(2,end) infinite;filter:drop-shadow(0 5px 2px #0006) brightness(1.08)}
+  .v23-panel{position:absolute;left:3%;right:3%;bottom:2%;z-index:36;background:rgba(28,27,40,.97);color:#fff;border:2px solid #e2ad3f;border-radius:13px;padding:8px;box-shadow:0 5px 0 #17131d;font-size:10px}
+  .v23-panel b{font-size:11px}.v23-panel small{opacity:.82}.v23-actions{display:flex;gap:5px;margin-top:6px}.v23-actions button{flex:1;border:0;border-radius:8px;padding:7px 4px;font-size:9px;font-weight:900;background:#e77da5;color:#fff}.v23-actions button.alt{background:#70a36b}.v23-actions button.gold{background:#e2ad3f;color:#292638}
+  .v23-cook{position:absolute;left:24%;top:31%;z-index:18;pointer-events:none;background:#292638;color:#fff;border:2px solid #e2ad3f;border-radius:8px;padding:3px 6px;font-size:8px;font-weight:900;display:none}
+  .v23-burn{position:absolute;left:25%;top:31%;z-index:19;pointer-events:none;font-size:17px;display:none;animation:glowCook .35s infinite alternate}
+  .v23-bowl{position:absolute;left:75%;top:77%;z-index:18;width:52px;height:23px;border:3px solid #292638;border-radius:0 0 18px 18px;background:#e77da5;text-align:center;line-height:17px;font-size:14px;cursor:pointer}
+  .v23-bowl:after{content:'🍖';position:absolute;left:16px;top:-17px;font-size:13px}
+  .v23-zone{position:absolute;pointer-events:none;z-index:2;border:0;border-radius:12px}
+  .v23-zone.kitchen{left:1%;top:19%;width:29%;height:23%}.v23-zone.sofa{left:56%;top:30%;width:41%;height:25%}.v23-zone.bed{left:1%;top:75%;width:48%;height:23%}
+  `;
+  document.head.appendChild(style);
+
+  function panel(title,text,buttons=[]){
+    document.getElementById('v23Panel')?.remove();
+    const e=document.createElement('div');e.id='v23Panel';e.className='v23-panel';
+    e.innerHTML=`<b>${title}</b><br><small>${text}</small>`+(buttons.length?`<div class="v23-actions">${buttons.map(b=>`<button class="${b.cls||''}" onclick="${b.fn}">${b.label}</button>`).join('')}</div>`:'');
+    $('world').appendChild(e);return e;
+  }
+  function removePanel(){document.getElementById('v23Panel')?.remove()}
+  function pose(who,p){const e=$(who);if(!e)return;e.classList.remove('sitting','lying','cookingPose');if(p==='sit')e.classList.add('sitting');if(p==='lie')e.classList.add('lying');if(p==='cook')e.classList.add('cookingPose');S.v23.pose[who]=p;}
+  function stand(who){pose(who,'stand')}
+  async function move(who,left,top,text){
+    const e=$(who);if(!e)return;
+    stand(who);e.classList.add('walking');e.style.left=left+'%';e.style.top=top+'%';
+    if(text)v20Say(text,who,1500);
+    await waitMs(760);e.classList.remove('walking');
+  }
+  function ensureZones(){
+    if(!$('v23Zones'))$('world').insertAdjacentHTML('afterbegin','<div id="v23Zones"><div class="v23-zone kitchen"></div><div class="v23-zone sofa"></div><div class="v23-zone bed"></div></div>');
+    if(!$('v23CookBadge'))$('world').insertAdjacentHTML('beforeend','<div id="v23CookBadge" class="v23-cook"></div>');
+    if(!$('v23Burn'))$('world').insertAdjacentHTML('beforeend','<div id="v23Burn" class="v23-burn">🔥🔥</div>');
+    if(!$('v23Bowl'))$('world').insertAdjacentHTML('beforeend','<div id="v23Bowl" class="v23-bowl" title="Bát thức ăn">🥣</div>');
+    $('v23Bowl').onclick=feedPet;
+  }
+
+  function feedPet(){
+    S.pet.food=S.pet.food||{dry:0,wet:0,treat:0};
+    const kind=S.pet.food.wet>0?'wet':S.pet.food.dry>0?'dry':S.pet.food.treat>0?'treat':null;
+    if(!kind){return panel('🐾 BÁT CỦA '+String(S.pet.name||'Miu').toUpperCase(),'Bát đang trống. Vào CỬA HÀNG mua thức ăn trước.',[{label:'🛒 Cửa hàng',fn:'shop()'}]);}
+    const gain={dry:18,wet:25,treat:10}[kind];S.pet.food[kind]--;S.pet.hunger=clamp(S.pet.hunger+gain);S.pet.happy=clamp(S.pet.happy+5);hud();
+    move('pet',78,76);v20FX('🍖',78,73);v20Say('Có đồ ăn rồi! 😋',S.partner,1400);toast('🐾 '+S.pet.name+' đã ăn '+(kind==='wet'?'pate':kind==='dry'?'hạt khô':'bánh thưởng'));
+    if(S.v22?.stats){S.v22.stats.petFeeds=(S.v22.stats.petFeeds||0)+1;v22Memory('Cho '+S.pet.name+' ăn');}
+    removePanel();
+  }
+  window.v23FeedPet=feedPet;
+  // Repair legacy global bindings used by older timers/closures in V20-V22.
+  try{ v21FX=v20FX; v21Say=v20Say; v21Move=v20Move; }catch(e){}
+
+  function recipes(){return[
+    {name:'🍜 Mì trứng rau',need:{noodle:1,egg:1,veg:1},steps:[['🔥 Làm nóng bếp',5],['💧 Đun nước',5],['🍜 Cho mì + trứng + rau',6],['🍽️ Hoàn thiện',5]]},
+    {name:'🍳 Trứng rau',need:{egg:2,veg:1},steps:[['🔥 Làm nóng bếp',5],['🍳 Chiên trứng',6],['🥬 Cho rau',5],['🍽️ Hoàn thiện',5]]},
+    {name:'🥚 Trứng đơn giản',need:{egg:1},steps:[['🔥 Làm nóng bếp',4],['🍳 Chiên trứng',6],['🍽️ Hoàn thiện',5]]}
+  ]}
+  function cookMenu(){
+    if(S.cooking){return cookStatus(true)}
+    panel('🍳 BẾP — ĐANG ĐỨNG TẠI BẾP','Chọn món. Sau khi bắt đầu, bếp chạy độc lập; bạn có thể đi xem TV hoặc làm việc khác.',recipes().map((r,i)=>({label:r.name,fn:`v23StartCooking(${i})`,cls:i===0?'gold':''})));
+  }
+  function v23StartCooking(i){
+    if(S.cooking)return cookStatus(true);
+    const r=recipes()[i];for(const k in r.need)if((S.inventory[k]||0)<r.need[k])return panel('🧊 THIẾU NGUYÊN LIỆU','Vào CỬA HÀNG mua thêm. Tủ lạnh không mua và không nấu.',[{label:'🛒 Cửa hàng',fn:'shop()'}]);
+    for(const k in r.need)S.inventory[k]-=r.need[k];
+    S.readyMeal=null;S.cooking={recipe:r,step:0,phase:'cooking',stepEnd:Date.now()+r.steps[0][1]*1000,burnDeadline:null,remain:r.steps[0][1]};
+    const who=S.player;pose(who,'cook');$('v23CookBadge').style.display='block';$('v23Burn').style.display='none';
+    panel('🔥 BẾP ĐANG NẤU',r.name+' · '+r.steps[0][0]+' · Bạn có thể rời bếp.',[{label:'📺 Đi xem TV',fn:'v23StartActivity("tv")',cls:'alt'},{label:'🛋️ Ngồi sofa',fn:'v23StartActivity("sofa")',cls:'alt'},{label:'✖ Đóng',fn:'removePanel()'}]);
+    v22Log('Bắt đầu nấu '+r.name);v20FX('🔥',31,43);v23CookingTick();
+  }
+  window.v23StartCooking=v23StartCooking;
+  // Disable the legacy V21 timer; otherwise it would restart/control the new cooking state.
+  window.v21RunCooking=()=>v23CookingTick();
+  try{ v21RunCooking=window.v21RunCooking; }catch(e){}
+  window.v21CookStatus=()=>{}; try{ v21CookStatus=window.v21CookStatus; }catch(e){}
+  function collectMeal(){
+    const c=S.cooking;if(!c||c.phase!=='ready')return;
+    const who=S.player;move(who,31,47,'Món xong rồi, lấy ra thôi.').then(()=>{S.readyMeal=c.recipe.name;S.cooking=null;stand(who);$('v23CookBadge').style.display='none';$('v23Burn').style.display='none';v20FX('🍽️',31,43);panel('🍽️ MÓN ĐÃ XONG',c.recipe.name+' đã được lấy khỏi bếp. Bây giờ có thể tới BÀN ĂN.',[{label:'🍚 Đi tới bàn ăn',fn:'v23Eat()',cls:'gold'},{label:'✖ Đóng',fn:'removePanel()'}]);v22Log('Lấy món khỏi bếp: '+c.recipe.name);});
+  }
+  function cookStatus(showPanel){
+    const c=S.cooking;if(!c)return;
+    if(c.phase==='burnt')return;
+    const remain=Math.max(0,Math.ceil((c.stepEnd-Date.now())/1000));
+    if(c.phase==='cooking'){
+      if(showPanel)panel('🔥 BẾP ĐANG NẤU',`${c.recipe.name} · ${c.recipe.steps[c.step][0]} · còn ${remain}s`,[{label:'📺 TV',fn:'v23StartActivity("tv")',cls:'alt'},{label:'🛋️ SOFA',fn:'v23StartActivity("sofa")',cls:'alt'},{label:'✖',fn:'removePanel()'}]);
+    }else if(c.phase==='ready'){
+      panel('🍽️ MÓN ĐÃ CHÍN',`${c.recipe.name} · lấy món trước khi bị cháy · còn ${Math.max(0,Math.ceil((c.burnDeadline-Date.now())/1000))}s`,[{label:'🍽️ LẤY MÓN',fn:'v23CollectMeal()',cls:'gold'},{label:'✖',fn:'removePanel()'}]);
+    }
+  }
+  window.v23CollectMeal=collectMeal;
+  function v23CookingTick(){
+    const c=S.cooking;if(!c)return;
+    if(c.phase==='cooking' && Date.now()>=c.stepEnd){
+      c.step++;
+      if(c.step>=c.recipe.steps.length){c.phase='ready';c.burnDeadline=Date.now()+12000;c.remain=12;pose(S.player,'stand');$('v23CookBadge').style.display='block';$('v23CookBadge').textContent='🍽️ '+c.recipe.name+' CHÍN — LẤY MÓN';$('v23Burn').style.display='block';v20FX('🍽️',31,43);toast('🍽️ '+c.recipe.name+' đã chín — 12 giây trước khi cháy!');return;}
+      c.stepEnd=Date.now()+c.recipe.steps[c.step][1]*1000;c.remain=c.recipe.steps[c.step][1];v20FX('🔥',31,43);
+    }
+    if(c.phase==='ready' && Date.now()>=c.burnDeadline){
+      const name=c.recipe.name;c.phase='burnt';S.v23.lastBurned=name;S.cooking=null;S.readyMeal=null;$('v23CookBadge').style.display='none';$('v23Burn').style.display='none';effect('anger',4);effect('happy',-2);hud();v20FX('💨',31,43);toast('🔥 '+name+' bị cháy! Mất món — phải nấu lại.');v22Log('Cháy món '+name);return;
+    }
+    if(c.phase==='cooking'){$('v23CookBadge').style.display='block';$('v23CookBadge').textContent='🔥 '+c.recipe.name+' · '+c.recipe.steps[c.step][0]+' · '+Math.max(0,Math.ceil((c.stepEnd-Date.now())/1000))+'s';}
+    else if(c.phase==='ready'){$('v23CookBadge').style.display='block';$('v23CookBadge').textContent='🍽️ '+c.recipe.name+' CHÍN · '+Math.max(0,Math.ceil((c.burnDeadline-Date.now())/1000))+'s';}
+  }
+
+  function v23StartActivity(type){
+    if(S.v23.activity)return toast('⏳ Bạn đang '+S.v23.activity.title.toLowerCase());
+    const who=S.player;removePanel();
+    const cfg={sofa:{title:'🛋️ Đang ngồi sofa',pos:[65,57],pose:'sit',effect:'tv'},tv:{title:'📺 Đang xem TV',pos:[65,57],pose:'sit',effect:'tv'},bed:{title:'🛌 Đang nằm nghỉ',pos:[23,82],pose:'lie',effect:'rest'}}[type];if(!cfg)return;
+    S.v23.activity={type,title:cfg.title,end:Date.now()+60000};
+    move(who,cfg.pos[0],cfg.pos[1]).then(()=>{pose(who,cfg.pose);if(type==='tv'){tvOn();$('v21TVState').style.display='block';}v20FX(type==='tv'?'📺':type==='sofa'?'🛋️':'💤',cfg.pos[0],cfg.pos[1]-8);});
+    panel(cfg.title,'60 giây hoạt động tự do — bạn vẫn có thể để BẾP tiếp tục chạy nền.',[{label:'✖ Dừng',fn:'v23EndActivity()',cls:'gold'}]);
+  }
+  function v23EndActivity(){if(!S.v23.activity)return;const a=S.v23.activity;S.v23.activity=null;stand(S.player);if(a.type==='tv'){$('v21TVState').style.display='none';}removePanel();changeTime(1);effect('happy',2);hud();toast('⏰ '+a.title+' kết thúc');}
+  function v23ActivityTick(){const a=S.v23.activity;if(!a)return;if(Date.now()>=a.end){v23EndActivity();return}const p=$('v23Panel');if(p){const sm=p.querySelector('small');if(sm)sm.textContent='Còn '+Math.max(0,Math.ceil((a.end-Date.now())/1000))+'s · BẾP vẫn chạy nền nếu đang nấu.';}setTimeout(v23ActivityTick,500)}
+
+  function v23Eat(){
+    if(!S.readyMeal)return toast('🍚 Chưa có món ăn');removePanel();const who=S.player;move(who,76,65,'Mời vào ăn nào.').then(()=>{move(S.partner,82,65,'Ăn thôi!').then(()=>{const meal=S.readyMeal;S.readyMeal=null;v22ActivityNeed('eat');effect('happy',5);effect('love',3);changeTime(15);hud();v20FX('❤️',78,58);toast('🍚 Hai người ăn cùng nhau');v22Log('Ăn '+meal);});});
+  }
+  window.v23Eat=v23Eat;window.v23StartActivity=v23StartActivity;window.v23EndActivity=v23EndActivity;
+
+  async function interact(k){
+    if(S.scene!=='home')return returnHomeScene();
+    const who=S.player;
+    const spots={kitchen:[31,48],fridge:[42,46],tv:[65,57],sofa:[65,57],table:[76,65],bed:[23,82],plant:[12,68],petarea:[80,76]};
+    if(spots[k])await move(who,spots[k][0],spots[k][1]);
+    if(k==='kitchen'){
+      pose(who,S.cooking?'stand':'cook');
+      if(S.cooking?.phase==='ready')return cookStatus(true);
+      if(S.cooking?.phase==='cooking')return cookStatus(true);
+      return cookMenu();
+    }
+    if(k==='fridge')return panel('🧊 TỦ LẠNH','Chỉ xem kho. Không mua và không nấu ở đây.',[{label:'🛒 Cửa hàng',fn:'shop()',cls:'gold'}]);
+    if(k==='tv'){return v23StartActivity('tv');}
+    if(k==='sofa'){return v23StartActivity('sofa');}
+    if(k==='bed'){return v23StartActivity('bed');}
+    if(k==='table'){if(!S.readyMeal)return panel('🍚 BÀN ĂN','Bàn đang chờ món. Hãy tới BẾP nấu trước.',[{label:'🍳 Tới BẾP',fn:'v23Object("kitchen")',cls:'gold'}]);return v23Eat();}
+    if(k==='petarea')return panel('🐾 KHU THÚ CƯNG',S.pet.name+' đang ở đây. Bấm vào BÁT để cho ăn hoặc chọn chơi.',[{label:'🥣 Cho ăn',fn:'v23FeedPet()',cls:'gold'},{label:'🎾 Chơi',fn:'petAction("play")',cls:'alt'}]);
+    if(k==='plant'){v20FX('💧',12,64);effect('happy',1);hud();return panel('🌿 CÂY CẢNH','Tưới một chút. Ít nhất cây không hỏi “ăn gì?”.');}
+  }
+  window.v23Object=interact;
+
+  function rebuild(){
+    ensureZones();decorateHomeObjects();
+    const hs=$('hotspots');if(!hs)return;hs.innerHTML='';
+    const add=(x,y,w,h,k)=>hit(x,y,w,h,()=>interact(k));
+    add(2,90,105,105,'kitchen');add(108,90,80,105,'fridge');add(200,55,145,100,'tv');add(200,125,145,100,'sofa');add(200,220,150,125,'table');add(1,370,185,110,'bed');add(1,270,105,110,'plant');add(250,340,100,110,'petarea');
+  }
+
+  // Final interaction routing: eliminate the older overlapping V20/V21/V22 handlers.
+  window.v22ObjectInteraction=interact;
+  window.v21Object=interact;
+  window.v20DoObject=interact;
+  window.v21StartActivity=v23StartActivity;
+  window.v21StartTV=()=>v23StartActivity('tv');
+  window.v21StartMeal=v23Eat;
+  window.v21StartCooking=v23StartCooking;
+  window.v21Kitchen=cookMenu;
+  window.v21CookStatus=cookStatus;
+  window.v21Rebuild=rebuild;
+  window.v21FeedDirect=feedPet;
+  window.petFeed=(kind)=>{if(kind&&S.pet.food?.[kind]>0){S.pet.food[kind]--;S.pet.hunger=clamp(S.pet.hunger+(kind==='wet'?25:kind==='dry'?18:10));S.pet.happy=clamp(S.pet.happy+5);hud();move('pet',78,76);toast('🐾 '+S.pet.name+' ăn ngon lành');}else feedPet();};
+  window.v22PartnerAI=async function(){if(S.scene!=='home'||S.v23.activity||S.v21?.work||S.cooking)return;const t=S.h*60+S.m;if(!((t>=7*60&&t<11*60)||(t>=13*60+30&&t<17*60+30))){const n=S.v22.needs;if(n.hunger<35){await move(S.partner,31,48,'Hình như đói rồi...');return}if(n.fun<30){await move(S.partner,65,57,'Xem gì đó giải trí thôi.');pose(S.partner,'sit');return}const a=['tv','sofa','petarea','plant'][Math.floor(Math.random()*4)];if(a==='tv'||a==='sofa')await move(S.partner,65,57,'Ngồi một lát.').then(()=>pose(S.partner,'sit'));else if(a==='petarea'){await move(S.partner,80,76,'Boss đâu rồi?');}else await move(S.partner,12,68,'Tưới cây chút.');}};
+  window.v20PartnerRoutine=window.v22PartnerAI;
+  try{ v22PartnerAI=window.v22PartnerAI; v20PartnerRoutine=window.v22PartnerAI; v21Object=interact; v20DoObject=interact; v21StartActivity=v23StartActivity; v21StartTV=()=>v23StartActivity('tv'); v21StartMeal=v23Eat; v21StartCooking=v23StartCooking; v21Kitchen=cookMenu; v21FeedDirect=feedPet; }catch(e){}
+
+  // Work/date remain time-locked, and working state cannot be started at night.
+  window.v22WorkStartGuard=function(){if(!v21CanWork())return toast(S.h*60+S.m<8*60?'💼 Văn phòng chưa mở — 08:00 mới bắt đầu.':'🌙 Đã hết giờ làm — văn phòng đóng cửa lúc 17:30.');return v21Work();};
+  window.v22DateStartGuard=function(){return v21Date();};
+
+  ensureZones();rebuild();
+  // Persistent simulation tick: cooking is independent from current activity/scene.
+  setInterval(()=>{v23CookingTick();v23ActivityTick();},500);
+  setInterval(()=>{if(S.scene==='home'&&!S.v23.activity&&!S.cooking&&Math.random()<.18)window.v22PartnerAI();},12000);
+  toast('🔧 V23: hành động thật + ngồi/nằm + bếp chạy nền + cháy món + thú cưng đã nối lại');
+})();
+
+</script>
+<script>
+/* ================= V26: YÊU NHAU CÓ GÌ VUI? — LIFE SIM MASTER ================= */
+(function(){
+  // Kill legacy campaign-facing hooks while preserving the earlier art/engine.
+  window.v22PartnerAI=async()=>{}; window.v20PartnerRoutine=async()=>{};
+  window.v24Difficulty=()=>web(); window.v24HowToPlay=()=>web();
+
+  // Reset to the agreed starting life.
+  Object.assign(S,{
+    day:1,h:7,m:30,money:1000000,
+    love:55,trust:52,anger:5,finance:50,happy:68,energy:92,
+    scene:'home',clean:95,
+    upgrades:{sofa:0,tv:0,kitchen:1,fridge:0,bed:1,table:0,plant:0,petarea:0},
+    inventory:{rice:1,veg:1,fish:0,meat:0,shrimp:0,egg:2,noodle:2},
+    cooking:null,readyMeal:null,chores:{dish:false,laundry:false,trash:false,floor:false},
+    partnerAtHome:false,petUnlocked:false,
+    partnerGender:S.partner||'girl',
+    v26:{room:'tiny',rentUntil:7,lastExpenseDay:1,cooking:null,job:null,jobTasks:0,jobEarned:0,jobLevel:{delivery:1,restaurant:1,office:1},bag:{},vehicle:'walk',petFood:0,history:[]}
+  });
+  S.partnerAtHome=false; if($(S.partner))$(S.partner).style.display='none';
+  if($('pet'))$('pet').style.display='none';
+
+  const G={
+    rooms:{
+      tiny:{name:'Phòng nhỏ',rent:280000,deposit:280000,capacity:1,objects:['kitchen','bed'],desc:'Một căn phòng nhỏ đủ để bắt đầu cuộc sống.',level:1,partner:false,pet:false},
+      normal:{name:'Phòng đôi',rent:450000,deposit:450000,capacity:2,objects:['kitchen','bed','fridge','table','sofa'],desc:'Rộng hơn, đủ không gian để mời người yêu về ở.',level:2,partner:true,pet:false},
+      studio:{name:'Studio',rent:650000,deposit:650000,capacity:2,objects:['kitchen','bed','fridge','table','sofa','tv','petarea'],desc:'Không gian tốt hơn, có khu thú cưng.',level:3,partner:true,pet:true},
+      apartment:{name:'Căn hộ',rent:950000,deposit:950000,capacity:2,objects:['kitchen','bed','fridge','table','sofa','tv','petarea','plant'],desc:'Căn hộ rộng, đầy đủ tiện nghi.',level:4,partner:true,pet:true}
+    },
+    jobs:{
+      delivery:{name:'🛵 Shipper',hours:'09:00–21:00',pay:55000,energy:7,time:18,desc:'Nhận hàng → lấy hàng → giao → nhận tiền'},
+      restaurant:{name:'🍜 Nhân viên quán phở',hours:'08:00–11:30 / 16:30–21:00',pay:42000,energy:6,time:15,desc:'Khách gọi → lấy món → phục vụ → thu tiền'},
+      office:{name:'💼 Nhân viên văn phòng',hours:'08:00–17:30',pay:48000,energy:5,time:16,desc:'Nhận task → thao tác tại máy → hoàn thành → task mới'}
+    },
+    items:{
+      rice:{name:'🍚 Gạo',price:22000,cat:'Thực phẩm'},egg:{name:'🥚 Trứng',price:5000,cat:'Thực phẩm'},veg:{name:'🥬 Rau',price:12000,cat:'Thực phẩm'},noodle:{name:'🍜 Mì',price:10000,cat:'Thực phẩm'},fish:{name:'🐟 Cá',price:35000,cat:'Thực phẩm'},meat:{name:'🥩 Thịt',price:45000,cat:'Thực phẩm'},
+      dry:{name:'🥣 Hạt khô cho thú',price:40000,cat:'Thú cưng'},wet:{name:'🥫 Pate',price:55000,cat:'Thú cưng'},toy:{name:'🎾 Đồ chơi',price:60000,cat:'Thú cưng'},pet:{name:'🐱 Nhận nuôi Miu',price:220000,cat:'Thú cưng'},
+      phone:{name:'📱 Điện thoại tốt',price:350000,cat:'Thiết bị'},laptop:{name:'💻 Laptop',price:800000,cat:'Thiết bị'},shirt:{name:'👕 Quần áo',price:150000,cat:'Cá nhân'},scooter:{name:'🛵 Xe máy cũ',price:900000,cat:'Phương tiện'}
+    }
+  };
+
+  function room(){return G.rooms[S.v26.room]||G.rooms.tiny;}
+  function bagCount(k){return S.v26.bag[k]||0;}
+  function addBag(k,n=1){S.v26.bag[k]=bagCount(k)+n;}
+  function useBag(k,n=1){S.v26.bag[k]=Math.max(0,bagCount(k)-n);}
+  function log26(t){S.v26.history.unshift(`${String(S.h).padStart(2,'0')}:${String(S.m).padStart(2,'0')} · ${t}`);S.v26.history=S.v26.history.slice(0,50);}
+  function sync26(){hud();renderHomeObjects();}
+  function renderHomeObjects(){
+    const all=document.querySelectorAll('#room .asset');
+    const map={kitchen:0,fridge:1,tv:2,sofa:3,table:4,plant:5,petarea:6,bed:7};
+    const active=new Set(room().objects);
+    Object.entries(map).forEach(([k,i])=>{if(all[i])all[i].classList.toggle('v25-hide',!active.has(k));});
+    const names={kitchen:'🍳 BẾP',fridge:'🧊 TỦ LẠNH',tv:'📺 TIVI',sofa:'🛋️ SOFA',table:'🍽️ BÀN ĂN',plant:'🌿 CÂY',petarea:'🐾 THÚ CƯNG',bed:'🛏️ GIƯỜNG'};
+    Object.entries(map).forEach(([k,i])=>{const e=all[i];if(!e)return;let l=e.querySelector('.assetLabel');if(!l){l=document.createElement('div');l.className='assetLabel';e.appendChild(l)}l.textContent=names[k];});
+    if($(S.partner))$(S.partner).style.display=S.partnerAtHome?'block':'none';
+    if($('pet'))$('pet').style.display=S.petUnlocked?'block':'none';
+  }
+
+  // Clear old home hotspots and make the room object-driven.
+  function rebuild26(){
+    renderHomeObjects();
+    const hs=$('hotspots');if(!hs)return;hs.innerHTML='';
+    const add=(x,y,w,h,fn)=>hit(x,y,w,h,fn);
+    add(2,90,105,105,()=>object26('kitchen'));
+    add(108,90,80,105,()=>object26('fridge'));
+    add(200,55,145,100,()=>object26('tv'));
+    add(200,125,145,100,()=>object26('sofa'));
+    add(200,220,150,125,()=>object26('table'));
+    add(1,370,185,110,()=>object26('bed'));
+    add(1,270,105,110,()=>object26('plant'));
+    add(250,340,100,110,()=>object26('petarea'));
+    add(335,20,25,60,()=>goCity());
+    const door=$('hotspots').lastElementChild; if(door)door.title='🚪 CỬA — Ra phố';
+  }
+
+  async function object26(k){
+    if(S.scene!=='home')return;
+    if(k==='kitchen'){
+      await move(S.player,34,47);pose(S.player,'cook');
+      if(S.v26.cooking)return cookingStatus();
+      return cookMenu26();
+    }
+    if(k==='fridge'){
+      await move(S.player,62,47);pose(S.player,'stand');
+      return show('<h2>🧊 TỦ LẠNH</h2><div class="v26-card">Chỉ là kho thực phẩm. Muốn mua đồ → ra cửa hàng. Muốn nấu → tới BẾP.</div><div class="v26-inv">'+Object.entries(S.inventory).map(([k,n])=>`<span>${k}: <b>${n}</b></span>`).join('')+'</div>');
+    }
+    if(k==='tv'){
+      if(!room().objects.includes('tv'))return toast('📺 Chưa có TV — mua trong Cửa hàng');
+      await move(S.player,67,57);pose(S.player,'sit');$('tv-screen').style.display='block';
+      return show('<h2>📺 ĐANG XEM TV</h2><div class="v26-card">Bạn có thể ngồi bao lâu tùy thích. TV vẫn bật khi bạn đóng bảng này.</div><button class="btn gold" onclick="stand26()">🚶 Đứng dậy</button>');
+    }
+    if(k==='sofa'){
+      if(!room().objects.includes('sofa'))return toast('🛋️ Chưa có sofa');
+      await move(S.player,57,59);pose(S.player,'sit');
+      return show('<h2>🛋️ ĐANG NGỒI</h2><div class="v26-card">Ngồi tự do, không giới hạn 60 giây.</div><button class="btn gold" onclick="stand26()">🚶 Đứng dậy</button>');
+    }
+    if(k==='bed'){
+      await move(S.player,22,80);pose(S.player,'lie');
+      return show('<h2>🛏️ ĐANG NẰM</h2><div class="v26-card">Bạn có thể nằm bao lâu tùy thích.</div><button class="btn gold" onclick="stand26()">🚶 Đứng dậy</button><button class="btn green" onclick="sleep26()">🌙 Ngủ qua đêm</button>');
+    }
+    if(k==='table'){
+      if(!S.readyMeal)return toast('🍽️ Chưa có món ăn — nấu ở BẾP trước');
+      await move(S.player,57,68);pose(S.player,'sit');S.readyMeal=null;effect('happy',5);S.energy=clamp(S.energy+8);changeTime(20);log26('Ăn một bữa tại bàn');hud();return toast('🍚 Ăn xong · +năng lượng');
+    }
+    if(k==='petarea'){
+      if(!S.petUnlocked)return toast('🐾 Chưa có thú cưng');
+      await move(S.player,70,73);return pet26();
+    }
+    if(k==='plant'){await move(S.player,15,67);return toast('🌿 Tưới cây');}
+  }
+  window.object26=object26;
+  async function stand26(){closeModal();$('tv-screen').style.display='none';pose(S.player,'stand');await move(S.player,50,72);}
+  window.stand26=stand26;
+
+  // Cooking runs independently of scene.
+  const REC=[
+    {name:'🍜 Mì trứng rau',need:{noodle:1,egg:1,veg:1},sec:22},
+    {name:'🍳 Trứng rau',need:{egg:2,veg:1},sec:18},
+    {name:'🍚 Cơm cá',need:{rice:1,fish:1},sec:25}
+  ];
+  function cookMenu26(){show('<h2>🍳 BẾP</h2><div class="v26-card">Chọn món tại bếp. Sau khi bắt đầu, bạn có thể rời đi và món vẫn tiếp tục nấu.</div>'+REC.map((r,i)=>`<button class="choice" onclick="startCook26(${i})">${r.name}<small>${Object.entries(r.need).map(([k,n])=>k+' × '+n).join(' · ')} · ${r.sec}s</small></button>`).join(''));}
+  function startCook26(i){const r=REC[i];if(S.v26.cooking)return cookingStatus();for(const k in r.need)if((S.inventory[k]||0)<r.need[k])return toast('🧊 Thiếu nguyên liệu — vào Cửa hàng');for(const k in r.need)S.inventory[k]-=r.need[k];S.v26.cooking={recipe:r,start:Date.now(),ready:false,burnAt:0};closeModal();log26('Bắt đầu nấu '+r.name);toast('🔥 '+r.name+' đang nấu nền');}
+  function cookingStatus(){const c=S.v26.cooking;if(!c)return;const elapsed=(Date.now()-c.start)/1000;if(elapsed<c.recipe.sec)return show('<h2>🔥 ĐANG NẤU</h2><div class="v26-card">'+c.recipe.name+'<br>Còn khoảng <b>'+Math.ceil(c.recipe.sec-elapsed)+' giây</b>.<br>Bạn có thể rời bếp.</div>');if(!c.ready)return cookingTick26();return show('<h2>🍽️ MÓN ĐÃ CHÍN</h2><div class="v26-card">'+c.recipe.name+' đã xong. Lấy món trước khi bị cháy.</div><button class="btn green" onclick="takeCook26()">🍽️ Lấy món</button>');}
+  function cookingTick26(){const c=S.v26.cooking;if(!c)return;const elapsed=(Date.now()-c.start)/1000;if(!c.ready&&elapsed>=c.recipe.sec){c.ready=true;c.burnAt=Date.now()+15000;toast('🍽️ '+c.recipe.name+' đã chín!');log26('Món đã chín');}if(c.ready&&Date.now()>=c.burnAt){S.v26.cooking=null;S.readyMeal=null;S.clean=clamp(S.clean-8);effect('happy',-6);log26('🔥 Làm cháy '+c.recipe.name);toast('🔥 Cháy đồ ăn! Bếp cần được dọn');v20FX('💨',35,43);}}
+  function takeCook26(){if(!S.v26.cooking?.ready)return;S.readyMeal=S.v26.cooking.recipe.name;S.v26.cooking=null;closeModal();pose(S.player,'stand');log26('Lấy món đã nấu');toast('🍽️ Món đã sẵn sàng ở bàn ăn');}
+  window.startCook26=startCook26;window.takeCook26=takeCook26;
+
+  function sleep26(){closeModal();stand26();const old=S.day;changeTime(24*60-(S.h*60+S.m)+7*60);S.day=old+1;S.h=7;S.m=0;S.energy=94;S.v26.lastExpenseDay=S.day;log26('Bắt đầu ngày '+S.day);toast('🌅 Ngày mới');}
+  window.sleep26=sleep26;
+
+  // World map: spatial scenes, not menus.
+  const PLACES=[
+    ['phoshop','🍜','QUÁN PHỞ',10,18,'restaurant'],['office','💼','VĂN PHÒNG',39,14,'office'],['hub','📦','TRUNG TÂM GIAO HÀNG',68,18,'delivery'],
+    ['store','🏪','CỬA HÀNG',9,53,'store'],['rice','🍚','QUÁN CƠM',38,54,'rice'],['net','🖥️','QUÁN NET',68,54,'net'],
+    ['pub','🍺','QUÁN NHẬU',10,79,'pub'],['park','🌳','CÔNG VIÊN',39,79,'park'],['cinema','🎬','RẠP PHIM',68,79,'cinema'],
+    ['repair','🔧','SỬA XE',82,47,'repair'],['bank','🏦','NGÂN HÀNG',82,72,'bank'],['hospital','🏥','BỆNH VIỆN',82,90,'hospital'],
+    ['tea','🧋','TRÀ SỮA',54,91,'tea'],['streettea','🧊','TRÀ ĐÁ VỈA HÈ',25,92,'streettea']
+  ];
+  const NPCS={
+    restaurant:[['PHO_OWNER','Chú Bình','👨‍🍳','Chủ quán'],['PHO_CHEF','Cô Lan','👩‍🍳','Đầu bếp'],['PHO_SERVER','Tú','🧑‍🍳','Nhân viên'],['PHO_CUSTOMER','Anh Hùng','👨','Khách quen'],['PHO_CUSTOMER2','Gia đình Minh','👨‍👩‍👧','Khách gia đình']],
+    office:[['OFF_BOSS','Chị Mai','👩‍💼','Quản lý'],['OFF_IT','Duy','🧑‍💻','IT'],['OFF_ACC','Hà','👩‍💼','Kế toán'],['OFF_SALES','Quang','👨‍💼','Kinh doanh'],['OFF_CLEAN','Bác Sáu','🧹','Lao công']],
+    delivery:[['DEL_MANAGER','Anh Phúc','🧑‍💼','Điều phối'],['DEL_RIDER','Tài','🛵','Shipper'],['DEL_RIDER2','Vy','🛵','Shipper'],['DEL_WARE','Chị Hạnh','📦','Kho']],
+    net:[['NET_OWNER','Khoa','🧑‍💻','Chủ net'],['NET_PLAYER','Long','🎮','Game thủ'],['NET_ONLINE','My','💻','Làm online'],['NET_TECH','Đạt','🔧','Kỹ thuật']],
+    pub:[['PUB_OWNER','Chú Tư','🍺','Chủ quán'],['PUB_WORKER','Thảo','🍲','Phục vụ'],['PUB_GUEST','Ông Bảy','👴','Khách quen'],['PUB_GUEST2','Nam','👨','Khách bàn bên']],
+    rice:[['RICE_OWNER','Cô Sáu','👩','Chủ quán'],['RICE_COOK','Chị Vân','👩‍🍳','Bếp'],['RICE_GUEST','Anh Đức','👨','Khách']],
+    park:[['PARK_RUN','Ngọc','🏃','Người chạy bộ'],['PARK_DOG','Bảo','🐕','Người dắt chó'],['PARK_OLD','Bà Năm','👵','Người nghỉ'],['PARK_SELL','Chú Tám','🧺','Bán nước']],
+    cinema:[['CINEMA_TICKET','Linh','🎟️','Nhân viên vé'],['CINEMA_GUARD','Phúc','🛡️','Bảo vệ'],['CINEMA_GUEST','Thư','👩','Khách']],
+    store:[['STORE_CASH','Yến','🧑‍💼','Thu ngân'],['STORE_STOCK','Hoàng','📦','Kho'],['STORE_CUSTOMER','An','🛒','Khách']],
+    repair:[['REPAIR_MECH','Chú Năm','🔧','Thợ máy'],['REPAIR_HELP','Tín','🧑‍🔧','Phụ việc']],
+    bank:[['BANK_TELLER','Trang','🏦','Giao dịch viên'],['BANK_GUARD','Sơn','🛡️','Bảo vệ']],
+    hospital:[['HOSP_DOCTOR','Bác sĩ Vy','👩‍⚕️','Bác sĩ'],['HOSP_NURSE','Điều dưỡng Nam','🧑‍⚕️','Điều dưỡng'],['HOSP_RECEPT','Lệ','🧾','Lễ tân']],
+    tea:[['TEA_CASH','Mai','🧋','Nhân viên'],['TEA_GUEST','Chi','👩','Khách'],['TEA_GUEST2','Thắng','👨','Khách']],
+    streettea:[['STREET_DRIVER','Chú Thành','🛵','Tài xế'],['STREET_VENDOR','Cô Tư','🧊','Bán trà đá'],['STREET_WORKER','Sơn','👷','Công nhân']]
+  };
+  const cityCss=`<style id="v26css">
+    .v25-hide{display:none!important}.v26-world{position:absolute;inset:0;overflow:hidden;background:#6f9b67;padding:52px 8px 8px}.v26-road{position:absolute;background:#4e4d50;box-shadow:inset 0 0 0 3px #3b393c}.v26-road.h{left:0;right:0;height:58px;top:48%}.v26-road.v{top:0;bottom:0;width:58px;left:48%}.v26-building{position:absolute;width:26%;min-height:70px;background:#f5e4c8;border:3px solid #292638;border-radius:12px;padding:7px;box-shadow:4px 5px 0 #3d3a40;cursor:pointer}.v26-building b{display:block;font-size:10px}.v26-building small{display:block;margin-top:4px;font-size:8px}.v26-npcs{position:absolute;left:8px;right:8px;bottom:8px;background:#fffaf0eF;border:2px solid #292638;border-radius:12px;padding:7px;display:flex;gap:5px;overflow:auto}.v26-npc{min-width:82px;background:#f7ead2;border:1px solid #dac4a4;border-radius:8px;padding:5px;font-size:8px;text-align:center}.v26-place{position:absolute;inset:0;background:#d2b27e;padding:50px 9px 10px;overflow:hidden}.v26-place .floor{position:absolute;inset:45px 8px 8px;background:repeating-linear-gradient(0deg,#d9c08f 0,#d9c08f 26px,#c9aa78 27px,#c9aa78 29px);border:4px solid #292638;border-radius:12px}.v26-object{position:absolute;background:#f6e8cf;border:3px solid #292638;border-radius:10px;padding:9px;text-align:center;box-shadow:3px 3px 0 #6b5949;cursor:pointer}.v26-card{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:10px;margin:7px 0;font-size:11px}.v26-inv{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#f7ead2;border:2px solid #dac4a4;padding:8px;border-radius:10px;font-size:10px}.v26-worktop{position:absolute;top:6px;left:6px;right:6px;z-index:5;background:#292638;color:#fff;border:3px solid #e2ad3f;border-radius:12px;padding:7px;display:flex;justify-content:space-between;align-items:center;font-size:10px}.v26-task{position:absolute;left:10px;right:10px;bottom:10px;background:#fffaf0ee;border:3px solid #292638;border-radius:14px;padding:10px;z-index:5}.v26-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.v26-actions button{min-height:48px}.v26-money{color:#276b32;font-weight:1000}.v26-label{font-size:9px;font-weight:1000}.v26-list{display:grid;gap:7px}.v26-list .choice{min-height:55px;text-align:left}.v26-place-npc{position:absolute;font-size:27px;transition:.5s}.v26-risk{border:2px solid #b86b3e;background:#fff0e3}.v26-good{border:2px solid #5c9860;background:#eff9ef}
+  </style>`;
+  if(!$('v26css'))document.head.insertAdjacentHTML('beforeend',cityCss);
+
+  function goCity(){
+    closeModal();pose(S.player,'stand');setScene('city','🏙️ THÀNH PHỐ','<div id="v26City"></div>');renderCity();
+  }
+  window.goCity=goCity;
+  function renderCity(){
+    const root=$('v26City');if(!root)return;root.innerHTML='<div class="v26-world"><div class="v26-road h"></div><div class="v26-road v"></div><div class="v26-building" style="left:4%;top:8%"><b>🏠 NHÀ</b><small>Phòng của bạn</small></div>'+PLACES.map((p,i)=>`<button class="v26-building" style="left:${p[3]}%;top:${p[4]}%" onclick="enterPlace26('${p[5]}')"><b>${p[1]} ${p[2]}</b><small>Chạm để đi vào</small></button>`).join('')+'<div class="v26-npcs">'+['👨‍🦱','👩','🧑‍🍳','🛵','👨‍💼','👵','👷','🧑‍💻'].map((x,i)=>`<div class="v26-npc">${x}<br><span>NPC #${i+1}</span></div>`).join('')+'</div></div>';
+  }
+  function enterPlace26(type){
+    if(type==='store')return enterStore26();
+    if(type==='repair')return enterRepair26();
+    if(type==='bank')return enterBank26();
+    if(type==='hospital')return enterHospital26();
+    if(type==='rice')return enterSimplePlace26(type,'🍚 QUÁN CƠM','Ăn nhanh, giá rẻ.','🍚','Gọi cơm',30000);
+    if(type==='net')return enterNet26();
+    if(type==='pub')return enterPub26();
+    if(type==='park')return enterSimplePlace26(type,'🌳 CÔNG VIÊN','Không gian miễn phí để đi bộ, ngồi và trò chuyện.','🪑','Ngồi nghỉ',0);
+    if(type==='cinema')return enterCinema26();
+    if(type==='tea')return enterSimplePlace26(type,'🧋 TRÀ SỮA','Địa điểm gặp bạn bè và hẹn hò.','🧋','Mua trà sữa',35000);
+    if(type==='streettea')return enterStreetTea26();
+    if(type==='phoshop'||type==='restaurant')return enterJobPlace26('restaurant');
+    if(type==='office')return enterJobPlace26('office');
+    if(type==='delivery'||type==='hub')return enterJobPlace26('delivery');
+  }
+  window.enterPlace26=enterPlace26;
+
+  function placeShell(title,type,npcs){
+    setScene('place',title,`<div class="v26-place"><div class="floor"></div><div class="v26-place-content"></div><div class="v26-npcs">${(npcs||[]).map(n=>`<div class="v26-npc"><b>${n[2]}</b><br>${n[1]}<br><small>${n[3]}</small></div>`).join('')}</div></div>`);
+  }
+  function enterJobPlace26(type){
+    const np=NPCS[type];placeShell(G.jobs[type].name,type,np);
+    const c=document.querySelector('.v26-place-content');
+    c.innerHTML=`<div class="v26-object" style="left:7%;top:12%">🚪<br><span class="v26-label">CỬA VÀO</span></div><div class="v26-object" style="left:40%;top:12%">${type==='office'?'🖥️ BÀN LÀM VIỆC':type==='restaurant'?'🍜 QUẦY MÓN':'📦 KHO HÀNG'}</div><div class="v26-object" style="left:70%;top:12%">${type==='delivery'?'🧾 BẢNG ĐƠN':'🧑‍💼 QUẢN LÝ'}</div><div class="v26-object" style="left:36%;top:52%">👤<br><span class="v26-label">VỊ TRÍ CỦA BẠN</span></div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="startJob26('${type}')">▶️ BẮT ĐẦU CA</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>`;
+  }
+  function startJob26(type){
+    const j=G.jobs[type],t=S.h*60+S.m;
+    const ok=type==='restaurant'?((t>=480&&t<690)||(t>=990&&t<1260)):type==='delivery'?(t>=540&&t<1260):(t>=480&&t<1050);
+    if(!ok)return toast('⏰ Chưa đúng giờ làm của nghề này.');
+    if(S.energy<15)return toast('⚡ Quá mệt — nghỉ trước đã.');
+    S.v26.job={type,task:0,earned:0,combo:0};renderJobTask26();
+  }
+  window.startJob26=startJob26;
+  function renderJobTask26(){
+    const j=G.jobs[S.v26.job.type],n=S.v26.job.task;const root=document.querySelector('.v26-place');if(!root)return;
+    const old=root.querySelector('.v26-task');if(old)old.remove();
+    const task=document.createElement('div');task.className='v26-task';
+    let body='';
+    if(S.v26.job.type==='delivery'){
+      const stage=n%4;const steps=[['📦','Nhận đơn tại bảng','Nhận đơn'],['📦','Đến kho và lấy đúng kiện','Lấy hàng'],['🛵','Chọn tuyến giao phù hợp','Chọn tuyến'],['🏠','Giao kiện cho khách','Giao hàng']];const s=steps[stage];
+      body=`<div><b>Đơn #${Math.floor(n/4)+1}</b> · Bước ${stage+1}/4</div><div class="v26-card" style="text-align:center;font-size:28px">${s[0]}<br><small>${s[1]}</small></div><div class="v26-actions"><button class="gold" onclick="jobDo26()">${s[2]}</button><button class="choice" onclick="jobSkip26()">Bỏ đơn</button></div>`;
+    }else if(S.v26.job.type==='restaurant'){
+      const stage=n%4;const steps=[['🧑','Khách vừa gọi món','Nhận order'],['🍜','Đi lấy món tại quầy','Lấy món'],['🚶','Mang món tới đúng bàn','Phục vụ'],['💵','Khách thanh toán','Thu tiền']];const s=steps[stage];body=`<div><b>Bàn ${3+(Math.floor(n/4)%5)}</b> · Bước ${stage+1}/4</div><div class="v26-card" style="text-align:center;font-size:28px">${s[0]}<br><small>${s[1]}</small></div><div class="v26-actions"><button class="gold" onclick="jobDo26()">${s[2]}</button><button class="choice" onclick="jobSkip26()">Bỏ khách</button></div>`;
+    }else{
+      const stage=n%3;const steps=[['📥','Có yêu cầu mới trong máy','Mở task'],['🖥️','Xử lý file trên máy','Xử lý'],['📤','Gửi kết quả cho quản lý','Hoàn thành']];const s=steps[stage];body=`<div><b>Task #${Math.floor(n/3)+1}</b> · Bước ${stage+1}/3</div><div class="v26-card" style="text-align:center;font-size:28px">${s[0]}<br><small>${s[1]}</small></div><div class="v26-actions"><button class="gold" onclick="jobDo26()">${s[2]}</button><button class="choice" onclick="jobSkip26()">Bỏ task</button></div>`;
+    }
+    task.innerHTML=`<div class="v26-worktop"><span>${j.name}</span><span>💰 ${fmt(S.v26.job.earned)} · 🔥 Combo ${S.v26.job.combo}</span></div>${body}<div class="v26-card"><small>Ca làm chạy liên tục. Mỗi thao tác thành công nhận tiền; không có câu hỏi thi.</small></div><button class="btn" onclick="endJob26()">⏹ Kết thúc ca</button>`;
+    root.appendChild(task);
+  }
+  function jobDo26(){
+    if(!S.v26.job)return;const j=G.jobs[S.v26.job.type];S.v26.job.task++;S.v26.job.earned+=j.pay;S.v26.job.combo++;S.money+=j.pay;S.energy=clamp(S.energy-j.energy);changeTime(j.time);S.v26.jobLevel[S.v26.job.type]=Math.min(10,(S.v26.jobLevel[S.v26.job.type]||1)+(S.v26.job.task%12===0?1:0));log26('Hoàn thành task '+S.v26.job.type+' +'+fmt(j.pay));toast('💰 +'+fmt(j.pay));renderJobTask26();}
+  function jobSkip26(){if(!S.v26.job)return;S.v26.job.task++;S.v26.job.combo=0;changeTime(8);S.energy=clamp(S.energy-2);toast('⚠️ Bỏ task — mất cơ hội kiếm tiền');renderJobTask26();}
+  function endJob26(){if(!S.v26.job)return;log26('Kết thúc ca '+G.jobs[S.v26.job.type].name+' · '+fmt(S.v26.job.earned));toast('💼 Kết thúc ca · '+fmt(S.v26.job.earned));S.v26.job=null;enterPlace26(S.scene==='place'?'office':'office');}
+  window.jobDo26=jobDo26;window.jobSkip26=jobSkip26;window.endJob26=endJob26;
+
+  function enterStore26(){placeShell('🏪 CỬA HÀNG', 'store',NPCS.store);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:8%;top:12%">🥬<br>THỰC PHẨM</div><div class="v26-object" style="left:40%;top:12%">🐾<br>THÚ CƯNG</div><div class="v26-object" style="left:72%;top:12%">📱<br>THIẾT BỊ</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="storeShelves26()">🛒 Lấy giỏ hàng</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function storeShelves26(){show('<h2>🏪 MUA HÀNG</h2><div class="v26-list">'+Object.entries(G.items).map(([k,x])=>`<button class="choice" onclick="buy26('${k}')">${x.name}<small>${x.cat} · ${fmt(x.price)} · Kho ${bagCount(k)}</small></button>`).join('')+'</div>');}
+  function buy26(k){const x=G.items[k];if(!x)return;if(k==='pet'&&!room().pet)return toast('🐾 Phòng hiện tại chưa có khu thú cưng');if(S.money<x.price)return toast('💸 Không đủ tiền');S.money-=x.price;addBag(k);if(['rice','egg','veg','noodle','fish','meat'].includes(k))S.inventory[k]=(S.inventory[k]||0)+1;if(['dry','wet'].includes(k))S.v26.petFood=(S.v26.petFood||0)+1;if(k==='pet'){S.petUnlocked=true;S.pet.name='Miu';}if(k==='scooter')S.v26.vehicle='scooter';log26('Mua '+x.name+' '+fmt(x.price));renderHomeObjects();hud();toast('🛒 Đã mua '+x.name);}
+  window.buy26=buy26;window.storeShelves26=storeShelves26;
+  function enterNet26(){placeShell('🖥️ QUÁN NET','net',NPCS.net);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:8%;top:12%">🖥️<br>MÁY THƯỜNG<br><small>10k/30 phút</small></div><div class="v26-object" style="left:40%;top:12%">🖥️<br>MÁY VIP<br><small>20k/30 phút</small></div><div class="v26-object" style="left:72%;top:12%">🥤<br>TỦ NƯỚC</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="net26()">🖥️ Ngồi vào máy</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function net26(){if(S.money<10000)return toast('💸 Không đủ 10.000đ');S.money-=10000;changeTime(30);S.energy=clamp(S.energy-3);log26('Ngồi quán net 30 phút');show('<h2>🖥️ ĐANG Ở QUÁN NET</h2><div class="v26-card">Bạn đang ngồi trước máy. Có thể chơi minigame, làm việc online hoặc nhắn tin.</div><button class="btn gold" onclick="netTask26()">💻 Làm task online</button><button class="btn" onclick="goCity()">🏙️ Rời quán</button>');}
+  function netTask26(){S.money+=35000;changeTime(20);S.energy=clamp(S.energy-5);log26('Hoàn thành task online +35k');toast('💻 Job online +35.000đ');}
+  window.net26=net26;window.netTask26=netTask26;
+  function enterPub26(){placeShell('🍺 QUÁN NHẬU','pub',NPCS.pub);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:10%;top:15%">🍺<br>BÀN 1</div><div class="v26-object" style="left:42%;top:15%">🍲<br>BÀN 2</div><div class="v26-object" style="left:72%;top:15%">🍻<br>BÀN 3</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="pubTalk26()">🪑 Ngồi vào bàn</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function pubTalk26(){changeTime(30);S.money=Math.max(0,S.money-70000);effect('happy',6);log26('Đi quán nhậu -70k');show('<h2>🍺 BÀN NHẬU</h2><div class="v26-card">NPC bàn bên đang nói chuyện. Bạn có thể ngồi nghe, trò chuyện hoặc nhận một cơ hội việc làm.</div><button class="choice" onclick="quickOpportunity26()">⚡ Hỏi cơ hội việc làm</button><button class="choice" onclick="goCity()">🏙️ Về</button>');}
+  function quickOpportunity26(){toast('⚡ Có job gấp mới trên WEB');S.v26.quick=true;goCity();}
+  window.pubTalk26=pubTalk26;window.quickOpportunity26=quickOpportunity26;
+  function enterSimplePlace26(type,title,desc,icon,action,cost){placeShell(title,type,NPCS[type]||[]);const c=document.querySelector('.v26-place-content');c.innerHTML=`<div class="v26-object" style="left:35%;top:18%;font-size:30px">${icon}<br><small>${desc}</small></div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="simpleAction26('${type}',${cost})">${action}${cost?' · '+fmt(cost):''}</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>`;}
+  function simpleAction26(type,cost){if(cost&&S.money<cost)return toast('💸 Không đủ tiền');S.money-=cost;changeTime(type==='park'?20:25);effect('happy',type==='park'?3:5);log26('Hoạt động '+type+(cost?' -'+fmt(cost):''));toast(type==='park'?'🌳 Nghỉ ngơi miễn phí':'🍚 Hoàn thành');}
+  function enterCinema26(){placeShell('🎬 RẠP PHIM','cinema',NPCS.cinema);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:10%;top:15%">🎟️<br>QUẦY VÉ</div><div class="v26-object" style="left:42%;top:15%">🍿<br>SẢNH</div><div class="v26-object" style="left:72%;top:15%">🎬<br>PHÒNG 2</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="movie26()">🎬 Mua vé 120k</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function movie26(){if(S.money<120000)return toast('💸 Không đủ tiền');S.money-=120000;changeTime(90);effect('happy',8);effect('love',S.partnerAtHome?6:0);log26('Xem phim -120k');toast('🎬 Xem phim xong');}
+  window.movie26=movie26;
+  function enterRepair26(){placeShell('🔧 TIỆM SỬA XE','repair',NPCS.repair);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:20%;top:16%">🛵<br>GARA</div><div class="v26-object" style="left:55%;top:16%">🔧<br>BÀN DỤNG CỤ</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="repair26()">🔧 Kiểm tra xe</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function repair26(){show('<h2>🔧 TIỆM SỬA XE</h2><div class="v26-card">Thợ kiểm tra xe và báo giá.</div><button class="choice" onclick="payRepair26(60000)">🔧 Sửa cơ bản · 60k</button><button class="choice" onclick="payRepair26(140000)">⚙️ Bảo dưỡng · 140k</button>');}
+  function payRepair26(cost){if(S.money<cost)return toast('💸 Không đủ tiền');S.money-=cost;log26('Sửa xe -'+fmt(cost));toast('🔧 Xe đã được kiểm tra');closeModal();}
+  window.repair26=repair26;window.payRepair26=payRepair26;
+  function enterBank26(){placeShell('🏦 NGÂN HÀNG','bank',NPCS.bank);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:20%;top:15%">🏦<br>QUẦY</div><div class="v26-object" style="left:58%;top:15%">💳<br>ATM</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="bank26()">🏦 Giao dịch</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function bank26(){show('<h2>🏦 TÀI KHOẢN</h2><div class="v26-card">Tiền mặt: <b>'+fmt(S.money)+'</b></div><div class="v26-card">Game dùng tiền mặt để tạo áp lực chi tiêu; không có nợ vô hạn.</div>');}
+  function enterHospital26(){placeShell('🏥 BỆNH VIỆN','hospital',NPCS.hospital);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:20%;top:15%">🧾<br>LỄ TÂN</div><div class="v26-object" style="left:58%;top:15%">🩺<br>PHÒNG KHÁM</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="hospital26()">🩺 Khám sức khỏe · 80k</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function hospital26(){if(S.money<80000)return toast('💸 Không đủ tiền');S.money-=80000;S.energy=clamp(S.energy+25);changeTime(45);log26('Khám sức khỏe -80k');toast('🏥 Sức khỏe hồi phục');}
+  function enterStreetTea26(){placeShell('🧊 TRÀ ĐÁ VỈA HÈ','streettea',NPCS.streettea);const c=document.querySelector('.v26-place-content');c.innerHTML='<div class="v26-object" style="left:20%;top:15%">🧊<br>BÀN TRÀ ĐÁ</div><div class="v26-object" style="left:58%;top:15%">🛵<br>GHẾ VỈA HÈ</div><button class="btn gold" style="position:absolute;left:8%;bottom:24%" onclick="streetTea26()">🧊 Ngồi uống trà đá · 5k</button><button class="btn" style="position:absolute;right:8%;bottom:24%" onclick="goCity()">🏙️ Ra phố</button>';}
+  function streetTea26(){if(S.money<5000)return toast('💸 Không đủ tiền');S.money-=5000;changeTime(20);effect('happy',3);log26('Ngồi trà đá -5k');show('<h2>🧊 TRÀ ĐÁ VỈA HÈ</h2><div class="v26-card">Chú Thành đang nói chuyện về một job giao hàng gấp. Cơ hội mới xuất hiện trên WEB.</div><button class="btn gold" onclick="S.v26.quick=true;goCity()">⚡ Nhận thông tin</button>');}
+  window.streetTea26=streetTea26;
+
+  function invitePartner26(){const r=room();if(!r.partner)return toast('🏠 Phòng hiện tại chưa đủ cho hai người');if(S.love<60||S.trust<55)return toast('❤️ Cần tình cảm 60 và tin tưởng 55');S.partnerAtHome=true;if($(S.partner)){$(S.partner).style.display='block';$(S.partner).style.left='58%';$(S.partner).style.top='62%';}renderHomeObjects();log26('Mời người yêu về sống cùng');toast('❤️ Người yêu đã chuyển vào ở cùng');}
+  window.invitePartner26=invitePartner26;
+
+  // Web: housing + jobs + shopping + quick opportunities.
+  function web26(){show('<h2>🌐 WEB</h2><div class="v26-list"><button class="choice" onclick="rooms26()">🏠 Tìm trọ<small>Thuê phòng lớn hơn để mở khóa cuộc sống.</small></button><button class="choice" onclick="invitePartner26()">❤️ Mời người yêu về ở<small>'+(room().partner?'Phòng hiện tại đủ cho 2 người.':'Cần nâng cấp phòng trước.')+'</small></button><button class="choice" onclick="jobBoard26()">💼 Việc làm<small>Shipper, quán phở, văn phòng.</small></button><button class="choice" onclick="quickJobs26()">⚡ Cơ hội nhanh<small>Tiền cao, deadline và rủi ro cao.</small></button><button class="choice" onclick="storeShelves26()">🛒 Mua sắm<small>Thực phẩm, thú cưng, thiết bị.</small></button></div>');}
+  function rooms26(){show('<h2>🏠 TÌM TRỌ</h2><div class="v26-list">'+Object.entries(G.rooms).map(([k,r])=>`<div class="v26-card"><b>${r.name}</b><br>${r.desc}<br>💰 ${fmt(r.rent)}/7 ngày · Cọc ${fmt(r.deposit)} · ${r.capacity} người<br>${k===S.v26.room?'<b>Đang ở đây</b>':`<button class="btn pink" onclick="rent26('${k}')">Thuê</button>`}</div>`).join('')+'</div>');}
+  function rent26(k){const r=G.rooms[k];if(r.level<=room().level)return toast('🏠 Chỉ nâng cấp lên phòng cao hơn');const cost=r.rent+r.deposit;if(S.money<cost)return toast('💸 Cần '+fmt(cost)+' cho cọc + 7 ngày đầu');S.money-=cost;S.v26.room=k;S.v26.rentUntil=S.day+6;S.petUnlocked=r.pet;room();renderHomeObjects();if(r.partner){toast('❤️ Phòng đủ chỗ để mời người yêu');}log26('Thuê '+r.name+' -'+fmt(cost));closeModal();toast('🏠 Đã chuyển sang '+r.name);}
+  function jobBoard26(){show('<h2>💼 BẢNG VIỆC LÀM</h2><div class="v26-list">'+Object.entries(G.jobs).map(([k,j])=>`<button class="choice" onclick="goCity();setTimeout(()=>enterPlace26('${k}'),100)"><b>${j.name}</b><small>${j.hours}<br>${j.desc}<br>💰 ${fmt(j.pay)}/task</small></button>`).join('')+'</div>');}
+  function quickJobs26(){show('<h2>⚡ CƠ HỘI NHANH</h2><div class="v26-card v26-risk"><b>Giao 3 đơn trong 20 phút</b><br>💰 180.000đ<br>⚠️ Trễ deadline: chỉ nhận 50.000đ.</div><button class="btn gold" onclick="quickJobStart26()">🛵 Nhận job</button><div class="v26-card v26-risk"><b>Dọn kho 30 phút</b><br>💰 220.000đ<br>⚡ Tốn nhiều năng lượng.</div><button class="btn gold" onclick="quickJobWarehouse26()">📦 Nhận job</button>');}
+  function quickJobStart26(){if(S.energy<30)return toast('⚡ Không đủ năng lượng');S.energy=clamp(S.energy-25);changeTime(20);S.money+=180000;log26('Hoàn thành job giao gấp +180k');toast('⚡ Job gấp thành công +180.000đ');closeModal();}
+  function quickJobWarehouse26(){if(S.energy<35)return toast('⚡ Không đủ năng lượng');S.energy=clamp(S.energy-35);changeTime(30);S.money+=220000;log26('Hoàn thành dọn kho +220k');toast('⚡ Job thời vụ +220.000đ');closeModal();}
+  window.web26=web26;window.rooms26=rooms26;window.rent26=rent26;window.jobBoard26=jobBoard26;window.quickJobs26=quickJobs26;window.quickJobStart26=quickJobStart26;window.quickJobWarehouse26=quickJobWarehouse26;
+
+  // Phone and tabs.
+  window.phone=function(){show('<h2>📱 ĐIỆN THOẠI</h2><div class="v26-list"><button class="choice" onclick="web26()">🌐 WEB<small>Tìm trọ · việc làm · mua sắm · cơ hội nhanh</small></button><button class="choice" onclick="inbox()">💬 TIN NHẮN<small>Người yêu, bạn bè, gia đình, đồng nghiệp</small></button><button class="choice" onclick="history26()">📒 NHẬT KÝ<small>Những gì đã xảy ra trong cuộc sống</small></button></div>');};
+  function history26(){show('<h2>📒 NHẬT KÝ</h2><div class="v26-log">'+(S.v26.history.length?S.v26.history.map(x=>'<div>'+x+'</div>').join(''):'Chưa có sự kiện.')+'</div>');}
+  window.history26=history26;
+  function jobTab(){show('<h2>💼 ĐI LÀM</h2><div class="v26-card">Muốn làm việc, hãy chọn nghề rồi bước vào địa điểm thật. Ca làm không có câu hỏi thi.</div><button class="btn gold" onclick="web26()">🌐 Mở bảng việc</button>');}
+  function dateTab(){goCity();setTimeout(()=>enterPlace26('park'),80);}
+  function shopTab(){goCity();setTimeout(()=>enterPlace26('store'),80);}
+  document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');const k=b.dataset.tab;if(k==='home'){closeModal();$('tv-screen').style.display='none';setScene('home','', '');rebuild26();}else if(k==='phone')phone();else if(k==='work')jobTab();else if(k==='date')dateTab();else if(k==='shop')shopTab();};});
+
+  // Economy: rent + living costs, never game-over.
+  function economy26(){
+    if(S.day!==S.v26.lastExpenseDay){S.v26.lastExpenseDay=S.day;const c=25000;S.money=Math.max(0,S.money-c);effect('finance',-1);log26('Chi phí sinh hoạt -25k');}
+    if(S.day>S.v26.rentUntil){const r=room();if(S.money>=r.rent){S.money-=r.rent;S.v26.rentUntil=S.day+6;log26('Tiền phòng -'+fmt(r.rent));toast('🏠 Đã trả tiền phòng '+fmt(r.rent));}else{effect('trust',-2);effect('happy',-3);toast('⚠️ Chưa đủ tiền phòng — cần đi làm');}}
+    hud();
+  }
+  // Background tick: cooking, economy, NPC life.
+  setInterval(()=>{cookingTick26();economy26();if(S.scene==='home'&&S.partnerAtHome&&Math.random()<.06)partnerAI26();},1000);
+  async function partnerAI26(){if(!S.partnerAtHome||S.scene!=='home'||S.v26.cooking)return;const t=S.h*60+S.m;if(t>=420&&t<690){await move(S.partner,35,48,'Em phụ bếp một chút.');pose(S.partner,'cook');}else if(t>=1080&&t<1320&&room().objects.includes('tv')){await move(S.partner,66,57,'Xem TV một lát.');pose(S.partner,'sit');}}
+  window.partnerAI26=partnerAI26;
+
+  // Pet becomes available only after the player obtains a pet-capable room and buys food/toy.
+  function pet26(){if(!S.petUnlocked)return toast('🐾 Chưa có thú cưng');if(!$('pet'))return;show('<h2>🐾 '+S.pet.name+'</h2><div class="v26-card">Đói: '+S.pet.hunger+'/100 · Vui: '+S.pet.happy+'/100</div><button class="choice" onclick="feedPet26()">🥣 Cho ăn<small>Mua thức ăn ở Cửa hàng</small></button><button class="choice" onclick="playPet26()">🎾 Chơi</button>');}
+  function feedPet26(){if(!S.petUnlocked)return;if((S.v26.petFood||0)<=0)return toast('🥣 Hết thức ăn');S.v26.petFood--;S.pet.hunger=clamp(S.pet.hunger+20);S.pet.happy=clamp(S.pet.happy+5);move('pet',75,73);v20FX('🍖',75,70);log26('Cho Miu ăn');toast('🐾 Miu ăn ngon lành');}
+  function playPet26(){S.pet.happy=clamp(S.pet.happy+10);S.pet.energy=clamp(S.pet.energy-8);move('pet',60,70);log26('Chơi với Miu');toast('🎾 Miu chạy chơi');}
+  window.pet26=pet26;window.feedPet26=feedPet26;window.playPet26=playPet26;
+
+
+  // Initial visual state.
+  rebuild26();sync26();
+  toast('🌅 Ngày 1 · 1.000.000đ · bắt đầu một mình');
+})();
+</script>
+</body></html>
