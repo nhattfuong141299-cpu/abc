@@ -1619,9 +1619,220 @@ v22Install();
   window.pet26=pet26;window.feedPet26=feedPet26;window.playPet26=playPet26;
 
 
-  // Initial visual state.
-  rebuild26();sync26();
+  /* ================= V26.1: FULL AUDIT REPAIR ================= */
+  // Legacy V1-V25 schedules are not allowed to resurrect the partner.
+  window.homeSchedule=function(){
+    const partner=$(S.partner);
+    if(partner) partner.style.display=(S.partnerAtHome && S.scene==='home')?'block':'none';
+  };
+  window.routine=async function(){
+    if(!S.partnerAtHome || S.scene!=='home') return;
+  };
+  window.partnerAI=async function(){
+    if(!S.partnerAtHome || S.scene!=='home') return;
+  };
+  window.v22PartnerAI=async function(){
+    if(!S.partnerAtHome || S.scene!=='home') return;
+  };
+  function hidePartnerEverywhere(){
+    const p=$(S.partner); if(p) p.style.display=(S.partnerAtHome && S.scene==='home')?'block':'none';
+  }
+
+  // Make the city a real, selectable map. No off-screen buildings and no overlapping hit areas.
+  function renderCity(){
+    const root=$('v26City'); if(!root)return;
+    const layout=[
+      ['phoshop','🍜','QUÁN PHỞ'],['office','💼','VĂN PHÒNG'],['hub','📦','TRUNG TÂM GIAO HÀNG'],
+      ['store','🏪','CỬA HÀNG'],['rice','🍚','QUÁN CƠM'],['net','🖥️','QUÁN NET'],
+      ['pub','🍺','QUÁN NHẬU'],['park','🌳','CÔNG VIÊN'],['cinema','🎬','RẠP PHIM'],
+      ['repair','🔧','SỬA XE'],['bank','🏦','NGÂN HÀNG'],['hospital','🏥','BỆNH VIỆN'],
+      ['tea','🧋','TRÀ SỮA'],['streettea','🧊','TRÀ ĐÁ VỈA HÈ']
+    ];
+    root.innerHTML=`<div class="v26-world v26-city-fixed">
+      <div class="v26-city-header"><b>🏙️ THÀNH PHỐ</b><small>Chạm vào địa điểm để đi vào</small></div>
+      <div class="v26-city-road r1"></div><div class="v26-city-road r2"></div>
+      <div class="v26-city-grid">${layout.map((p,i)=>`<button type="button" class="v26-building v26-place-button" data-place="${p[0]}"><b>${p[1]} ${p[2]}</b><small>ĐI VÀO</small></button>`).join('')}</div>
+      <div class="v26-city-npcs"><b>👥 Người đang hoạt động:</b> ${['Chú Bình','Duy','Tài','Yến','Ngọc','Khoa','Chú Tư'].map(x=>`<span>${x}</span>`).join('')}</div>
+      <button type="button" class="btn gold v26-home-city" id="v26CityHome">🏠 Về phòng</button>
+    </div>`;
+    root.querySelectorAll('[data-place]').forEach(b=>b.addEventListener('click',()=>enterPlace26(b.dataset.place)));
+    $('v26CityHome')?.addEventListener('click',()=>{closeModal();returnHomeScene();});
+  }
+
+  // Give every destination a distinct physical interaction area inside the scene.
+  function placeObjects26(type){
+    const map={
+      restaurant:[['🍜','QUẦY PHỞ'],['🍲','BẾP'],['🪑','BÀN KHÁCH']],
+      office:[['🖥️','MÁY TÍNH'],['📄','KỆ HỒ SƠ'],['🧑‍💼','BÀN QUẢN LÝ']],
+      delivery:[['📦','KHO HÀNG'],['🧾','BẢNG ĐƠN'],['🛵','BÃI XE']],
+      store:[['🥬','KỆ THỰC PHẨM'],['🐾','KỆ THÚ CƯNG'],['📱','KỆ THIẾT BỊ']],
+      rice:[['🍚','QUẦY CƠM'],['🍲','BẾP'],['🪑','BÀN ĂN']],
+      net:[['🖥️','MÁY THƯỜNG'],['🖥️','MÁY VIP'],['🥤','TỦ NƯỚC']],
+      pub:[['🍺','QUẦY'],['🍻','BÀN 1'],['🍲','BÀN 2']],
+      park:[['🪑','GHẾ ĐÁ'],['🌳','CÂY LỚN'],['🚶','ĐƯỜNG ĐI BỘ']],
+      cinema:[['🎟️','QUẦY VÉ'],['🍿','QUẦY BẮP'],['🎬','PHÒNG CHIẾU']],
+      repair:[['🛵','GARA'],['🔧','BÀN DỤNG CỤ'],['🧰','KHO PHỤ TÙNG']],
+      bank:[['🏦','QUẦY GIAO DỊCH'],['💳','ATM'],['🪑','KHU CHỜ']],
+      hospital:[['🧾','LỄ TÂN'],['🩺','PHÒNG KHÁM'],['🛏️','KHU CHỜ']],
+      tea:[['🧋','QUẦY TRÀ SỮA'],['🪑','BÀN 1'],['🪑','BÀN 2']],
+      streettea:[['🧊','BÀN TRÀ ĐÁ'],['🛵','GHẾ VỈA HÈ'],['🌳','GỐC CÂY']]
+    };
+    return map[type]||[];
+  }
+  function placeShell(title,type,npcs){
+    setScene('place',title,`<div class="v26-place"><div class="floor"></div><div class="v26-place-content"></div><div class="v26-place-npc-layer"></div><button type="button" class="v26-place-back" id="v26PlaceBack">🏙️ RA PHỐ</button></div>`);
+    const c=document.querySelector('.v26-place-content');
+    const objs=placeObjects26(type);
+    c.innerHTML=objs.map((o,i)=>`<button type="button" class="v26-object v26-real-object" data-action="${i}">${o[0]}<br><b>${o[1]}</b></button>`).join('');
+    const layer=document.querySelector('.v26-place-npc-layer');
+    layer.innerHTML=(npcs||[]).map((n,i)=>`<button type="button" class="v26-place-npc v26-npc-live" data-npc="${i}">${n[2]}<br><small>${n[1]}</small></button>`).join('');
+    c.querySelectorAll('[data-action]').forEach((b,i)=>b.addEventListener('click',()=>placeObjectAction26(type,i)));
+    layer.querySelectorAll('[data-npc]').forEach((b,i)=>b.addEventListener('click',()=>npcTalk26(type,i)));
+    $('v26PlaceBack')?.addEventListener('click',goCity);
+  }
+  function placeObjectAction26(type,i){
+    if(type==='restaurant')return i===0?toast('🧾 Quầy đang nhận order'):i===1?toast('🔥 Bếp đang hoạt động'):toast('🪑 Bàn khách đang có người');
+    if(type==='office')return i===0?toast('🖥️ Máy tính sẵn sàng cho task'):i===1?toast('📄 Hồ sơ văn phòng'):toast('💼 Bàn quản lý');
+    if(type==='delivery')return i===0?toast('📦 Kho hàng — nơi lấy kiện'):i===1?startJob26('delivery'):toast('🛵 Xe sẵn sàng');
+    if(type==='store')return storeShelves26();
+    if(type==='rice')return i===0?toast('🍚 Quầy cơm — khách đang xếp hàng'):simpleAction26('rice',0);
+    if(type==='net')return net26();
+    if(type==='pub')return i===0?toast('🍺 Quầy đang phục vụ'):pubTalk26();
+    if(type==='park')return simpleAction26('park',0);
+    if(type==='cinema')return i===0?movie26():toast('🎬 Khu vực rạp chiếu');
+    if(type==='repair')return repair26();
+    if(type==='bank')return bank26();
+    if(type==='hospital')return hospital26();
+    if(type==='tea')return simpleAction26('tea',35000);
+    if(type==='streettea')return streetTea26();
+  }
+  function npcTalk26(type,i){
+    const n=(NPCS[type]||[])[i]; if(!n)return;
+    const lines={restaurant:['Quán hôm nay đông ghê!','Bếp đang ra món liên tục.','Ngồi đi, có bàn trống!'],office:['Task hôm nay hơi nhiều.','Máy bên kia đang trống.','Sếp vừa đi qua đấy!'],delivery:['Có đơn mới rồi!','Kiện này cần giao gấp.','Xe đổ xăng chưa?'],net:['Máy này đang ngon lắm.','Tối nay có giải đấy.','Wi-Fi hôm nay ổn.'],pub:['Ngồi xuống làm ly nước đi.','Bàn bên đang nói chuyện vui lắm.','Hôm nay quán đông.'],rice:['Cơm mới ra đấy.','Trưa nay đông khách.','Ăn nhanh còn đi làm!'],park:['Chiều nay mát thật.','Đi bộ một vòng không?','Cây này mát lắm.'],cinema:['Suất tiếp theo sắp chiếu.','Bắp rang vừa làm xong.','Phòng 2 còn ghế.'],store:['Hàng mới nhập sáng nay.','Khu thú cưng ở bên kia.','Thanh toán ở quầy nhé.'],repair:['Xe cần kiểm tra phanh.','Phụ tùng mới về rồi.','Để tôi xem xe cho.'],bank:['Mời anh/chị qua quầy.','ATM đang hoạt động.','Khu chờ bên này.'],hospital:['Mời ngồi chờ một chút.','Bác sĩ sắp khám.','Đã tới lượt rồi.'],tea:['Trà sữa mới pha xong.','Bàn này còn trống.','Hôm nay có topping mới.'],streettea:['Ngồi đây mát lắm.','Có job giao hàng nghe nói ngon đấy.','Trà đá 5 nghìn thôi!']}[type]||['Chào bạn!'];
+    toast(n[2]+' '+n[1]+': '+lines[i%lines.length]);
+  }
+
+  // Repair every route and make all place names resolvable.
+  const _enterPlace26=enterPlace26;
+  window.enterPlace26=function(type){
+    const aliases={phoshop:'restaurant',hub:'delivery'}; type=aliases[type]||type;
+    if(!NPCS[type] && !['store','rice','net','pub','park','cinema','repair','bank','hospital','tea','streettea','restaurant','office','delivery'].includes(type))return toast('📍 Địa điểm chưa được xây dựng');
+    return _enterPlace26(type);
+  };
+
+  // The door is large, visible and independently clickable.
+  function rebuild26(){
+    renderHomeObjects();
+    const hs=$('hotspots');if(!hs)return;hs.innerHTML='';
+    const add=(x,y,w,h,fn)=>hit(x,y,w,h,fn);
+    add(2,90,105,105,()=>object26('kitchen')); add(108,90,80,105,()=>object26('fridge'));
+    add(200,55,145,100,()=>object26('tv')); add(200,125,145,100,()=>object26('sofa'));
+    add(200,220,150,125,()=>object26('table')); add(1,370,185,110,()=>object26('bed'));
+    add(1,270,105,110,()=>object26('plant')); add(250,340,100,110,()=>object26('petarea'));
+    add(82,0,18,18,()=>goCity());
+    let d=$('v26DoorLabel');if(!d){$('world').insertAdjacentHTML('beforeend','<button type="button" id="v26DoorLabel">🚪 RA PHỐ</button>');d=$('v26DoorLabel');d.onclick=goCity;}
+    hidePartnerEverywhere();
+  }
+  // Going home must never bring back a legacy partner or pet.
+  const _returnHomeScene=returnHomeScene;
+  window.returnHomeScene=function(){
+    S.scene='home';$('sceneLayer').classList.remove('show');$('room').style.display='block';closeModal();hud();rebuild26();hidePartnerEverywhere();
+    if($('pet'))$('pet').style.display=S.petUnlocked?'block':'none';
+  };
+  // Phone gets a direct MAP entry so the city is never hidden behind a menu chain.
+  const _phone26=window.phone;
+  window.phone=function(){show('<h2>📱 ĐIỆN THOẠI</h2><div class="v26-list"><button class="choice" onclick="goCity()">🗺️ BẢN ĐỒ THÀNH PHỐ<small>Đi trực tiếp tới mọi địa điểm.</small></button><button class="choice" onclick="web26()">🌐 WEB<small>Tìm trọ · việc làm · mua sắm · cơ hội nhanh</small></button><button class="choice" onclick="inbox()">💬 TIN NHẮN</button><button class="choice" onclick="history26()">📒 NHẬT KÝ</button></div>');};
+
+  // CSS: all city/place controls stay inside the portrait viewport.
+  const repairCss=`<style id="v261css">
+    #v26DoorLabel{position:absolute;right:3%;top:2%;z-index:18;border:3px solid #292638;border-radius:10px;background:#e2ad3f;color:#292638;padding:8px 10px;font-weight:1000;box-shadow:0 3px 0 #292638}
+    .v26-city-fixed{padding:42px 8px 8px!important;background:linear-gradient(#82ad78,#628e60)!important}
+    .v26-city-header{position:absolute;top:7px;left:9px;right:9px;color:#fff;display:flex;justify-content:space-between;align-items:center;font-size:12px;text-shadow:2px 2px #292638;z-index:4}.v26-city-header small{font-size:8px}
+    .v26-city-road{position:absolute;background:#4d4b4e;z-index:0}.v26-city-road.r1{left:0;right:0;height:12%;top:44%}.v26-city-road.r2{top:0;bottom:0;width:12%;left:44%}
+    .v26-city-grid{position:absolute;left:3%;right:3%;top:11%;bottom:13%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);gap:5px;z-index:2}
+    .v26-place-button{position:relative!important;left:auto!important;top:auto!important;width:auto!important;min-height:0!important;height:auto!important;padding:5px!important;display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;touch-action:manipulation}
+    .v26-place-button b{font-size:9px!important}.v26-place-button small{font-size:7px!important;color:#7b5b39}
+    .v26-city-npcs{position:absolute;left:3%;right:3%;bottom:2%;height:10%;background:#fffaf0ed;border:2px solid #292638;border-radius:10px;display:flex;align-items:center;gap:6px;overflow-x:auto;padding:4px;z-index:4;font-size:7px}.v26-city-npcs span{background:#f7ead2;border:1px solid #dac4a4;border-radius:7px;padding:4px;white-space:nowrap}
+    .v26-home-city{position:absolute;right:7px;top:7px;width:auto!important;padding:5px 8px!important;margin:0!important;z-index:5;font-size:9px!important}
+    .v26-place{background:#b99670!important}.v26-place .floor{inset:45px 8px 8px!important}
+    .v26-place-content{position:absolute;inset:58px 8px 85px;z-index:3}
+    .v26-real-object{width:27%;height:24%;padding:5px;font-size:22px;touch-action:manipulation}.v26-real-object:nth-child(1){left:6%;top:10%}.v26-real-object:nth-child(2){left:37%;top:10%}.v26-real-object:nth-child(3){left:68%;top:10%}
+    .v26-place-npc-layer{position:absolute;left:8px;right:8px;bottom:9px;height:72px;z-index:4;display:flex;gap:5px;align-items:end;overflow-x:auto}.v26-npc-live{position:relative!important;min-width:74px!important;bottom:auto!important;left:auto!important;right:auto!important;background:#fffaf0;border:2px solid #292638;border-radius:9px;padding:5px;font-size:22px;text-align:center;color:#292638}.v26-npc-live small{font-size:7px}
+    .v26-place-back{position:absolute;top:6px;right:6px;z-index:8;border:3px solid #292638;border-radius:9px;background:#e2ad3f;padding:6px 8px;font-weight:1000}
+  </style>`;
+  if(!$('v261css'))document.head.insertAdjacentHTML('beforeend',repairCss);
+
+  // Re-run initial state after all repair hooks are installed.
+  S.partnerAtHome=false; if($(S.partner))$(S.partner).style.display='none';
+  if($('pet'))$('pet').style.display='none';
+  rebuild26();sync26();hidePartnerEverywhere();
+  toast('🔧 V26.1 đã sửa: ẩn NPC người yêu · bản đồ đầy đủ · địa điểm có thể chọn');
   toast('🌅 Ngày 1 · 1.000.000đ · bắt đầu một mình');
 })();
+
+/* ================= V27: HAND-DRAWN PIXEL LOCATION ART ================= */
+(function(){
+  const style=document.createElement('style');
+  style.textContent=
+  '.v27-scene{position:absolute;inset:0;overflow:hidden;background:#9fc2d1}.v27-art{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}.v27-hot{position:absolute;z-index:7;border:0;background:transparent;cursor:pointer}.v27-hot:active{filter:brightness(1.15)}.v27-npcs{position:absolute;left:0;right:0;bottom:9%;height:30%;z-index:8;pointer-events:none}.v27-npc{position:absolute;width:44px;height:76px;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 5px 2px #0005)}.v27-npc svg{width:100%;height:100%}.v27-name{position:absolute;left:50%;transform:translateX(-50%);bottom:-2px;white-space:nowrap;background:#242331e8;color:#fff3dc;border:2px solid #e1b75b;border-radius:6px;padding:2px 4px;font-size:7px;font-weight:900}.v27-title{position:absolute;left:10px;top:10px;z-index:20;color:#fff8e8;font-size:15px;font-weight:1000;text-shadow:2px 2px #242331}.v27-sub{position:absolute;left:10px;top:31px;z-index:20;color:#fff8e8;font-size:8px;text-shadow:1px 1px #242331}.v27-back{position:absolute;right:8px;top:8px;z-index:25;border:3px solid #242331;background:#e4b650;color:#242331;border-radius:9px;padding:7px 9px;font-weight:1000}.v27-action{position:absolute;left:7%;right:7%;bottom:2%;z-index:25;background:#242331eF;border:2px solid #e4b650;color:#fff8e8;border-radius:12px;padding:7px;font-size:9px}.v27-action b{font-size:11px}.v27-art text{font-family:system-ui,sans-serif;font-weight:900;paint-order:stroke;stroke:#242331;stroke-width:2px}.v27-city{position:absolute;inset:0;background:#7da46e;overflow:hidden}.v27-road{position:absolute;background:#59585b;box-shadow:inset 0 0 0 4px #444}.v27-road.h{left:0;right:0;top:46%;height:12%}.v27-road.v{top:0;bottom:0;left:45%;width:10%}.v27-building{position:absolute;border:0;background:transparent;z-index:5;cursor:pointer}.v27-building svg{width:100%;height:100%;filter:drop-shadow(0 5px 2px #0004)}.v27-building span{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);white-space:nowrap;background:#242331eF;color:#fff8e8;border:2px solid #e4b650;border-radius:6px;padding:2px 4px;font-size:7px;font-weight:1000}.v27-mapnpcs{position:absolute;left:3%;right:3%;bottom:3%;height:9%;z-index:10;background:#242331d9;border:2px solid #e4b650;border-radius:10px;color:#fff8e8;padding:5px;font-size:8px}.v27-sign{position:absolute;z-index:9;background:#f0d27d;color:#242331;border:3px solid #242331;padding:3px 5px;font-size:8px;font-weight:1000;transform:rotate(-2deg)}';
+  document.head.appendChild(style);
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function person(fill='#e3b07a',shirt='#315c9a',hair='#2a2525'){
+    return '<svg viewBox="0 0 44 76"><ellipse cx="22" cy="72" rx="15" ry="3" fill="#0004"/><rect x="13" y="36" width="18" height="27" rx="4" fill="'+shirt+'" stroke="#242331" stroke-width="3"/><circle cx="22" cy="25" r="11" fill="'+fill+'" stroke="#242331" stroke-width="3"/><path d="M11 24Q13 8 23 10Q34 9 34 24L29 18Q21 22 13 18Z" fill="'+hair+'"/><rect x="12" y="60" width="7" height="13" fill="#272b3c"/><rect x="25" y="60" width="7" height="13" fill="#272b3c"/><circle cx="18" cy="26" r="1.7" fill="#242331"/><circle cx="26" cy="26" r="1.7" fill="#242331"/></svg>';
+  }
+  const palettes={restaurant:['#d7a15d','#b83e37','#4b3027'],office:['#d4a06c','#344e78','#2a2525'],delivery:['#d2a06d','#2f8f63','#2a2525'],store:['#d6a66f','#6a4a9a','#2a2525'],rice:['#d3a06a','#c4553d','#2a2525'],net:['#d4a36f','#315c9a','#2a2525'],pub:['#d0a16b','#7a3942','#2a2525'],park:['#d7a879','#4c7d4d','#2a2525'],cinema:['#d3a16c','#654d98','#2a2525'],repair:['#d0a06a','#40515e','#2a2525'],bank:['#d4a36d','#315b83','#2a2525'],hospital:['#d7a878','#f0f0e8','#2a2525'],tea:['#d3a16d','#7d4e8d','#2a2525'],streettea:['#d2a16c','#4f7f5d','#2a2525']};
+  function sceneArt(type){
+    const p=palettes[type]||palettes.store;
+    let objects='';
+    if(type==='restaurant') objects='<rect x="0" y="0" width="100" height="100" fill="#d8b383"/><rect y="62" width="100" height="38" fill="#9b7657"/><rect y="20" width="100" height="42" fill="#efe0c2"/><rect x="5" y="28" width="30" height="22" fill="#6e9aa2" stroke="#332b2a" stroke-width="2"/><rect x="40" y="18" width="55" height="12" rx="2" fill="#a74635" stroke="#332b2a" stroke-width="2"/><text x="67" y="26" text-anchor="middle" font-size="5" fill="#fff2d5">PHỞ GIA ĐÌNH</text><rect x="7" y="53" width="86" height="8" fill="#6c4030" stroke="#332b2a" stroke-width="2"/><rect x="10" y="68" width="22" height="10" fill="#6c4030"/><rect x="39" y="68" width="22" height="10" fill="#6c4030"/><rect x="68" y="68" width="22" height="10" fill="#6c4030"/><circle cx="21" cy="66" r="5" fill="#ddd" stroke="#332b2a"/><circle cx="50" cy="66" r="5" fill="#ddd" stroke="#332b2a"/><circle cx="79" cy="66" r="5" fill="#ddd" stroke="#332b2a"/><rect x="6" y="34" width="18" height="13" fill="#4e3129"/><circle cx="15" cy="36" r="7" fill="#e9c78c" stroke="#332b2a"/><path d="M10 38h10M9 41h12" stroke="#7d3d2e" stroke-width="2"/>';
+    else if(type==='office') objects='<rect width="100" height="100" fill="#cbd0d2"/><rect y="0" width="100" height="38" fill="#687581"/><rect x="7" y="8" width="25" height="20" fill="#9cc4cc" stroke="#333440" stroke-width="2"/><rect x="39" y="8" width="25" height="20" fill="#9cc4cc" stroke="#333440" stroke-width="2"/><rect x="71" y="8" width="22" height="20" fill="#9cc4cc" stroke="#333440" stroke-width="2"/><rect x="7" y="48" width="25" height="12" fill="#704d3e"/><rect x="38" y="48" width="25" height="12" fill="#704d3e"/><rect x="69" y="48" width="25" height="12" fill="#704d3e"/><rect x="13" y="39" width="12" height="9" fill="#303b4c"/><rect x="44" y="39" width="12" height="9" fill="#303b4c"/><rect x="75" y="39" width="12" height="9" fill="#303b4c"/><rect x="35" y="70" width="30" height="12" fill="#6e4b3d"/><text x="50" y="78" text-anchor="middle" font-size="5" fill="#fff">QUẢN LÝ</text>';
+    else if(type==='delivery') objects='<rect width="100" height="100" fill="#b6c6b4"/><rect y="60" width="100" height="40" fill="#73787a"/><rect x="5" y="15" width="90" height="42" fill="#d8d3c3" stroke="#34333d" stroke-width="2"/><rect x="10" y="22" width="32" height="25" fill="#9c6a46" stroke="#34333d"/><rect x="48" y="22" width="40" height="25" fill="#eee0bd" stroke="#34333d"/><text x="68" y="30" text-anchor="middle" font-size="5" fill="#333">KHO GIAO HÀNG</text><rect x="14" y="64" width="23" height="14" fill="#d59a45" stroke="#34333d"/><rect x="42" y="64" width="23" height="14" fill="#d59a45" stroke="#34333d"/><rect x="70" y="64" width="20" height="14" fill="#d59a45" stroke="#34333d"/><circle cx="22" cy="84" r="6" fill="#20252c"/><circle cx="78" cy="84" r="6" fill="#20252c"/>';
+    else if(type==='store') objects='<rect width="100" height="100" fill="#d6b27f"/><rect y="63" width="100" height="37" fill="#8f765f"/><rect x="5" y="15" width="90" height="48" fill="#efe1c3" stroke="#39333b" stroke-width="2"/><rect x="8" y="18" width="84" height="9" fill="#4e8a68"/><text x="50" y="25" text-anchor="middle" font-size="5" fill="#fff">CỬA HÀNG TIỆN LỢI</text><rect x="10" y="33" width="24" height="23" fill="#8b6a4e"/><rect x="38" y="33" width="24" height="23" fill="#8b6a4e"/><rect x="66" y="33" width="24" height="23" fill="#8b6a4e"/><circle cx="16" cy="39" r="3" fill="#74a75f"/><circle cx="27" cy="39" r="3" fill="#d86b56"/><circle cx="44" cy="39" r="3" fill="#e2b44e"/><circle cx="72" cy="39" r="3" fill="#b17cc3"/><rect x="39" y="68" width="22" height="12" fill="#4f7182" stroke="#39333b"/><text x="50" y="76" text-anchor="middle" font-size="4" fill="#fff">THU NGÂN</text>';
+    else if(type==='rice') objects='<rect width="100" height="100" fill="#d9b77f"/><rect y="62" width="100" height="38" fill="#9b7656"/><rect x="5" y="15" width="90" height="43" fill="#f0dfbf" stroke="#3b3030" stroke-width="2"/><rect x="35" y="18" width="30" height="12" fill="#c65a3f"/><text x="50" y="26" text-anchor="middle" font-size="5" fill="#fff">CƠM NHÀ</text><rect x="10" y="38" width="80" height="8" fill="#704a35"/><circle cx="20" cy="50" r="5" fill="#eee" stroke="#333"/><circle cx="50" cy="50" r="5" fill="#eee" stroke="#333"/><circle cx="80" cy="50" r="5" fill="#eee" stroke="#333"/><rect x="16" y="68" width="18" height="10" fill="#704a35"/><rect x="41" y="68" width="18" height="10" fill="#704a35"/><rect x="66" y="68" width="18" height="10" fill="#704a35"/>';
+    else if(type==='net') objects='<rect width="100" height="100" fill="#292e45"/><rect y="65" width="100" height="35" fill="#4b3d3d"/><rect x="5" y="10" width="90" height="50" fill="#1e2434" stroke="#655e75" stroke-width="2"/><g fill="#313a55" stroke="#191b28" stroke-width="2"><rect x="8" y="18" width="24" height="18"/><rect x="38" y="18" width="24" height="18"/><rect x="68" y="18" width="24" height="18"/><rect x="8" y="40" width="24" height="18"/><rect x="38" y="40" width="24" height="18"/><rect x="68" y="40" width="24" height="18"/></g><g fill="#7cc7e8"><rect x="12" y="22" width="16" height="10"/><rect x="42" y="22" width="16" height="10"/><rect x="72" y="22" width="16" height="10"/></g><text x="50" y="12" text-anchor="middle" font-size="5" fill="#e4b650">NET 24H</text>';
+    else if(type==='pub') objects='<rect width="100" height="100" fill="#5b3540"/><rect y="60" width="100" height="40" fill="#704d43"/><rect x="7" y="15" width="86" height="45" fill="#8e4d4b" stroke="#322a32" stroke-width="2"/><rect x="18" y="25" width="64" height="10" fill="#e0a84b"/><text x="50" y="32" text-anchor="middle" font-size="5" fill="#3a2930">QUÁN BÌNH DÂN</text><rect x="10" y="68" width="24" height="11" fill="#4c3430"/><rect x="38" y="68" width="24" height="11" fill="#4c3430"/><rect x="66" y="68" width="24" height="11" fill="#4c3430"/><circle cx="22" cy="65" r="5" fill="#d9ad5c"/><circle cx="50" cy="65" r="5" fill="#d9ad5c"/><circle cx="78" cy="65" r="5" fill="#d9ad5c"/>';
+    else if(type==='park') objects='<rect width="100" height="100" fill="#8eb9c0"/><rect y="48" width="100" height="52" fill="#78a05f"/><path d="M0 72Q50 50 100 72" fill="none" stroke="#d1b785" stroke-width="16"/><circle cx="17" cy="38" r="15" fill="#47774e" stroke="#2e4c39" stroke-width="3"/><rect x="14" y="38" width="6" height="28" fill="#704d39"/><circle cx="80" cy="35" r="17" fill="#4f8053" stroke="#2e4c39" stroke-width="3"/><rect x="77" y="35" width="6" height="31" fill="#704d39"/><rect x="34" y="69" width="32" height="7" fill="#6e4b3d" stroke="#332d31" stroke-width="2"/><rect x="38" y="76" width="4" height="9" fill="#6e4b3d"/><rect x="58" y="76" width="4" height="9" fill="#6e4b3d"/>';
+    else if(type==='cinema') objects='<rect width="100" height="100" fill="#242640"/><rect y="60" width="100" height="40" fill="#6a4654"/><rect x="8" y="12" width="84" height="45" fill="#333653" stroke="#171827" stroke-width="3"/><rect x="18" y="21" width="64" height="25" fill="#121522"/><path d="M22 41L39 26L49 36L59 28L78 42" fill="none" stroke="#d2a24c" stroke-width="2"/><rect x="8" y="65" width="28" height="12" fill="#b44e45"/><rect x="42" y="65" width="16" height="12" fill="#b44e45"/><rect x="64" y="65" width="28" height="12" fill="#b44e45"/><text x="50" y="55" text-anchor="middle" font-size="5" fill="#f4d88c">RẠP PHIM</text>';
+    else if(type==='repair') objects='<rect width="100" height="100" fill="#a9b0b0"/><rect y="63" width="100" height="37" fill="#5f6467"/><rect x="5" y="12" width="90" height="50" fill="#d2c4a7" stroke="#33343b" stroke-width="2"/><rect x="10" y="19" width="80" height="7" fill="#3f6670"/><text x="50" y="25" text-anchor="middle" font-size="5" fill="#fff">GARA SỬA XE</text><rect x="10" y="35" width="27" height="18" fill="#704c3b"/><rect x="42" y="35" width="48" height="18" fill="#7e8a8c"/><circle cx="54" cy="44" r="8" fill="#222a2e"/><circle cx="54" cy="44" r="4" fill="#b5bdba"/><rect x="13" y="69" width="74" height="5" fill="#3f3331"/>';
+    else if(type==='bank') objects='<rect width="100" height="100" fill="#9db4bd"/><rect y="63" width="100" height="37" fill="#d1b88f"/><rect x="5" y="12" width="90" height="50" fill="#eee4cf" stroke="#34333a" stroke-width="2"/><path d="M8 22L50 8L92 22Z" fill="#3d6782" stroke="#34333a" stroke-width="2"/><rect x="17" y="23" width="7" height="27" fill="#e4dcc7" stroke="#34333a"/><rect x="46" y="23" width="7" height="27" fill="#e4dcc7" stroke="#34333a"/><rect x="75" y="23" width="7" height="27" fill="#e4dcc7" stroke="#34333a"/><text x="50" y="19" text-anchor="middle" font-size="5" fill="#fff">NGÂN HÀNG</text><rect x="39" y="68" width="22" height="12" fill="#4b7182" stroke="#34333a"/><text x="50" y="76" text-anchor="middle" font-size="4" fill="#fff">ATM</text>';
+    else if(type==='hospital') objects='<rect width="100" height="100" fill="#a9c6c9"/><rect y="62" width="100" height="38" fill="#d2c09e"/><rect x="6" y="10" width="88" height="52" fill="#f2f1e8" stroke="#34383b" stroke-width="2"/><rect x="34" y="16" width="32" height="9" fill="#d85b5b"/><text x="50" y="23" text-anchor="middle" font-size="5" fill="#fff">BỆNH VIỆN</text><rect x="10" y="34" width="22" height="18" fill="#dfe7e6" stroke="#52666b"/><rect x="39" y="34" width="22" height="18" fill="#dfe7e6" stroke="#52666b"/><rect x="68" y="34" width="22" height="18" fill="#dfe7e6" stroke="#52666b"/><rect x="47" y="37" width="6" height="12" fill="#d85b5b"/><rect x="44" y="40" width="12" height="6" fill="#d85b5b"/>';
+    else if(type==='tea') objects='<rect width="100" height="100" fill="#c4a5c1"/><rect y="63" width="100" height="37" fill="#a66f78"/><rect x="5" y="14" width="90" height="48" fill="#f0dfcf" stroke="#40323f" stroke-width="2"/><rect x="10" y="20" width="80" height="9" fill="#7f4c87"/><text x="50" y="27" text-anchor="middle" font-size="5" fill="#fff">TRÀ SỮA NHÀ MÌNH</text><rect x="13" y="39" width="22" height="13" fill="#8f5b48"/><rect x="40" y="39" width="22" height="13" fill="#8f5b48"/><rect x="67" y="39" width="22" height="13" fill="#8f5b48"/><circle cx="24" cy="36" r="5" fill="#d2a45e"/><circle cx="51" cy="36" r="5" fill="#d2a45e"/><circle cx="78" cy="36" r="5" fill="#d2a45e"/>';
+    else objects='<rect width="100" height="100" fill="#c9b58d"/><rect y="63" width="100" height="37" fill="#7b7770"/><path d="M0 60Q50 52 100 60" fill="none" stroke="#b3b3aa" stroke-width="8"/><rect x="18" y="66" width="26" height="8" fill="#6c4b3d"/><rect x="55" y="66" width="26" height="8" fill="#6c4b3d"/><circle cx="28" cy="58" r="8" fill="#5d8b58"/><circle cx="73" cy="58" r="9" fill="#5d8b58"/><rect x="25" y="57" width="6" height="18" fill="#6c4b3d"/><rect x="70" y="57" width="6" height="18" fill="#6c4b3d"/><text x="50" y="30" text-anchor="middle" font-size="6" fill="#fff">TRÀ ĐÁ VỈA HÈ</text>';
+    return '<svg class="v27-art" viewBox="0 0 100 100" preserveAspectRatio="none">'+objects+'</svg>';
+  }
+  function makeScene(type,title,npcs){
+    const layer=$('sceneLayer'); if(!layer)return;
+    layer.className='show'; $('room').style.display='none'; $('pet').style.display='none'; S.scene='place';
+    layer.innerHTML='<div class="v27-scene"><div class="v27-title">'+esc(title)+'</div><div class="v27-sub">Khu vực tương tác</div>'+sceneArt(type)+'<button class="v27-back" id="v27Back">RA PHỐ</button><div class="v27-npcs"></div></div>';
+    const nl=layer.querySelector('.v27-npcs');
+    (npcs||[]).slice(0,5).forEach((n,i)=>{const d=document.createElement('button');d.className='v27-npc';d.style.left=(8+i*18)+'%';d.style.bottom=(i%2?8:14)+'%';d.innerHTML=person(palettes[type]?.[0],palettes[type]?.[1],palettes[type]?.[2])+'<span class="v27-name">'+esc(n[1])+'</span>';d.onclick=()=>npcTalk26(type,i);nl.appendChild(d)});
+    layer.querySelector('#v27Back').onclick=goCity;
+    const a=document.createElement('div');a.className='v27-action';a.innerHTML='<b>'+esc(title)+'</b><br>Chạm vào các khu vực trong cảnh để tương tác.';layer.querySelector('.v27-scene').appendChild(a);
+    const hotspots={restaurant:[[6,48,30,22],[39,15,55,18],[9,63,82,28]],office:[[7,38,28,25],[38,38,28,25],[68,38,27,25]],delivery:[[5,20,38,35],[48,20,44,35],[5,60,90,32]],store:[[5,31,29,28],[36,31,29,28],[67,31,29,28]],rice:[[8,37,84,25],[8,64,84,28]],net:[[5,16,29,43],[36,16,29,43],[67,16,29,43]],pub:[[7,63,28,22],[37,63,28,22],[67,63,28,22]],park:[[4,65,38,24],[60,24,35,35],[35,60,30,30]],cinema:[[7,12,86,43],[7,62,30,23],[63,62,30,23]],repair:[[7,34,29,25],[42,34,50,25],[7,64,86,26]],bank:[[7,34,25,28],[38,34,25,28],[68,34,25,28]],hospital:[[7,34,25,28],[38,34,25,28],[68,34,25,28]],tea:[[7,39,25,20],[38,39,25,20],[68,39,25,20]],streettea:[[15,62,30,18],[55,62,30,18]]};
+    (hotspots[type]||[]).forEach((q,i)=>{const b=document.createElement('button');b.className='v27-hot';b.style.left=q[0]+'%';b.style.top=q[1]+'%';b.style.width=q[2]+'%';b.style.height=q[3]+'%';b.onclick=()=>placeObjectAction26(type,i);layer.querySelector('.v27-scene').appendChild(b)});
+  }
+  window.placeShell=function(title,type,npcs){makeScene(type,title,npcs)};
+  window.enterPlace26=function(type){
+    const aliases={phoshop:'restaurant',hub:'delivery'};type=aliases[type]||type;
+    if(type==='restaurant'||type==='office'||type==='delivery') return enterJobPlace27(type);
+    const names={store:'CỬA HÀNG',rice:'QUÁN CƠM',net:'QUÁN NET',pub:'QUÁN NHẬU',park:'CÔNG VIÊN',cinema:'RẠP PHIM',repair:'SỬA XE',bank:'NGÂN HÀNG',hospital:'BỆNH VIỆN',tea:'TRÀ SỮA',streettea:'TRÀ ĐÁ VỈA HÈ'}; makeScene(type,names[type]||type,NPCS[type]||[]);
+  };
+  function enterJobPlace27(type){
+    const title=G.jobs[type].name;makeScene(type,title,NPCS[type]||[]);
+    const b=document.createElement('button');b.className='v27-back';b.style.right='94px';b.textContent='BẮT ĐẦU CA';b.onclick=()=>startJob26(type);$('sceneLayer').querySelector('.v27-scene').appendChild(b);
+  }
+  window.renderCity=function(){
+    const root=$('v26City');if(!root)return;root.innerHTML='<div class="v27-city"><div class="v27-road h"></div><div class="v27-road v"></div><div class="v27-title">THÀNH PHỐ</div><div class="v27-sub">Mỗi địa điểm là một cảnh riêng, không còn khối hộp hay emoji.</div><div class="v27-mapnpcs">Người trong thành phố: Chú Bình · Duy · Tài · Yến · Ngọc · Khoa · Chú Tư</div></div>';
+    const map=[['phoshop','restaurant','Quán Phở',8,8],['office','office','Văn Phòng',38,7],['hub','delivery','Trung Tâm Giao Hàng',68,8],['store','store','Cửa Hàng',7,31],['rice','rice','Quán Cơm',38,31],['net','net','Quán Net',69,31],['pub','pub','Quán Nhậu',7,54],['park','park','Công Viên',38,54],['cinema','cinema','Rạp Phim',69,54],['repair','repair','Sửa Xe',8,75],['bank','bank','Ngân Hàng',39,75],['hospital','hospital','Bệnh Viện',70,75],['tea','tea','Trà Sữa',23,87],['streettea','streettea','Trà Đá',55,87]];
+    const colors=['#b85a43','#4b708a','#d39a43','#5f8f63','#c56d4e','#3f496f','#74474d','#5b8a55','#604b79','#536a70','#456c88','#8aa5a0','#875b8b','#557b5d'];
+    map.forEach((m,i)=>{const b=document.createElement('button');b.className='v27-building';b.style.left=m[3]+'%';b.style.top=m[4]+'%';b.style.width='22%';b.style.height='17%';b.innerHTML='<svg viewBox="0 0 100 70"><rect x="7" y="24" width="86" height="40" rx="3" fill="#d9c7a8" stroke="#292733" stroke-width="3"/><path d="M4 26L50 5L96 26Z" fill="'+colors[i]+'" stroke="#292733" stroke-width="3"/><rect x="22" y="37" width="18" height="19" fill="#6d8790" stroke="#292733" stroke-width="2"/><rect x="60" y="37" width="18" height="19" fill="#9a654a" stroke="#292733" stroke-width="2"/><rect x="43" y="42" width="14" height="22" fill="#704b3d" stroke="#292733" stroke-width="2"/></svg><span>'+m[2]+'</span>';b.onclick=()=>enterPlace26(m[0]);root.querySelector('.v27-city').appendChild(b)});
+    const home=document.createElement('button');home.className='v27-back';home.textContent='VỀ PHÒNG';home.onclick=returnHomeScene;root.querySelector('.v27-city').appendChild(home);
+  };
+  // Ensure the map renderer is used whenever city opens.
+  const oldGoCity=window.goCity;window.goCity=function(){oldGoCity();setTimeout(()=>renderCity(),0)};
+  // Door/home state remains as previously defined.
+  renderCity();
+})();
+
 </script>
 </body></html>
