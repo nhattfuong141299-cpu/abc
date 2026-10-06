@@ -1877,7 +1877,7 @@ v22Install();
   function place28(type){if(type==='phoshop')type='restaurant';if(type==='hub')type='delivery';renderPlace28(type)}
   window.goCity=goCity28;window.enterPlace26=place28;window.renderCity=goCity28;
   // Make every navigation tab call a real destination instead of an inert panel.
-  document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');const k=b.dataset.tab;if(k==='home'){closeModal();$('sceneLayer').classList.remove('show');$('room').style.display='block';rebuild26();homeSchedule();}else if(k==='phone')phone();else if(k==='work')jobTab();else if(k==='date')goCity28();else if(k==='shop')place28('store')});
+  document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');const k=b.dataset.tab;if(k==='home'){closeModal();$('sceneLayer').classList.remove('show');$('room').style.display='block';rebuild26();homeSchedule();}else if(k==='phone')phone();else if(k==='work')jobTab();else if(k==='date')goCity29();else if(k==='shop')place28('store')});
   // Replace the old city-opening door target.
   const hs=$('hotspots'); if(hs){/* existing V26 door remains routed through window.goCity */}
   // Keep partner hidden until explicitly invited; legacy timers cannot resurrect them.
@@ -1887,6 +1887,138 @@ v22Install();
   document.addEventListener('click',e=>{const h=e.target.closest('.hot');if(h&&h.dataset.v28bound!=='1')h.dataset.v28bound='1';},{passive:true});
   toast('🔧 V28: đã nối lại tương tác thực cho nhà, thành phố, địa điểm và công việc');
 })();
+
+/* ================= V29 REAL INTERACTION + REAL PLACE ART ================= */
+(function(){
+  const css=`<style id="v29css">
+  .v29-scene{position:absolute;inset:0;overflow:hidden;background:#c7aa82}.v29-art{position:absolute;inset:0;width:100%;height:100%;shape-rendering:crispEdges}.v29-hit{position:absolute;z-index:30;border:0;background:transparent;cursor:pointer;touch-action:manipulation}.v29-hit:active{background:#ffffff12}.v29-label{position:absolute;z-index:31;background:#292733dd;color:#fff;padding:3px 6px;border-radius:6px;font-size:8px;font-weight:1000;pointer-events:none}.v29-player{position:absolute;z-index:35;width:44px;height:62px;transition:left .55s ease,top .55s ease;pointer-events:none}.v29-player .h{position:absolute;left:10px;top:0;width:25px;height:25px;border:3px solid #292733;border-radius:50%;background:#efb493}.v29-player .b{position:absolute;left:6px;top:24px;width:33px;height:31px;border:3px solid #292733;border-radius:7px;background:#5e9fd8}.v29-player i{position:absolute;top:51px;width:10px;height:11px;background:#292733}.v29-player .a{left:8px}.v29-player .c{left:26px}.v29-action2{position:absolute;left:4%;right:4%;bottom:3%;z-index:50;background:#292733ee;color:#fff;border:3px solid #e2ad3f;border-radius:13px;padding:9px}.v29-action2 b{font-size:11px}.v29-action2 small{display:block;margin-top:3px}.v29-action2 button{margin-top:6px;width:100%;border:0;border-radius:8px;padding:8px;background:#e77da5;color:#fff;font-weight:1000}.v29-work2{position:absolute;left:4%;right:4%;bottom:3%;z-index:55;background:#fff3dc;color:#292733;border:3px solid #292733;border-radius:13px;padding:9px}.v29-work2 button{width:100%;margin-top:6px;border:0;border-radius:8px;padding:9px;background:#e77da5;color:#fff;font-weight:1000}.v29-scenehead{position:absolute;z-index:60;top:9px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:center}.v29-scenehead b{color:#fff;font-size:16px;text-shadow:2px 2px #292733}.v29-back2{border:3px solid #292733;border-radius:9px;background:#292733;color:#fff;padding:7px 9px;font-weight:1000}.v29-toast{position:absolute;z-index:100;left:50%;top:11%;transform:translateX(-50%);background:#292733;color:#fff;border:3px solid #e2ad3f;border-radius:10px;padding:8px 10px;font-size:10px;font-weight:1000;display:none;max-width:88%;text-align:center}
+  .v29-chat{max-height:48vh;overflow:auto;background:#f9ecd5;border-radius:12px;padding:8px}.v29-msg{padding:8px 10px;border:2px solid #dac4a4;border-radius:12px;background:#fffaf0;margin:5px 0;max-width:86%;font-size:12px}.v29-msg.me{margin-left:auto;background:#dceeff;border-color:#8ab4dd}.v29-compose{display:flex;gap:6px;margin-top:7px}.v29-compose input{flex:1;padding:11px;border:2px solid #dac4a4;border-radius:10px;font-size:13px}.v29-compose button{width:72px;border:0;border-radius:10px;background:#e77da5;color:#fff;font-weight:1000}
+  .v29-object{cursor:pointer}.v29-object:active{filter:brightness(1.15)}
+  </style>`;
+  if(!$('v29css'))document.head.insertAdjacentHTML('beforeend',css);
+
+  /* ---------- HOME: every visible object has a real action ---------- */
+  const homeMap={
+    kitchen:[5,90,112,112,()=>cook()],
+    fridge:[110,90,82,112,()=>fridge()],
+    tv:[204,62,126,105,()=>startFreeActivity('tv')],
+    sofa:[178,109,180,132,()=>startFreeActivity('tv')],
+    table:[200,218,180,132,()=>{if(S.v26?.readyMeal||S.readyMeal)return eatMeal();toast('Bàn ăn: chưa có món. Hãy nấu món ở BẾP trước.')}],
+    trash:[268,315,92,101,()=>chores()],
+    bed:[1,371,177,109,()=>sleep()],
+    plant:[137,238,168,138,()=>{changeTime(5);effect('happy',2);S.clean=clamp(S.clean+2);hud();toast('🌿 Bạn tưới cây. Căn phòng dễ chịu hơn.')}],
+    petarea:[250,360,75,80,()=>petMenu()]
+  };
+  function rebuildHomeHits29(){
+    const hs=$('hotspots');if(!hs)return;hs.innerHTML='';
+    Object.values(homeMap).forEach(v=>{const b=document.createElement('button');b.className='hot';b.style.cssText=`left:${v[0]/360*100}%;top:${v[1]/480*100}%;width:${v[2]/360*100}%;height:${v[3]/480*100}%`;b.onclick=v[4];hs.appendChild(b)});
+  }
+  function home29(){
+    S.scene='home';closeModal();$('sceneLayer').classList.remove('show');$('room').style.display='block';
+    const p=$(S.partner);if(p)p.style.display=(S.partnerAtHome?'block':'none');
+    const pet=$('pet');if(pet)pet.style.display=S.petUnlocked?'block':'none';
+    rebuildHomeHits29();hud();
+  }
+  window.returnHomeScene=home29;
+  rebuildHomeHits29();
+
+  /* ---------- REAL SVG PLACE ART ---------- */
+  const art={
+    restaurant:`<rect width="1000" height="1200" fill="#c9a77d"/><rect y="180" width="1000" height="1020" fill="#d9bf95"/><rect y="150" width="1000" height="38" fill="#604638"/><rect x="70" y="245" width="860" height="250" rx="18" fill="#81543e" stroke="#292733" stroke-width="14"/><rect x="105" y="275" width="790" height="170" fill="#a96d4e"/><rect x="130" y="315" width="230" height="95" fill="#e0c49b" stroke="#292733" stroke-width="9"/><rect x="385" y="315" width="230" height="95" fill="#e0c49b" stroke="#292733" stroke-width="9"/><rect x="640" y="315" width="230" height="95" fill="#e0c49b" stroke="#292733" stroke-width="9"/><text x="500" y="370" text-anchor="middle" font-size="42" font-weight="900" fill="#fff">PHỞ NHÀ MÌNH</text><g fill="#704b3d" stroke="#292733" stroke-width="10"><rect x="110" y="610" width="250" height="125"/><rect x="390" y="610" width="250" height="125"/><rect x="670" y="610" width="220" height="125"/></g><g fill="#e4c49a" stroke="#292733" stroke-width="8"><rect x="135" y="585" width="200" height="25"/><rect x="415" y="585" width="200" height="25"/><rect x="695" y="585" width="170" height="25"/></g><g fill="#4f4038"><rect x="145" y="735" width="25" height="120"/><rect x="300" y="735" width="25" height="120"/><rect x="425" y="735" width="25" height="120"/><rect x="580" y="735" width="25" height="120"/><rect x="700" y="735" width="25" height="120"/><rect x="835" y="735" width="25" height="120"/></g><text x="230" y="690" text-anchor="middle" font-size="25" font-weight="900" fill="#fff">BÀN KHÁCH</text><text x="515" y="690" text-anchor="middle" font-size="25" font-weight="900" fill="#fff">BÀN KHÁCH</text><text x="780" y="690" text-anchor="middle" font-size="25" font-weight="900" fill="#fff">BÀN KHÁCH</text>`,
+    office:`<rect width="1000" height="1200" fill="#b8c1c7"/><rect y="160" width="1000" height="1040" fill="#d5d0c5"/><rect y="160" width="1000" height="35" fill="#454956"/><rect x="60" y="250" width="260" height="150" fill="#754d3c" stroke="#292733" stroke-width="12"/><rect x="370" y="250" width="260" height="150" fill="#754d3c" stroke="#292733" stroke-width="12"/><rect x="680" y="250" width="260" height="150" fill="#754d3c" stroke="#292733" stroke-width="12"/><g fill="#273448" stroke="#292733" stroke-width="9"><rect x="125" y="175" width="130" height="90"/><rect x="435" y="175" width="130" height="90"/><rect x="745" y="175" width="130" height="90"/></g><g fill="#8b9aa5" stroke="#292733" stroke-width="8"><rect x="80" y="480" width="840" height="210" rx="20"/><rect x="350" y="760" width="300" height="150" rx="20"/></g><text x="500" y="555" text-anchor="middle" font-size="42" font-weight="900" fill="#fff">KHU LÀM VIỆC</text><text x="500" y="840" text-anchor="middle" font-size="30" font-weight="900" fill="#292733">BÀN QUẢN LÝ</text>`,
+    delivery:`<rect width="1000" height="1200" fill="#a9b5a0"/><rect y="170" width="1000" height="1030" fill="#c7b58d"/><rect x="55" y="250" width="260" height="310" fill="#9b6b4d" stroke="#292733" stroke-width="12"/><rect x="370" y="250" width="260" height="310" fill="#9b6b4d" stroke="#292733" stroke-width="12"/><rect x="685" y="250" width="260" height="310" fill="#9b6b4d" stroke="#292733" stroke-width="12"/><g fill="#d6b57d" stroke="#292733" stroke-width="7"><rect x="90" y="295" width="190" height="75"/><rect x="405" y="295" width="190" height="75"/><rect x="720" y="295" width="190" height="75"/></g><g fill="#d8d8d8" stroke="#292733" stroke-width="8"><rect x="110" y="610" width="190" height="55"/><rect x="405" y="610" width="190" height="55"/><rect x="700" y="610" width="190" height="55"/></g><g fill="#4d5560" stroke="#292733" stroke-width="8"><rect x="125" y="680" width="160" height="230" rx="30"/><rect x="420" y="680" width="160" height="230" rx="30"/></g><text x="500" y="1100" text-anchor="middle" font-size="40" font-weight="900" fill="#292733">KHO GIAO HÀNG</text>`,
+    store:`<rect width="1000" height="1200" fill="#d6b77f"/><rect y="180" width="1000" height="1020" fill="#ead5aa"/><rect x="55" y="245" width="250" height="500" fill="#86553e" stroke="#292733" stroke-width="12"/><rect x="375" y="245" width="250" height="500" fill="#86553e" stroke="#292733" stroke-width="12"/><rect x="695" y="245" width="250" height="500" fill="#86553e" stroke="#292733" stroke-width="12"/><g fill="#d9c29b" stroke="#292733" stroke-width="7"><rect x="80" y="290" width="200" height="70"/><rect x="80" y="390" width="200" height="70"/><rect x="80" y="490" width="200" height="70"/><rect x="400" y="290" width="200" height="70"/><rect x="400" y="390" width="200" height="70"/><rect x="400" y="490" width="200" height="70"/><rect x="720" y="290" width="200" height="70"/><rect x="720" y="390" width="200" height="70"/><rect x="720" y="490" width="200" height="70"/></g><text x="180" y="820" text-anchor="middle" font-size="28" font-weight="900" fill="#292733">THỰC PHẨM</text><text x="500" y="820" text-anchor="middle" font-size="28" font-weight="900" fill="#292733">THÚ CƯNG</text><text x="820" y="820" text-anchor="middle" font-size="28" font-weight="900" fill="#292733">ĐỒ DÙNG</text>`,
+    rice:`<rect width="1000" height="1200" fill="#d2b27c"/><rect y="190" width="1000" height="1010" fill="#e2c99e"/><rect x="70" y="245" width="860" height="240" fill="#754b39" stroke="#292733" stroke-width="14"/><rect x="110" y="285" width="780" height="160" fill="#9c6548"/><text x="500" y="380" text-anchor="middle" font-size="50" font-weight="900" fill="#fff">CƠM NHÀ</text><g fill="#704b3d" stroke="#292733" stroke-width="10"><rect x="110" y="600" width="260" height="120"/><rect x="370" y="600" width="260" height="120"/><rect x="630" y="600" width="260" height="120"/></g><g fill="#e0c39a" stroke="#292733" stroke-width="8"><rect x="140" y="575" width="200" height="25"/><rect x="400" y="575" width="200" height="25"/><rect x="660" y="575" width="200" height="25"/></g>`,
+    net:`<rect width="1000" height="1200" fill="#2d3246"/><rect y="190" width="1000" height="1010" fill="#4a3d4d"/><g fill="#2c394c" stroke="#292733" stroke-width="10"><rect x="70" y="260" width="250" height="190"/><rect x="375" y="260" width="250" height="190"/><rect x="680" y="260" width="250" height="190"/></g><g fill="#7e9aaa" stroke="#292733" stroke-width="8"><rect x="100" y="290" width="190" height="105"/><rect x="405" y="290" width="190" height="105"/><rect x="710" y="290" width="190" height="105"/></g><g fill="#67483d" stroke="#292733" stroke-width="8"><rect x="100" y="480" width="190" height="50"/><rect x="405" y="480" width="190" height="50"/><rect x="710" y="480" width="190" height="50"/></g><text x="500" y="760" text-anchor="middle" font-size="48" font-weight="900" fill="#fff">QUÁN NET</text>`,
+    pub:`<rect width="1000" height="1200" fill="#5d4141"/><rect y="190" width="1000" height="1010" fill="#8b5d47"/><rect x="70" y="235" width="860" height="170" fill="#5b3931" stroke="#292733" stroke-width="12"/><text x="500" y="345" text-anchor="middle" font-size="46" font-weight="900" fill="#f6d58a">QUÁN NHẬU</text><g fill="#6c4739" stroke="#292733" stroke-width="9"><circle cx="230" cy="600" r="105"/><circle cx="500" cy="600" r="105"/><circle cx="770" cy="600" r="105"/></g><g fill="#d4b07d"><circle cx="230" cy="600" r="70"/><circle cx="500" cy="600" r="70"/><circle cx="770" cy="600" r="70"/></g>`,
+    park:`<rect width="1000" height="1200" fill="#88b7c5"/><rect y="430" width="1000" height="770" fill="#77a75e"/><path d="M0 820 Q250 650 500 820 T1000 820" fill="none" stroke="#d8c38e" stroke-width="100"/><g fill="#4e7d4d" stroke="#292733" stroke-width="9"><circle cx="150" cy="370" r="120"/><circle cx="820" cy="350" r="130"/><circle cx="510" cy="470" r="100"/></g><g fill="#76513e" stroke="#292733" stroke-width="8"><rect x="350" y="820" width="300" height="55"/><rect x="390" y="875" width="30" height="90"/><rect x="580" y="875" width="30" height="90"/></g><text x="500" y="1080" text-anchor="middle" font-size="48" font-weight="900" fill="#fff">CÔNG VIÊN</text>`,
+    cinema:`<rect width="1000" height="1200" fill="#20243a"/><rect y="570" width="1000" height="630" fill="#5b3f50"/><rect x="120" y="190" width="760" height="360" rx="20" fill="#101322" stroke="#292733" stroke-width="14"/><rect x="170" y="235" width="660" height="270" fill="#526e80"/><text x="500" y="380" text-anchor="middle" font-size="50" font-weight="900" fill="#fff">RẠP PHIM</text><g fill="#9a5360" stroke="#292733" stroke-width="8"><rect x="100" y="680" width="220" height="120" rx="30"/><rect x="390" y="680" width="220" height="120" rx="30"/><rect x="680" y="680" width="220" height="120" rx="30"/></g>`,
+    repair:`<rect width="1000" height="1200" fill="#768087"/><rect y="190" width="1000" height="1010" fill="#a79d8d"/><rect x="60" y="230" width="880" height="210" fill="#53606a" stroke="#292733" stroke-width="14"/><rect x="130" y="510" width="740" height="80" fill="#5a473d" stroke="#292733" stroke-width="10"/><g fill="#d14d45" stroke="#292733" stroke-width="9"><rect x="200" y="650" width="600" height="230" rx="55"/></g><circle cx="300" cy="890" r="55" fill="#292733"/><circle cx="700" cy="890" r="55" fill="#292733"/><text x="500" y="330" text-anchor="middle" font-size="44" font-weight="900" fill="#fff">GARA SỬA XE</text>`,
+    bank:`<rect width="1000" height="1200" fill="#9ab3b2"/><rect y="180" width="1000" height="1020" fill="#d6d2c3"/><rect x="70" y="240" width="860" height="220" fill="#557b7a" stroke="#292733" stroke-width="14"/><text x="500" y="370" text-anchor="middle" font-size="48" font-weight="900" fill="#fff">NGÂN HÀNG</text><rect x="120" y="570" width="400" height="170" fill="#8b6b52" stroke="#292733" stroke-width="12"/><rect x="620" y="530" width="230" height="300" fill="#4d5963" stroke="#292733" stroke-width="12"/><rect x="660" y="580" width="150" height="80" fill="#9fb6c0" stroke="#292733" stroke-width="8"/><text x="735" y="705" text-anchor="middle" font-size="28" font-weight="900" fill="#fff">ATM</text>`,
+    hospital:`<rect width="1000" height="1200" fill="#a9c4c3"/><rect y="190" width="1000" height="1010" fill="#e2e5df"/><rect x="60" y="235" width="880" height="190" fill="#659a98" stroke="#292733" stroke-width="14"/><text x="500" y="355" text-anchor="middle" font-size="45" font-weight="900" fill="#fff">BỆNH VIỆN</text><rect x="100" y="530" width="350" height="170" fill="#b8a17d" stroke="#292733" stroke-width="10"/><rect x="550" y="530" width="350" height="170" fill="#f4f4ed" stroke="#292733" stroke-width="10"/><rect x="650" y="570" width="160" height="70" fill="#9fc3c3"/>`,
+    tea:`<rect width="1000" height="1200" fill="#a9c9cf"/><rect y="470" width="1000" height="730" fill="#8c5d49"/><rect x="90" y="240" width="820" height="230" fill="#76513f" stroke="#292733" stroke-width="14"/><rect x="150" y="300" width="700" height="120" fill="#d6b37c" stroke="#292733" stroke-width="8"/><text x="500" y="380" text-anchor="middle" font-size="42" font-weight="900" fill="#292733">TRÀ SỮA</text><g fill="#6d493a" stroke="#292733" stroke-width="9"><rect x="130" y="610" width="260" height="100"/><rect x="420" y="610" width="260" height="100"/><rect x="710" y="610" width="160" height="100"/></g>`,
+    streettea:`<rect width="1000" height="1200" fill="#b9c9b2"/><rect y="520" width="1000" height="680" fill="#aeb0a4"/><rect x="100" y="300" width="800" height="220" fill="#805a45" stroke="#292733" stroke-width="14"/><path d="M100 300 L500 180 L900 300Z" fill="#c18b4e" stroke="#292733" stroke-width="14"/><g fill="#704b3d" stroke="#292733" stroke-width="8"><rect x="150" y="650" width="260" height="80"/><rect x="590" y="650" width="260" height="80"/></g><text x="500" y="425" text-anchor="middle" font-size="42" font-weight="900" fill="#fff">TRÀ ĐÁ VỈA HÈ</text>`
+  };
+  const zoneMap={
+    restaurant:[['order',10,23,24,18,'QUẦY NHẬN ORDER'],['kitchen',38,23,24,18,'BẾP / LẤY MÓN'],['table',68,23,23,18,'BÀN KHÁCH']],
+    office:[['task',8,22,27,20,'BÀN MÁY TÍNH'],['work',38,22,25,20,'KHU XỬ LÝ'],['boss',69,22,23,20,'BÀN QUẢN LÝ']],
+    delivery:[['order',7,22,27,25,'BẢNG ĐƠN'],['package',37,22,27,25,'KHO KIỆN HÀNG'],['bike',69,22,24,25,'BÃI XE']],
+    store:[['food',6,22,28,32,'KỆ THỰC PHẨM'],['pet',36,22,28,32,'KỆ THÚ CƯNG'],['stuff',68,22,26,32,'KỆ ĐỒ DÙNG']],
+    rice:[['counter',8,23,38,22,'QUẦY CƠM'],['table',54,23,38,22,'BÀN ĂN']],
+    net:[['pc1',7,22,28,25,'MÁY THƯỜNG'],['pc2',37,22,28,25,'MÁY VIP'],['drink',68,22,26,25,'NƯỚC UỐNG']],
+    pub:[['t1',8,22,25,25,'BÀN 1'],['t2',38,22,25,25,'BÀN 2'],['bar',68,22,25,25,'QUẦY']],
+    park:[['bench',28,62,42,18,'GHẾ NGHỈ'],['walk',8,50,84,42,'LỐI ĐI BỘ']],
+    cinema:[['ticket',8,20,27,28,'QUẦY VÉ'],['screen',35,20,30,28,'MÀN HÌNH'],['seat',68,20,25,28,'PHÒNG CHIẾU']],
+    repair:[['garage',8,22,32,27,'GARA'],['tools',45,22,45,27,'BÀN DỤNG CỤ']],
+    bank:[['counter',8,22,43,27,'QUẦY GIAO DỊCH'],['atm',60,22,30,30,'ATM']],
+    hospital:[['desk',8,22,38,27,'LỄ TÂN'],['clinic',55,22,37,27,'PHÒNG KHÁM']],
+    tea:[['bar',8,22,28,25,'QUẦY PHA'],['t1',38,22,25,25,'BÀN 1'],['t2',68,22,25,25,'BÀN 2']],
+    streettea:[['table',10,48,35,24,'BÀN TRÀ ĐÁ'],['seat',55,48,35,24,'GHẾ VỈA HÈ']]
+  };
+  function scene29(type){
+    const l=sceneRoot();l.innerHTML=`<div class="v29-scene"><svg class="v29-art" viewBox="0 0 1000 1200" preserveAspectRatio="none">${art[type]||art.rice}</svg><div class="v29-scenehead"><b>${placeNames[type]||type}</b><button class="v29-back2" id="v29back">RA PHỐ</button></div><div class="v29-player"><i class="h"></i><i class="b"></i><i class="a"></i><i class="c"></i></div><div class="v29-action2" id="v29action"><b>Chạm vào đồ vật để nhân vật đi tới.</b><small>Không còn khối nút che đồ họa.</small></div><div class="v29-toast" id="v29toast"></div></div>`;
+    const root=l.querySelector('.v29-scene');l.querySelector('#v29back').onclick=goCity28;
+    const p=root.querySelector('.v29-player');p.style.left='45%';p.style.top='52%';
+    function move(x,y){p.style.left=x+'%';p.style.top=y+'%';}
+    function say29(title,text,action){const a=root.querySelector('#v29action');a.innerHTML=`<b>${title}</b><small>${text}</small><button id="v29doAction">${action||'THỰC HIỆN'}</button>`;root.querySelector('#v29doAction').onclick=()=>toast29(text)}
+    function toast29(t){const e=root.querySelector('#v29toast');e.textContent=t;e.style.display='block';clearTimeout(root._tt);root._tt=setTimeout(()=>e.style.display='none',1600)}
+    const add=(z)=>{const [id,x,y,w,h,label]=z;const b=document.createElement('button');b.className='v29-hit';b.style.cssText=`left:${x}%;top:${y}%;width:${w}%;height:${h}%`;b.setAttribute('aria-label',label);b.onclick=()=>{move(x+w/2,y+h/2);action(type,id,root,move,say29,toast29)};root.appendChild(b)};
+    (zoneMap[type]||[]).forEach(add);return root;
+  }
+  function action(type,id,root,move,say29,toast29){
+    if(type==='restaurant'){if(id==='order')return jobStart29('restaurant',root,move);if(id==='kitchen')return S.v26?.job?jobStep28(root):toast29('Nhận ca trước rồi tới bếp lấy món.');if(id==='table')return S.v26?.job?jobStep28(root):toast29('Bàn khách đang chờ đơn.');}
+    if(type==='office'){if(id==='task')return jobStart29('office',root,move);if(id==='work'||id==='boss')return S.v26?.job?jobStep28(root):toast29('Nhận task trước rồi mới thao tác.');}
+    if(type==='delivery'){if(id==='order')return jobStart29('delivery',root,move);if(id==='package'||id==='bike')return S.v26?.job?jobStep28(root):toast29('Nhận đơn trước rồi mới lấy kiện.');}
+    if(type==='store')return storeShelves26();
+    if(type==='rice'&&id==='counter'){if(S.money<30000)return toast29('Không đủ 30.000đ.');S.money-=30000;changeTime(25);effect('happy',5);hud();return toast29('Ăn cơm xong · -30.000đ');}
+    if(type==='rice')return toast29('Bạn ngồi xuống bàn ăn.');
+    if(type==='net'){if(id==='pc1')return net26();if(id==='pc2'){if(S.money<20000)return toast29('Không đủ 20.000đ.');S.money-=20000;changeTime(30);S.energy=clamp(S.energy-2);hud();return toast29('Bạn đã ngồi máy VIP.')}return toast29('Bạn mua một chai nước.');}
+    if(type==='pub'){if(id==='t1')return pubTalk26();return toast29('Bạn ngồi xuống và trò chuyện với NPC.');}
+    if(type==='park'){if(id==='bench'){changeTime(20);effect('happy',3);hud();return toast29('Bạn ngồi nghỉ 20 phút.')}changeTime(20);S.energy=clamp(S.energy-2);effect('happy',4);hud();return toast29('Bạn đi bộ quanh công viên.');}
+    if(type==='cinema'){return movie26();}
+    if(type==='repair')return repair26();
+    if(type==='bank')return bank26();
+    if(type==='hospital')return hospital26();
+    if(type==='tea'){if(id==='bar')return simpleAction26('tea',35000);return toast29('Bạn ngồi xuống, nhân viên sẽ mang đồ uống.');}
+    if(type==='streettea')return streetTea26();
+  }
+  function renderPlace29(type){if(type==='phoshop')type='restaurant';if(type==='hub')type='delivery';scene29(type)}
+  function goCity29(){closeModal();$('room').style.display='none';$('pet').style.display='none';$('sceneLayer').className='show';S.scene='city';const l=sceneRoot();l.innerHTML='<div class="v28-city"><div class="v28-road h"></div><div class="v28-road v"></div><div class="v28-maptitle">THÀNH PHỐ · CHẠM VÀO ĐỊA ĐIỂM</div></div>';const root=l.querySelector('.v28-city');maps.forEach((m,i)=>{const b=document.createElement('button');b.className='v28-building';b.style.left=m[3]+'%';b.style.top=m[4]+'%';b.style.width=(m[2].length>14?'25':'22')+'%';b.innerHTML=svgBuilding(m[2],['#b85a43','#4b708a','#d39a43','#5f8f63','#c56d4e','#3f496f','#74474d','#5b8a55','#604b79','#536a70','#456c88','#8aa5a0','#875b8b','#557b5d'][i])+'<span>'+m[2]+'</span>';b.onclick=()=>renderPlace29(m[1]);root.appendChild(b)});const home=document.createElement('button');home.className='v28-back';home.style.position='absolute';home.style.right='10px';home.style.top='9px';home.textContent='VỀ PHÒNG';home.onclick=home29;root.appendChild(home)}
+  window.enterPlace26=renderPlace29;window.renderCity=goCity29;window.goCity=goCity29;
+
+
+  /* ---------- WORK: use the graphical scene and actual task loop ---------- */
+  function jobStart29(type,root,move){
+    if(S.v26?.job)return renderWork28(root);
+    const t=S.h*60+S.m;
+    const ok=type==='restaurant'?((t>=480&&t<=690)||(t>=990&&t<=1260)):type==='delivery'?(t>=540&&t<=1260):(t>=480&&t<=1050);
+    if(!ok)return toast29('Chưa đúng giờ làm việc.');
+    S.v26=S.v26||{};S.v26.job={type,task:0,stage:0,earned:0,combo:0};renderWork28(root);
+  }
+
+  /* ---------- MESSAGE SYSTEM: persistent thread, no repeated template bubble ---------- */
+  S.v29Chats=S.v29Chats||{};
+  Object.keys(contacts).forEach(k=>{if(!S.v29Chats[k])S.v29Chats[k]=[]});
+  function seedChat(k){if(S.v29Chats[k].length)return;const c=contacts[k];S.v29Chats[k].push({from:'them',text:c.messages[0][0].replace(/^.*?:\s*/, '')});}
+  function reply29(k,text){const low=text.toLowerCase();if(k==='love'){if(/yêu|nhớ|thương/.test(low))return 'Nghe vậy tự nhiên vui ngang 😌';if(/buồn|mệt|chán/.test(low))return 'Có chuyện gì thì kể tôi nghe, đừng giữ một mình.';if(/đi|trà sữa|cà phê|ăn/.test(low))return 'Được, để tôi sắp xếp thời gian rồi báo bạn nhé.';return 'Ừ, tôi hiểu rồi. Bạn nói tiếp đi.';}if(k==='best')return /đá bóng|chơi/.test(low)?'Tối nay nếu rảnh thì đi luôn 😂':'Ông cứ báo tôi trước là được.';if(k==='friend')return /đi|trà sữa|cà phê/.test(low)?'Ok, để tôi xem lịch rồi nhắn lại.':'Ừ, khi nào cần cứ nhắn tôi.';if(k==='family')return 'Ừ, nhớ giữ sức khỏe và báo gia đình khi rảnh nhé.';return 'Ok, tôi xử lý rồi báo bạn.';}
+  function phone29(){show(`<h2>📱 Điện thoại</h2><p class="card">Tin nhắn được lưu thành cuộc trò chuyện riêng. Tin bạn gửi sẽ không bị thay bằng câu mẫu lặp lại.</p>${Object.entries(contacts).map(([k,c])=>`<button class="choice" onclick="chat29('${k}')">${c.avatar} <b>${k==='love'?S.partnerName:c.name.replace(/^.*?\s/,'')}</b>${S.v29Chats[k].filter(x=>x.from==='them').length?'':' · mới'}</button>`).join('')}`)}
+  function chat29(k){seedChat(k);const c=contacts[k];const name=k==='love'?S.partnerName:c.name;const msgs=S.v29Chats[k].map(m=>`<div class="v29-msg ${m.from==='me'?'me':''}">${m.text}</div>`).join('');show(`<h2>${c.avatar} ${name}</h2><div class="v29-chat">${msgs}</div><div class="v29-compose"><input id="v29Input" maxlength="160" placeholder="Nhập tin nhắn..."><button onclick="send29('${k}')">Gửi</button></div>${btn('⬅️ Danh sách','phone29()')}`)}
+  function send29(k){const i=$('v29Input');const text=(i?.value||'').trim();if(!text)return toast('Viết gì đó trước đã.');S.v29Chats[k].push({from:'me',text});const r=reply29(k,text);changeTime(1);hud();chat29(k);setTimeout(()=>{S.v29Chats[k].push({from:'them',text:r});if(S.scene==='home')toast('📱 Có tin nhắn mới');else if(S.scene==='home'){} else chat29(k);},650);}
+  window.phone=phone29;window.chat=chat29;window.sendMessage=send29;window.inbox=phone29;
+
+  /* New incoming messages: unique, short, no replay of the same pair. */
+  let incoming29=0;
+  const incomingPool={love:['Tối nay bạn có về sớm không?','Tôi vừa tan ca, hơi mệt một chút.','Mai mình ăn gì nhỉ?'],best:['Ông rảnh thì gọi tôi nhé.','Có chuyện vui kể ông nghe này.','Cuối tuần đi đâu không?'],friend:['Mai tôi có lịch ở gần chỗ bạn.','Bạn còn cần cái file hôm trước không?','Hôm nay quán mới mở đấy.'],family:['Nhớ ăn uống đúng giờ nhé.','Cuối tuần nếu rảnh thì gọi về.','Mẹ vừa nấu món bạn thích.'],coworker:['Sáng mai nhớ xem lịch nhé.','Tôi gửi tài liệu rồi.','Có thay đổi nhỏ trong lịch làm.']};
+  window.randomMessage=function(){const ks=Object.keys(incomingPool);const k=ks[incoming29%ks.length];const arr=incomingPool[k];const text=arr[incoming29%arr.length];incoming29++;S.v29Chats[k].push({from:'them',text});S.unread=(S.unread||0)+1;toast('📱 '+contacts[k].name+' vừa nhắn');hud();};
+
+  /* Remove the old visible block zones by making V28 zone transparent if any legacy scene is still present. */
+  const old=document.createElement('style');old.textContent='.v28-zone{border:0!important;background:transparent!important;box-shadow:none!important;color:transparent!important}.v28-zone small{display:none!important}.v28-action{display:none!important}';document.head.appendChild(old);
+  /* Partner/pet visibility must obey progression, including every return-to-home path. */
+  window.homeSchedule=function(){const p=$(S.partner);if(p)p.style.display=(S.partnerAtHome&&S.scene==='home')?'block':'none';const pet=$('pet');if(pet)pet.style.display=S.petUnlocked?'block':'none';};
+  home29();
+  toast('Đã bật tương tác thật: đồ vật, địa điểm và tin nhắn.');
+})();
+
 </script>
 
 </body></html>
