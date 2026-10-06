@@ -1,0 +1,1146 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>YÊU NHAU CÓ GÌ VUI? — V22</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:#11111d;font-family:system-ui,sans-serif}body{display:flex;justify-content:center}#game{width:min(430px,100vw);background:#222235;min-height:100vh;color:#292638}#hud{background:#303148;color:#fff;padding:10px;border-bottom:3px solid #171724}.brand{font-size:19px;font-weight:1000}.meta{display:flex;justify-content:space-between;font-size:12px;font-weight:900}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:7px}.stat{font-size:9px;background:#202131;border:2px solid #494b61;border-radius:8px;padding:4px}.bar{height:5px;background:#111;border-radius:5px}.bar i{display:block;height:100%}#world{position:relative;aspect-ratio:9/12;overflow:hidden;background:#d9c5aa}#room{position:absolute;inset:0}.wall{position:absolute;inset:0 0 auto;height:17%;background:#d9c5aa;border-bottom:4px solid #9e8065}.floor{position:absolute;inset:17% 0 0;background:#c7aa89;background-image:linear-gradient(#b58b69 2px,transparent 2px),linear-gradient(90deg,#b58b69 2px,transparent 2px);background-size:24px 24px}.window{position:absolute;left:5%;top:3%;width:36%;height:14%;background:#80a9b7;border:5px solid #292638;z-index:1}.lamp{position:absolute;left:39%;top:15%;width:9%;height:8%;background:#f7d58a;border:4px solid #292638;border-radius:50%;z-index:2}.rug{position:absolute;right:4%;bottom:21%;width:44%;height:10%;background:#b98293;border:4px solid #8e6171;border-radius:8px;z-index:2}.asset{position:absolute;z-index:3}.char{z-index:5;transform:scale(.78);transform-origin:50% 100%;filter:drop-shadow(0 3px 0 #29263855);image-rendering:pixelated}.char.walking{transform:scale(.78)}.char.talking{transform:scale(.78)}.hot{position:absolute;border:0;background:transparent;z-index:10;touch-action:manipulation}.hot:active{background:#ffffff12}#toast{position:absolute;z-index:30;top:8px;left:50%;transform:translateX(-50%);background:#292638;color:white;border:3px solid #777;border-radius:12px;padding:7px 10px;font-size:11px;font-weight:900;display:none;max-width:90%;text-align:center}#modal{display:none;position:absolute;inset:0;background:#12121dcc;z-index:20;align-items:flex-end}.sheet{width:100%;max-height:90%;overflow:auto;background:#fff1d7;border:3px solid #292638;border-bottom:0;border-radius:18px 18px 0 0;padding:12px}.btn,.choice{width:100%;border:0;border-radius:10px;padding:10px;margin-top:7px;font-weight:900}.btn{background:#5e9fd8;color:#fff}.pink{background:#e77da5}.green{background:#70a36b}.gold{background:#e2ad3f}.choice{background:white;border:2px solid #d6c1a0;text-align:left}.cards{display:grid;grid-template-columns:1fr 1fr;gap:7px}.card{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:8px}nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:6px;background:#161622}nav button{border:2px solid #494b61;background:#2d2e43;color:#fff;border-radius:10px;padding:8px 2px;font-size:10px;font-weight:950}nav button.active{background:#e77da5;color:#352432}
+#boy,#girl{transition:left 900ms cubic-bezier(.2,.8,.2,1),top 900ms cubic-bezier(.2,.8,.2,1);will-change:left,top}
+.char.walking{animation:walkBob .22s steps(2,end) infinite}
+.char.talking{animation:talkBob .55s steps(2,end) infinite}
+@keyframes walkBob{0%{transform:translateY(0)}50%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+@keyframes talkBob{0%{transform:translateY(0)}50%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+#speech{position:absolute;z-index:12;max-width:58%;background:#fffaf0;border:3px solid #292638;border-radius:12px;padding:7px 9px;font-size:10px;font-weight:900;line-height:1.25;box-shadow:0 4px 0 #292638;pointer-events:none;display:none}
+#roomFX{position:absolute;inset:0;z-index:8;pointer-events:none}
+.fx{position:absolute;font-size:18px;animation:fxUp 900ms ease-out forwards}
+@keyframes fxUp{from{opacity:1;transform:translateY(0) scale(.8)}to{opacity:0;transform:translateY(-35px) scale(1.25)}}
+.taskbar{height:8px;background:#191923;border-radius:8px;overflow:hidden;margin:6px 0}.taskbar i{display:block;height:100%;background:#e77da5}
+.feed{display:flex;flex-direction:column;gap:8px}.post{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:10px}.post small{color:#777}
+.chat{display:flex;flex-direction:column;gap:6px}.bubble{max-width:86%;padding:9px 11px;border-radius:12px;background:#fffaf0;border:2px solid #dac4a4}.bubble.me{align-self:flex-end;background:#dceeff;border-color:#8ab4dd}
+.bigchoice{min-height:52px;font-size:13px}
+.upgrade-ready{outline:3px solid #e2ad3f;box-shadow:0 0 0 4px #e2ad3f55}
+
+/* V7 LIFE-SIM SYSTEMS */
+#sceneLayer{position:absolute;inset:0;z-index:2;display:none;overflow:hidden;background:#b99d7d}
+#sceneLayer.show{display:block}.sceneTop{position:absolute;left:10px;right:10px;top:10px;display:flex;justify-content:space-between;z-index:6;color:#fff;font-weight:1000;text-shadow:2px 2px #292638}.sceneTitle{font-size:17px}.sceneBack{background:#292638;color:#fff;border:3px solid #777;border-radius:10px;padding:7px 10px;font-weight:1000}
+.office{position:absolute;inset:0;background:#c5c8cc}.office:before{content:"";position:absolute;inset:0 0 48%;background:#75808a;border-bottom:7px solid #3a3b49}.office:after{content:"";position:absolute;left:6%;right:6%;bottom:8%;height:34%;background:repeating-linear-gradient(90deg,#5b453d 0 28%,#3a2d2d 28% 30%);border:6px solid #292638}
+.officeDesk{position:absolute;width:28%;height:13%;background:#6f4c3e;border:5px solid #292638;bottom:20%;z-index:3}.desk1{left:7%}.desk2{left:38%}.desk3{right:7%}.officePC{position:absolute;width:11%;height:9%;background:#30384a;border:4px solid #292638;bottom:34%;z-index:4}.pc1{left:14%}.pc2{left:45%}.pc3{right:14%}.officeNPC{position:absolute;z-index:5;font-size:30px;transition:all .8s ease}.workBubble{position:absolute;z-index:8;background:#fffaf0;border:3px solid #292638;border-radius:12px;padding:6px 8px;font-size:9px;font-weight:1000;animation:floatBubble .8s ease-in-out infinite alternate}.wb1{left:7%;top:47%}.wb2{left:39%;top:47%}.wb3{right:7%;top:47%}
+@keyframes tvf{0%{opacity:.65}50%{opacity:1}100%{opacity:.7}}
+@keyframes floatBubble{to{transform:translateY(-3px)}}
+.dateScene{position:absolute;inset:0;background:linear-gradient(#8aa6bf 0 38%,#c8a47c 38%)}.dateScene.cafe{background:linear-gradient(#7e9ab6 0 45%,#8b5d48 45%)}.dateScene.cinema{background:linear-gradient(#22243b 0 45%,#6e4354 45%)}.dateScene.park{background:linear-gradient(#8eb6c4 0 45%,#78a05f 45%)}.dateScene.food{background:linear-gradient(#d5a675 0 45%,#6e4a3b 45%)}.dateObj{position:absolute;border:5px solid #292638;background:#c08a61}.dateTable{left:22%;bottom:17%;width:56%;height:16%;border-radius:12px}.dateLight{left:44%;top:18%;width:12%;height:12%;border-radius:50%;background:#f6d58a}.dateBench{left:8%;bottom:11%;width:84%;height:8%;background:#60473e}.dateScreen{left:15%;top:12%;width:70%;height:28%;background:#20233b;border:7px solid #292638}.dateTree{position:absolute;left:8%;bottom:20%;width:20%;height:34%;background:#5f8e58;border:5px solid #292638;border-radius:50%}.dateNPC{position:absolute;bottom:30%;font-size:32px;z-index:5;transition:all .8s ease}.dateBoy{left:29%}.dateGirl{right:29%}
+.marketScene{position:absolute;inset:0;background:#d6b57e}.stall{position:absolute;width:25%;height:22%;background:#9b6748;border:5px solid #292638;top:30%}.stall1{left:4%}.stall2{left:37%}.stall3{right:4%}.marketItem{position:absolute;font-size:26px;z-index:4}.mi1{left:10%;top:35%}.mi2{left:43%;top:35%}.mi3{right:10%;top:35%}.marketNPC{position:absolute;bottom:16%;font-size:34px;z-index:5}
+.lvbadge{position:absolute;right:2px;top:2px;background:#e2ad3f;color:#292638;border:2px solid #292638;border-radius:5px;padding:1px 3px;font-size:7px;font-weight:1000;z-index:20}.asset.upgrade-ready{outline:2px solid #e2ad3f}.assetLabel{position:absolute;left:50%;top:-13px;transform:translateX(-50%);z-index:21;white-space:nowrap;background:#292638;color:#fffaf0;border:2px solid #e2ad3f;border-radius:7px;padding:2px 6px;font-size:8px;font-weight:1000;line-height:1;box-shadow:0 2px 0 #292638;pointer-events:none}.assetLv{position:absolute;left:50%;bottom:-11px;transform:translateX(-50%);z-index:21;white-space:nowrap;background:#e2ad3f;color:#292638;border:2px solid #292638;border-radius:6px;padding:2px 5px;font-size:7px;font-weight:1000;line-height:1;pointer-events:none}.asset.skin2{filter:saturate(1.45) hue-rotate(14deg) brightness(1.04) drop-shadow(0 5px 3px #29263855)}.asset.skin3{filter:saturate(1.7) hue-rotate(-16deg) brightness(1.10) drop-shadow(0 6px 4px #29263866)}
+#pet{position:absolute;z-index:9;left:74%;top:72%;width:54px;height:48px;transition:left .9s ease,top .9s ease;cursor:pointer}.petBody{position:absolute;left:9px;top:13px;width:38px;height:28px;background:#e5a76f;border:4px solid #292638;border-radius:12px 12px 8px 8px}.petHead{position:absolute;left:2px;top:2px;width:29px;height:27px;background:#f0bd82;border:4px solid #292638;border-radius:50%}.petEar1,.petEar2{position:absolute;width:10px;height:12px;background:#d98e5d;border:3px solid #292638;top:-5px}.petEar1{left:4px;transform:rotate(-20deg)}.petEar2{left:19px;transform:rotate(20deg)}.petEye{position:absolute;width:4px;height:4px;background:#292638;top:12px;left:9px;box-shadow:10px 0 #292638}.petLeg{position:absolute;bottom:-8px;width:8px;height:12px;background:#d98e5d;border:3px solid #292638}.pl1{left:12px}.pl2{left:34px}.petTail{position:absolute;right:-7px;top:14px;width:18px;height:18px;border:4px solid #292638;border-left:0;border-bottom:0;border-radius:0 14px 0 0;transform:rotate(20deg)}
+.petDog .petBody{background:#b9825f}.petDog .petHead{background:#d49a70}.petDog .petEar1,.petDog .petEar2{background:#8d5a43}
+.petPanel{display:grid;grid-template-columns:1fr 1fr;gap:7px}.petStat{background:#fffaf0;border:2px solid #dac4a4;border-radius:10px;padding:8px}.notif{display:inline-block;min-width:18px;padding:2px 5px;border-radius:9px;background:#e66d78;color:#fff;font-size:9px;text-align:center}
+
+/* V14 - FREE ACTIVITY + REAL CHORES */
+.homeAction{position:absolute;z-index:11;background:#fffaf0;border:3px solid #292638;border-radius:12px;padding:7px 9px;font-size:10px;font-weight:1000;box-shadow:0 3px 0 #292638;pointer-events:none;animation:floatBubble .7s ease-in-out infinite alternate}
+.char.working{animation:workBob .35s steps(2,end) infinite}
+@keyframes workBob{0%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-2px) rotate(1deg)}100%{transform:translateY(0) rotate(-1deg)}}
+.freePanel{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:10px}
+.freeTimer{font-size:26px;font-weight:1000;text-align:center;margin:5px 0}
+.aiLog{font-size:10px;color:#62586a;min-height:38px;margin-top:6px}
+
+/* V15 GRAPHICS UPGRADE — depth, lighting, richer pixel-art presentation */
+html,body{background:#0b0b13}
+#game{background:#171725;box-shadow:0 0 50px #0008}
+#hud{background:linear-gradient(180deg,#383950,#292a40);box-shadow:0 4px 14px #0005;position:relative;z-index:40}
+.brand{letter-spacing:.2px;text-shadow:2px 2px 0 #171725}
+.stat{background:linear-gradient(180deg,#292b40,#1d1e2e);box-shadow:inset 0 1px #ffffff14,0 2px 0 #10101a}
+.bar{box-shadow:inset 0 1px 2px #0008}
+#world{background:#b99b7a;box-shadow:inset 0 0 45px #0004}
+#room{background:linear-gradient(180deg,#ead7bd00 0 15%,#00000008 100%)}
+.wall{background:linear-gradient(180deg,#ead9c1,#d5bea0 72%,#b88e6f);box-shadow:inset 0 -7px 0 #8f705d,inset 0 0 30px #fff4}
+.wall:after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:5px;background:repeating-linear-gradient(90deg,#8d6d58 0 22px,#a78369 22px 44px);opacity:.7}
+.floor{background-color:#c7aa89;background-image:linear-gradient(135deg,#d4b99a 25%,transparent 25%),linear-gradient(315deg,#d4b99a 25%,transparent 25%),linear-gradient(45deg,#b99675 25%,transparent 25%),linear-gradient(225deg,#b99675 25%,transparent 25%);background-position:0 0,12px 0,12px -12px,0 12px;background-size:24px 24px;box-shadow:inset 0 18px 35px #0002}
+.window{background:linear-gradient(135deg,#9fd2dc,#547f91 55%,#345461);box-shadow:inset 0 0 20px #fff3,0 6px 0 #5e4639,0 10px 18px #0003}
+.window:after{content:"☁  ☁";position:absolute;left:10%;top:15%;color:#eaf8f8aa;font-size:14px;letter-spacing:7px}
+.lamp{box-shadow:0 0 22px #f7d58a88,0 8px 20px #0003}
+.rug{background:radial-gradient(circle,#d49aae 0 35%,#b98293 36% 70%,#8e6171 71%);box-shadow:0 7px 12px #0003,inset 0 0 0 3px #e5b5c5aa}
+.asset{filter:drop-shadow(0 5px 3px #00025);image-rendering:pixelated;transition:filter .25s ease,transform .25s ease}
+.asset svg{width:100%;height:100%;display:block;image-rendering:pixelated;shape-rendering:crispEdges}
+.char{filter:drop-shadow(0 5px 2px #0005);transform-origin:50% 90%}
+.char.walking{filter:drop-shadow(0 5px 2px #0005) brightness(1.04)}
+.char.talking{filter:drop-shadow(0 6px 3px #0005) brightness(1.08)}
+#boy,#girl{transition:left 700ms cubic-bezier(.18,.85,.25,1),top 700ms cubic-bezier(.18,.85,.25,1),filter .2s}
+#pet{filter:drop-shadow(0 5px 2px #0005)}
+#pet:after{content:"";position:absolute;left:10px;bottom:-5px;width:36px;height:7px;background:#0003;border-radius:50%;filter:blur(2px)}
+#roomFX{mix-blend-mode:screen}
+#speech{background:linear-gradient(180deg,#fffdf6,#fff0d3);border-color:#342f40;box-shadow:0 5px 0 #342f40,0 8px 12px #0003}
+#toast{box-shadow:0 5px 15px #0005;backdrop-filter:blur(5px)}
+#modal{backdrop-filter:blur(3px)}
+.sheet{box-shadow:0 -10px 35px #0004;background:linear-gradient(180deg,#fff7e7,#ffeac8)}
+.btn,.choice{box-shadow:0 3px 0 #0002;transition:transform .12s ease,filter .12s ease,box-shadow .12s ease}
+.btn:active,.choice:active{transform:translateY(2px);box-shadow:0 1px 0 #0002;filter:brightness(.96)}
+.card{box-shadow:inset 0 1px #fff8,0 3px 8px #00000010}
+nav{box-shadow:0 -5px 18px #0005;position:relative;z-index:50}
+nav button{box-shadow:inset 0 1px #ffffff12,0 2px 0 #0c0c14;transition:transform .12s ease}
+nav button:active{transform:translateY(2px)}
+.sceneTop{background:linear-gradient(180deg,#0005,transparent);padding-bottom:12px;text-shadow:2px 2px 0 #292638}
+.sceneBack{box-shadow:0 3px 0 #111,0 7px 14px #0004}
+.dateScene,.marketScene,.office{box-shadow:inset 0 0 55px #0003}
+.dateObj,.stall,.officeDesk,.officePC{box-shadow:0 6px 12px #0003}
+.dateLight{box-shadow:0 0 30px #f6d58a99}
+.dateTree{box-shadow:7px 8px 12px #0003}
+.dateNPC{filter:drop-shadow(0 5px 2px #0005)}
+.marketItem{filter:drop-shadow(0 4px 2px #0005)}
+.marketNPC,.officeNPC{filter:drop-shadow(0 5px 2px #0005)}
+.hot{outline:none}
+.hot:active{background:#ffffff0a}
+/* subtle room decoration layers */
+#room:before{content:"";position:absolute;inset:17% 0 0;pointer-events:none;z-index:1;background:radial-gradient(circle at 46% 34%,#fff3 0 12%,transparent 38%),linear-gradient(180deg,transparent 60%,#0002);mix-blend-mode:soft-light}
+#room:after{content:"";position:absolute;left:0;right:0;bottom:0;height:20%;pointer-events:none;z-index:7;background:linear-gradient(180deg,transparent,#3b2b2a18)}
+/* furniture contact shadows make the small characters feel grounded */
+.asset:not(.char){transform-origin:center bottom}
+.upgrade-ready{filter:drop-shadow(0 6px 4px #0003) saturate(1.15) brightness(1.04)!important}
+@media (min-width:431px){#game{border-left:1px solid #343449;border-right:1px solid #343449}}
+
+/* V20 ACTION/TREND UI */
+.v20ObjectCard{background:#fffaf0;border:2px solid #dac4a4;border-radius:12px;padding:9px;margin:6px 0;display:grid;grid-template-columns:1fr auto;gap:3px}.v20ObjectCard small{grid-column:1/-1;color:#766}.v20ShopBanner{background:#292638;color:#fffaf0;border:3px solid #e2ad3f;border-radius:12px;padding:9px;margin-bottom:8px}.v20TrendPost{background:linear-gradient(135deg,#fffaf0,#f5e5cf)}.trendTag{display:inline-block;background:#e77da5;color:#fff;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:1000}.v20Free{position:absolute}.v20FreeTitle{font-weight:1000}.v20FreeBar{height:8px;background:#191923;border-radius:8px;overflow:hidden}.v20FreeBar i{display:block;height:100%;background:#e77da5;width:100%}#v20Free{position:absolute;left:8px;right:8px;bottom:8px;z-index:25;background:#fff1d7;border:3px solid #292638;border-radius:13px;padding:8px;box-shadow:0 4px 0 #292638}.v20FreeTitle{font-size:12px}.v20FreeTime{font-weight:1000;text-align:center;margin:3px}.v20Free button{width:100%;border:0;border-radius:8px;padding:7px;background:#292638;color:#fff;font-weight:900}.asset[data-object]{cursor:pointer}.asset[data-object]:active{filter:brightness(1.18) saturate(1.2)}
+
+/* V21 layout + persistent simulation */
+#world{aspect-ratio:9/14;min-height:0}
+.assetLabel{top:50%!important;left:50%!important;transform:translate(-50%,-50%)!important;background:rgba(41,38,56,.90)!important;border:2px solid #e2ad3f!important;border-radius:8px!important;padding:3px 6px!important;font-size:8px!important;line-height:1!important;box-shadow:0 2px 0 #17131d!important;pointer-events:none!important}
+.assetLv{bottom:-10px!important;font-size:7px!important}
+.v21Activity{position:absolute;left:3%;right:3%;bottom:2%;z-index:35;background:rgba(30,29,43,.96);color:#fff;border:2px solid #e2ad3f;border-radius:12px;padding:7px 9px;box-shadow:0 5px 0 #17131d;pointer-events:auto}
+.v21Activity .row{display:flex;align-items:center;gap:7px}.v21Activity b{font-size:10px}.v21Activity small{font-size:8px;opacity:.85}.v21Activity button{margin-left:auto;border:0;border-radius:8px;padding:5px 7px;font-weight:900;background:#e77da5;color:#fff}
+.v21WorkPanel{position:absolute;left:3%;right:3%;bottom:3%;z-index:7;background:rgba(30,29,43,.94);color:#fff;border:3px solid #e2ad3f;border-radius:14px;padding:9px;box-shadow:0 6px 0 #17131d}.v21WorkPanel h3{margin:0 0 5px;font-size:14px}.v21Tasks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.v21Task{border:2px solid #66677d;background:#292a40;color:#fff;border-radius:9px;padding:7px 4px;font-size:8px;font-weight:900}.v21Task:disabled{opacity:.45}.v21Task.active{background:#e77da5}.v21WorkStatus{font-size:9px;margin-top:6px}.v21WorkProgress{height:7px;background:#111;border-radius:7px;overflow:hidden;margin-top:4px}.v21WorkProgress i{display:block;height:100%;background:#70a36b;width:0}
+.v21DatePanel{position:absolute;left:4%;right:4%;bottom:4%;z-index:7;background:rgba(30,29,43,.94);color:#fff;border:3px solid #e2ad3f;border-radius:14px;padding:9px}.v21DatePanel .dateActions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.v21DatePanel button{border:2px solid #66677d;background:#292a40;color:#fff;border-radius:9px;padding:8px 4px;font-size:8px;font-weight:900}.v21ChatList{max-height:55vh;overflow:auto}.v21Thread{display:flex;flex-direction:column;gap:6px;max-height:45vh;overflow:auto;padding:5px;background:#f9ecd5;border-radius:10px}.v21Typing{font-size:9px;color:#777;font-style:italic}.v21Bubble{max-width:84%;padding:8px 10px;border-radius:12px;border:2px solid #dac4a4;background:#fffaf0;font-size:11px}.v21Bubble.me{align-self:flex-end;background:#dceeff;border-color:#8ab4dd}.v21Compose{display:flex;gap:5px;margin-top:7px}.v21Compose input{flex:1;padding:10px;border:2px solid #dac4a4;border-radius:10px}.v21Compose button{width:72px;border:0;border-radius:10px;background:#e77da5;color:#fff;font-weight:900}
+.v21Bowl{position:absolute;left:77%;top:78%;z-index:15;width:48px;height:20px;background:#e77da5;border:3px solid #292638;border-radius:0 0 18px 18px;box-shadow:0 4px 0 #29263855;cursor:pointer;text-align:center;font-size:13px;line-height:15px}.v21Bowl:after{content:'🍖';position:absolute;left:14px;top:-17px;font-size:14px}.v21CookingGlow{position:absolute;z-index:14;left:26%;top:34%;font-size:17px;animation:glowCook .8s infinite alternate}.v21TVState{position:absolute;z-index:14;left:69%;top:27%;font-size:15px;display:none;animation:tvf .35s steps(2,end) infinite}.v21ObjectHint{position:absolute;z-index:13;font-size:8px;color:#fff;background:#292638;border:1px solid #e2ad3f;border-radius:6px;padding:2px 4px;pointer-events:none;display:none}.v21Closed{opacity:.55;filter:grayscale(.7)}
+@keyframes glowCook{from{opacity:.45;transform:scale(.9)}to{opacity:1;transform:scale(1.15)}}
+
+/* ================= V22 LIFE SIM EXPANSION ================= */
+.v22-chip{display:inline-flex;align-items:center;gap:4px;background:#25263a;color:#fff;border:1px solid #5a5c78;border-radius:999px;padding:4px 7px;font-size:10px;font-weight:900}
+.v22-panel{position:absolute;left:3%;right:3%;bottom:3%;z-index:18;background:#171827ee;color:#fff;border:2px solid #5c5e7a;border-radius:14px;padding:9px;box-shadow:0 8px 20px #0007;font-size:11px}
+.v22-panel .row{display:flex;align-items:center;gap:8px}.v22-panel .grow{flex:1}.v22-progress{height:7px;background:#090a11;border-radius:8px;overflow:hidden;margin-top:5px}.v22-progress i{display:block;height:100%;background:#e77da5;width:0}
+.v22-float{position:absolute;z-index:17;background:#fff3d9;color:#292638;border:2px solid #292638;border-radius:12px;padding:6px 8px;font-size:10px;font-weight:900;box-shadow:0 3px 0 #29263866;animation:v22pop .25s ease-out}
+.v22-weather{position:absolute;right:3%;top:2%;z-index:8;background:#171827cc;color:#fff;border:2px solid #666983;border-radius:12px;padding:5px 8px;font-size:10px;font-weight:900}
+.v22-night{position:absolute;inset:0;z-index:7;pointer-events:none;background:rgba(25,31,75,.0);transition:background .5s}
+.v22-petbowl{position:absolute;z-index:11;left:78%;top:76%;font-size:28px;filter:drop-shadow(0 3px 0 #29263866);cursor:pointer;animation:v22bob 1.6s ease-in-out infinite}
+.v22-vis{position:absolute;z-index:6;left:10%;bottom:30%;font-size:34px;display:none;filter:drop-shadow(0 3px 0 #29263866)}
+.v22-workdesk{position:absolute;z-index:5;left:34%;bottom:34%;font-size:45px;display:none}
+.v22-speech{position:absolute;z-index:16;background:#fff;border:2px solid #292638;border-radius:12px;padding:5px 7px;max-width:48%;font-size:10px;font-weight:900;display:none;box-shadow:0 3px 0 #29263844}
+.v22-toastline{position:absolute;z-index:16;left:50%;bottom:16%;transform:translateX(-50%);background:#292638ee;color:#fff;border:2px solid #777;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;display:none;white-space:nowrap}
+.v22-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.v22-mini{background:#fffaf0;border:2px solid #dac4a4;border-radius:11px;padding:8px;font-size:11px}.v22-mini b{display:block;margin-bottom:3px}
+.v22-choice{width:100%;border:2px solid #d6c1a0;background:#fff;border-radius:10px;padding:9px;text-align:left;font-weight:900;margin-top:6px}
+.v22-badge{display:inline-block;background:#e77da5;color:#fff;border-radius:8px;padding:2px 5px;font-size:9px;margin-left:4px}
+.v22-feed{background:#fff;border:2px solid #dac4a4;border-radius:12px;padding:9px;margin:7px 0}.v22-feed .comment{font-size:10px;color:#655d63;margin-top:5px}
+.v22-log{max-height:150px;overflow:auto;background:#f5e8d1;border:2px solid #dac4a4;border-radius:10px;padding:7px;font-size:10px}.v22-log div{padding:4px 0;border-bottom:1px solid #dac4a466}
+@keyframes v22pop{from{transform:translateY(6px) scale(.95);opacity:.2}to{transform:none;opacity:1}}@keyframes v22bob{50%{transform:translateY(-4px)}}
+body.v22-noclick{pointer-events:none}body.v22-noclick #v22WorkPanel,body.v22-noclick #modal{pointer-events:auto}
+</style></head><body><div id="game"><header id="hud"><div class="brand">💗 YÊU NHAU CÓ GÌ VUI?</div><div class="meta"><span id="time">Ngày 2 · 18:35</span><span id="money">3.200.000đ</span></div><div class="stats"><div class="stat">❤️ 78<div class="bar"><i style="width:78%;background:#ef7fa8"></i></div></div><div class="stat">🤝 74<div class="bar"><i style="width:74%;background:#5e9fd8"></i></div></div><div class="stat">😤 12<div class="bar"><i style="width:12%;background:#e66d78"></i></div></div><div class="stat">💰 61<div class="bar"><i style="width:61%;background:#e5b34c"></i></div></div><div class="stat">🏠 84<div class="bar"><i style="width:84%;background:#70a36b"></i></div></div></div></header><main id="world"><div id="room"><div class="wall"></div><div class="floor"></div><div class="window"></div><div class="lamp"></div><div class="rug"></div><div class="asset" style="left:1.94%;top:19.58%;width:30.28%;height:21.88%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="7" y="21" width="114" height="88" fill="#51454a" class="o"/><rect x="14" y="28" width="100" height="52" fill="#9c6b52" class="o"/><rect x="22" y="36" width="28" height="28" fill="#272638" class="o"/><rect x="27" y="41" width="18" height="18" fill="#394b52"/><rect x="57" y="34" width="40" height="28" fill="#302b36" class="o"/><rect x="62" y="39" width="30" height="18" fill="#67505b"/><rect x="15" y="80" width="99" height="20" fill="#6e4a3b" class="o"/><rect x="27" y="84" width="10" height="10" fill="#f3c85b"/><rect x="47" y="84" width="10" height="10" fill="#70a36b"/><rect x="68" y="84" width="10" height="10" fill="#ef7fa8"/>
+</svg></div><div class="asset" style="left:32.50%;top:19.58%;width:19.17%;height:21.67%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="14" y="7" width="100" height="114" fill="#272638" class="o"/><rect x="20" y="13" width="88" height="103" fill="#d4d9d7"/><rect x="20" y="57" width="88" height="4" fill="#909a9c"/><rect x="27" y="34" width="4" height="18" fill="#4d5960"/><rect x="27" y="68" width="4" height="19" fill="#4d5960"/><rect x="73" y="18" width="25" height="16" fill="#8ab5c1"/><rect x="78" y="23" width="15" height="6" fill="#2d5160"/>
+</svg></div><div class="asset" style="left:58.89%;top:13.96%;width:29.44%;height:19.17%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="10" y="10" width="108" height="72" fill="#272638" class="o"/><rect x="17" y="17" width="94" height="58" fill="#315064" class="o"/><rect x="24" y="49" width="12" height="19" fill="#6e8c75"/><rect x="39" y="41" width="15" height="27" fill="#a56f55"/><rect x="57" y="32" width="17" height="36" fill="#6e806b"/><rect x="77" y="46" width="14" height="22" fill="#a47a55"/><rect x="48" y="82" width="32" height="9" fill="#272638"/><rect x="27" y="91" width="74" height="9" fill="#5d3d32" class="o"/>
+</svg></div><div class="asset" style="left:50.83%;top:24.17%;width:46.94%;height:24.38%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="8" y="45" width="112" height="61" rx="7" fill="#4e3945" class="o"/><rect x="15" y="35" width="98" height="55" rx="8" fill="#79566a" class="o"/><rect x="22" y="42" width="34" height="32" fill="#986f80" class="o"/><rect x="70" y="42" width="34" height="32" fill="#986f80" class="o"/><rect x="18" y="77" width="94" height="18" fill="#624653" class="o"/><rect x="18" y="96" width="14" height="16" fill="#272638"/><rect x="96" y="96" width="14" height="16" fill="#272638"/><rect x="27" y="48" width="21" height="13" fill="#f0d1b1"/><rect x="79" y="48" width="21" height="13" fill="#f0d1b1"/>
+</svg></div><div class="asset" style="left:57.50%;top:46.88%;width:37.22%;height:19.79%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="10" y="28" width="108" height="42" fill="#272638" class="o"/><rect x="16" y="34" width="96" height="30" fill="#bb8159"/><rect x="23" y="64" width="12" height="45" fill="#272638"/><rect x="93" y="64" width="12" height="45" fill="#272638"/><rect x="34" y="39" width="17" height="12" fill="#f5d7ad"/><rect x="76" y="39" width="17" height="12" fill="#ef7fa8"/><rect x="58" y="36" width="12" height="15" fill="#70a36b"/>
+</svg></div><div class="asset" style="left:2.22%;top:62.29%;width:21.11%;height:18.12%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="31" y="71" width="66" height="43" fill="#272638" class="o"/><rect x="37" y="76" width="54" height="31" fill="#a86e4c"/><rect x="47" y="35" width="12" height="44" fill="#5c8b5c"/><rect x="25" y="25" width="27" height="25" fill="#70a36b"/><rect x="57" y="18" width="29" height="28" fill="#5f945f"/><rect x="77" y="37" width="27" height="25" fill="#76ae70"/><rect x="41" y="14" width="20" height="23" fill="#78b273"/>
+</svg></div><div class="asset" style="left:76.39%;top:66.88%;width:19.44%;height:18.33%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="9" y="16" width="110" height="98" fill="#272638" class="o"/><rect x="16" y="23" width="96" height="84" fill="#d4dbda"/><rect x="27" y="39" width="74" height="57" fill="#272638"/><rect x="35" y="47" width="58" height="41" fill="#63828a"/><rect x="47" y="56" width="34" height="24" fill="#91b0a7"/><rect x="23" y="27" width="18" height="8" fill="#f3c85b"/>
+</svg></div><div class="asset" style="left:1.67%;top:78.96%;width:46.11%;height:20.21%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="6" y="35" width="116" height="66" fill="#272638" class="o"/><rect x="13" y="42" width="102" height="51" fill="#876278"/><rect x="18" y="47" width="37" height="22" fill="#f3dec5" class="o"/><rect x="61" y="47" width="37" height="22" fill="#f3dec5" class="o"/><rect x="14" y="71" width="100" height="20" fill="#aa7890"/><rect x="12" y="94" width="14" height="18" fill="#272638"/><rect x="102" y="94" width="14" height="18" fill="#272638"/>
+</svg></div><div id="boy" class="asset char" style="left:40.00%;top:51.25%;width:21.94%;height:20.83%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="35" y="8" width="58" height="54" fill="#272638" class="o"/><rect x="41" y="14" width="46" height="41" fill="#f2b99d"/><rect x="36" y="9" width="56" height="20" fill="#292936"/><rect x="31" y="17" width="13" height="30" fill="#292936"/><rect x="85" y="15" width="13" height="35" fill="#292936"/><rect x="49" y="36" width="7" height="7" fill="#272638"/><rect x="69" y="36" width="7" height="7" fill="#272638"/><rect x="57" y="46" width="18" height="5" fill="#d86f79"/><rect x="27" y="57" width="74" height="45" fill="#272638" class="o"/><rect x="34" y="61" width="60" height="34" fill="#5d9bd0"/><rect x="17" y="63" width="17" height="31" fill="#f2b99d"/><rect x="94" y="63" width="17" height="31" fill="#f2b99d"/><rect x="34" y="92" width="22" height="27" fill="#3e536b" class="o"/><rect x="72" y="92" width="22" height="27" fill="#3e536b" class="o"/><rect x="31" y="114" width="20" height="8" fill="#292638"/><rect x="77" y="114" width="20" height="8" fill="#292638"/>
+</svg></div><div id="girl" class="asset char" style="left:59.72%;top:53.75%;width:21.94%;height:20.83%"><svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+<defs><filter id="none"><feComponentTransfer/></filter></defs>
+<style>.o{stroke:#272638;stroke-width:4;stroke-linejoin:miter;stroke-linecap:square}</style>
+<rect x="35" y="8" width="58" height="54" fill="#272638" class="o"/><rect x="41" y="14" width="46" height="41" fill="#f2b99d"/><rect x="36" y="9" width="56" height="20" fill="#4b2e33"/><rect x="31" y="17" width="13" height="30" fill="#4b2e33"/><rect x="85" y="15" width="13" height="35" fill="#4b2e33"/><rect x="49" y="36" width="7" height="7" fill="#272638"/><rect x="69" y="36" width="7" height="7" fill="#272638"/><rect x="57" y="46" width="18" height="5" fill="#d86f79"/><rect x="27" y="57" width="74" height="45" fill="#272638" class="o"/><rect x="34" y="61" width="60" height="34" fill="#e17fa1"/><rect x="17" y="63" width="17" height="31" fill="#f2b99d"/><rect x="94" y="63" width="17" height="31" fill="#f2b99d"/><rect x="34" y="92" width="22" height="27" fill="#e8a2b8" class="o"/><rect x="72" y="92" width="22" height="27" fill="#e8a2b8" class="o"/><rect x="29" y="95" width="12" height="24" fill="#292638"/><rect x="87" y="95" width="12" height="24" fill="#292638"/>
+</svg></div></div><div id="sceneLayer"><div class="sceneTop"><span class="sceneTitle" id="sceneTitle"></span><button class="sceneBack" onclick="returnHomeScene()">🏠 Về nhà</button></div><div id="sceneContent"></div></div><div class="tv-screen" style="position:absolute;left:68%;top:18%;z-index:6;font-size:20px;display:none">📺</div><div id="pet" onclick="petMenu()"><div class="petBody"></div><div class="petHead"><span class="petEar1"></span><span class="petEar2"></span><span class="petEye"></span></div><div class="petLeg pl1"></div><div class="petLeg pl2"></div><div class="petTail"></div></div><div id="hotspots"></div><div id="toast"></div><div id="modal"><div class="sheet" id="sheet"></div></div></main><nav><button class="active" data-tab="home">🏠<br>Nhà</button><button data-tab="phone">📱<br>Điện thoại</button><button data-tab="work">💼<br>Đi làm</button><button data-tab="date">❤️<br>Hẹn hò</button><button data-tab="shop">🛒<br>Cửa hàng</button></nav></div><script>
+const S={
+ day:2,h:18,m:35,money:3200000,love:78,trust:74,anger:12,finance:61,happy:84,energy:76,
+ upgrades:{sofa:1,tv:1,kitchen:1,fridge:1,bed:1},
+ chores:{dish:false,laundry:false,trash:false,floor:false},
+ work:{email:0,report:0,meeting:0},
+ chatIndex:0, socialIndex:0, lastRoutine:-1, player:'boy', partner:'girl', inventory:{rice:2,veg:2,fish:1,meat:1,shrimp:1,egg:6,noodle:4}, fridgeOpen:false, pet:{type:'cat',name:'Miu',hunger:72,happy:78,clean:84,energy:88,food:{dry:3,wet:2,treat:1}}, unread:0, inbox:{love:[],best:[],friend:[],family:[],coworker:[]}, messageSeq:0, cooking:null, scene:'home', clean:100, playerGenderChosen:true,freeActive:null,busy:false, busy:false
+};
+const $=id=>document.getElementById(id);
+const clamp=(n,a=0,b=100)=>Math.max(a,Math.min(b,n));
+const fmt=n=>n.toLocaleString('vi-VN')+'đ';
+const waitMs=ms=>new Promise(r=>setTimeout(r,ms));
+
+function hud(){
+ $('time').textContent=`Ngày ${S.day} · ${String(S.h).padStart(2,'0')}:${String(S.m).padStart(2,'0')}`;
+ $('money').textContent=fmt(S.money);
+ const vals=[S.love,S.trust,S.anger,S.finance,S.happy];
+ document.querySelectorAll('.stat').forEach((e,i)=>{
+   const t=e.childNodes[0]; if(t) t.textContent=['❤️ '+S.love,'🤝 '+S.trust,'😤 '+S.anger,'💰 '+S.finance,'🏠 '+S.happy][i];
+   const bar=e.querySelector('i'); if(bar) bar.style.width=vals[i]+'%';
+ });
+}
+function toast(t){
+ const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(window.tt);
+ window.tt=setTimeout(()=>e.style.display='none',1800);
+}
+function closeModal(){ $('modal').style.display='none'; $('sheet').innerHTML=''; }
+function show(t,after){
+ $('sheet').innerHTML=t+'<button class="btn" id="x">Đóng</button>';
+ $('modal').style.display='flex';
+ $('x').onclick=()=>{closeModal();after&&after()};
+}
+function btn(label,fn,cls='btn'){return `<button class="${cls}" onclick="${fn}">${label}</button>`}
+function changeTime(min){
+ S.m+=min; while(S.m>=60){S.m-=60;S.h++} while(S.h>=24){S.h-=24;S.day++}
+ hud();
+}
+function effect(kind,n=1){
+ if(kind==='love')S.love=clamp(S.love+n);
+ if(kind==='trust')S.trust=clamp(S.trust+n);
+ if(kind==='anger')S.anger=clamp(S.anger+n);
+ if(kind==='happy')S.happy=clamp(S.happy+n);
+ if(kind==='energy')S.energy=clamp(S.energy+n);
+}
+function fx(emoji,x=50,y=45){
+ const f=document.createElement('div');f.className='fx';f.textContent=emoji;f.style.left=x+'%';f.style.top=y+'%';
+ $('roomFX').appendChild(f);setTimeout(()=>f.remove(),950);
+}
+function say(text,who='girl',ms=2200){
+ const e=$('speech');e.textContent=text;e.style.display='block';
+ const c=$(who); if(c){e.style.left=(parseFloat(c.style.left)||50)+8+'%';e.style.top=Math.max(4,(parseFloat(c.style.top)||50)-8)+'%';c.classList.add('talking');setTimeout(()=>c.classList.remove('talking'),ms)}
+ clearTimeout(window.speechTimer);window.speechTimer=setTimeout(()=>e.style.display='none',ms);
+}
+
+async function moveNPC(who,left,top,text){
+ const c=$(who);if(!c)return;
+ c.style.display='block';c.classList.add('walking');c.style.left=left+'%';c.style.top=top+'%';
+ if(text)setTimeout(()=>say(text,who,1700),500);
+ await waitMs(850);c.classList.remove('walking');
+}
+function homeSchedule(){
+ const absent=(S.h>=7&&S.h<11)||(S.h>=14&&S.h<17);
+ const partner=$(S.partner); if(partner) partner.style.display=absent?'none':'block';
+ if(absent && S.scene==='home') { if(!S._workNotified){S._workNotified=true;toast('💼 '+(S.partner==='girl'?'Em':'Anh')+' đang đi làm');} } else S._workNotified=false;
+}
+function returnHomeScene(){
+ S.scene='home';$('sceneLayer').classList.remove('show');$('room').style.display='block';$('pet').style.display='block';homeSchedule();closeModal();hud();
+}
+function setScene(type,title,html,cls=''){
+ S.scene=type;$('room').style.display='none';$('pet').style.display='none';const layer=$('sceneLayer');layer.className='show';$('sceneTitle').textContent=title;const c=$('sceneContent');c.innerHTML=html;c.className=cls;
+}
+function say(text,who='girl',ms=2200){const e=$('speech');e.textContent=text;e.style.display='block';const c=$(who);if(c){e.style.left=(parseFloat(c.style.left)||50)+8+'%';e.style.top=Math.max(4,(parseFloat(c.style.top)||50)-8)+'%';c.classList.add('talking');setTimeout(()=>c.classList.remove('talking'),ms)}clearTimeout(window.speechTimer);window.speechTimer=setTimeout(()=>e.style.display='none',ms)}
+function fx(emoji,x=50,y=45){const f=document.createElement('div');f.className='fx';f.textContent=emoji;f.style.left=x+'%';f.style.top=y+'%';$('roomFX').appendChild(f);setTimeout(()=>f.remove(),950)}
+async function routine(scene='idle'){
+ if(S.scene!=='home'||S.busy)return;
+ S.busy=true;
+ try{
+  if(scene==='cook'){await moveNPC('boy',34,47,'Để anh lấy đồ!');await moveNPC('girl',23,49,'Em nấu nhé 😋')}
+  else if(scene==='tv'){await moveNPC('boy',39,55,'Bật TV nha.');await moveNPC('girl',57,57,'Ngồi sát vào!');tvOn()}
+  else if(scene==='table'){await moveNPC('boy',43,67,'Đói quá...');await moveNPC('girl',61,68,'Chờ em!')}
+  else if(scene==='bed'){await moveNPC('boy',14,78,'Ngủ thôi...');await moveNPC('girl',19,80,'Ngủ ngon ❤️')}
+  else if(scene==='fight'){await moveNPC('girl',65,51,'Anh giải thích đi! 😤');await moveNPC('boy',33,51,'Khoan... khoan...')}
+ }finally{S.busy=false}
+}
+
+function hit(x,y,w,h,fn){let b=document.createElement('button');b.className='hot';b.style.cssText=`left:${x/360*100}%;top:${y/480*100}%;width:${w/360*100}%;height:${h/480*100}%`;b.onclick=fn;$('hotspots').appendChild(b)}
+function tvOn(){let t=document.querySelector('.tv-screen');if(t){t.textContent='📺';t.style.display='block';t.style.animation='tvf .35s steps(2,end) infinite'}}
+function init(){
+ hit(5,90,112,112,()=>{toast('🍳 Bếp — bạn có thể nấu tự do hoặc chọn món');show(`<h2>🍳 Bếp</h2><p class="card">Bạn có thể đứng nấu tự do 1 phút, hoặc bắt đầu một món cụ thể.</p>${btn('🍳 Nấu tự do 1 phút','startFreeActivity(\'cook\')','pink')}${btn('🍲 Chọn món nấu','cook()','choice')}`)});
+ hit(110,90,82,112,()=>fridge());
+ hit(204,62,126,105,()=>startFreeActivity('tv'));
+ hit(178,109,180,132,()=>live());
+ hit(200,218,180,132,()=>{routine('table');show(`<h2>🍚 Bàn ăn</h2><p class="card">Bàn ăn chỉ có ý nghĩa khi có đồ ăn thật.</p>${btn('🥢 Ăn cùng nhau','eatMeal()')}`)});
+ hit(268,315,92,101,()=>chores());
+ hit(1,371,177,109,()=>sleep());
+ hit(137,238,168,138,()=>live());
+ hit(250,360,75,80,()=>petMenu());
+ decorateHomeObjects();
+ homeSchedule();
+}
+function fridge(){
+  const items=[['rice','🍚 Gạo'],['veg','🥬 Rau'],['fish','🐟 Cá'],['meat','🥩 Thịt'],['shrimp','🦐 Tôm'],['egg','🥚 Trứng'],['noodle','🍜 Mì']];
+  show(`<h2>🧊 Tủ lạnh</h2><p>Đây chỉ là <b>kho thực phẩm</b>. Tủ lạnh <b>không có chức năng chọn hoặc nấu món</b>.</p><div class="cards">${items.map(x=>`<div class="card">${x[1]}<br><b>${S.inventory[x[0]]}</b> phần</div>`).join('')}</div><p class="card">🍳 Muốn nấu ăn: chạm vào <b>khu vực Bếp</b> trong nhà.</p>${btn('🛒 Mở Cửa hàng','closeModal();shop()','gold')}`)
+}
+function grocery(){shop()}
+
+const recipes=[
+ {name:'🍜 Mì trứng rau',need:{noodle:1,egg:1,veg:1},steps:[['🔥 Bật bếp — làm nóng',15],['💧 Đun nước sôi',10],['🍜 Pha mì',5],['🍽️ Bê ra bàn',5]]},
+ {name:'🍳 Trứng rau',need:{egg:2,veg:1},steps:[['🔥 Bật bếp — làm nóng',8],['🍳 Chiên trứng',8],['🥬 Cho rau',5],['🍽️ Bê ra bàn',5]]}
+];
+function recipeText(r){return Object.entries(r.need).map(([k,n])=>{const names={rice:'🍚 Gạo',veg:'🥬 Rau',fish:'🐟 Cá',meat:'🥩 Thịt',shrimp:'🦐 Tôm',egg:'🥚 Trứng',noodle:'🍜 Mì'};return `${names[k]} ${S.inventory[k]}/${n}`}).join(' · ')}
+function cook(){
+  if(S.scene!=='home')returnHomeScene();
+  if(S.cooking)return toast('🍳 Món đang được nấu, làm xong món này trước nhé');
+  show(`<h2>🍳 Chọn món nấu</h2><p class="card">Chọn món trước. <b>Nguyên liệu chỉ bị trừ khi bạn bắt đầu nấu</b>.</p><div class="cards">${recipes.map((r,i)=>`<div class="card"><b>${r.name}</b><p>${recipeText(r)}</p><button class="btn pink" onclick="startCooking(${i})">${Object.entries(r.need).every(([k,n])=>S.inventory[k]>=n)?'🍳 Nấu món này':'🔒 Thiếu nguyên liệu'}</button></div>`).join('')}</div>${btn('🧊 Xem tủ lạnh','fridge()','choice')}`)
+}
+async function startCooking(i){
+  const r=recipes[i];
+  for(const k in r.need){if((S.inventory[k]||0)<r.need[k])return toast('🧊 Thiếu nguyên liệu — vào Cửa hàng để mua thêm');}
+  if(S.busy)return toast('⏳ Hai người đang bận, chờ một chút');
+  closeModal();
+  S.busy=true;
+  try{await moveNPC('boy',34,47,'Để anh lấy đồ!');await moveNPC('girl',23,49,'Em nấu nhé 😋');}
+  finally{S.busy=false}
+  for(const k in r.need)S.inventory[k]-=r.need[k];
+  S.cooking={recipe:r,step:0,remain:r.steps[0][1],deadline:0,timer:null,serveTimer:null};
+  renderCookStep();
+}
+function renderCookStep(){
+  const c=S.cooking;if(!c)return;
+  const step=c.recipe.steps[c.step];
+  show(`<h2>🍳 ${c.recipe.name}</h2><p><b>Bước ${c.step+1}/${c.recipe.steps.length}: ${step[0]}</b></p><div class="taskbar"><i id="cookbar" style="width:100%"></i></div><p>Còn <b id="cooktime">${step[1]}</b> giây</p><p class="card">Nguyên liệu đã được lấy từ tủ lạnh. Không thể mua thực phẩm trong màn này — muốn mua, hãy vào <b>🛒 Cửa hàng</b>.</p><button class="btn pink" id="cookWait">🔥 Bắt đầu bước</button>`);
+  $('cookWait').onclick=()=>runCookTimer();
+}
+function runCookTimer(){
+  const c=S.cooking;if(!c||c.timer)return;
+  const step=c.recipe.steps[c.step];let remain=step[1];
+  const b=$('cookWait');if(b){b.disabled=true;b.textContent='⏳ Đang thực hiện...'}
+  c.timer=setInterval(()=>{
+    remain--;if($('cooktime'))$('cooktime').textContent=remain;if($('cookbar'))$('cookbar').style.width=(remain/step[1]*100)+'%';
+    if(remain<=0){clearInterval(c.timer);c.timer=null;finishCookStep()}
+  },1000);
+}
+async function finishCookStep(){
+  const c=S.cooking;if(!c)return;
+  c.step++;
+  if(c.step>=c.recipe.steps.length){
+    S.cooking=null;effect('love',4);effect('happy',4);effect('trust',2);changeTime(1);hud();
+    await routine('table');
+    show(`<h2>🍽️ Món ăn đã được bê ra bàn</h2><div class="card">Hai người ăn tối cùng nhau. Không nhận tiền — đây là bữa cơm của nhà mình ❤️</div>${btn('🥢 Ăn cùng nhau','eatMeal()')}`);return;
+  }
+  if(c.step===c.recipe.steps.length-1){
+    c.deadline=5;
+    show(`<h2>🍽️ ${c.recipe.name} đã chín!</h2><p class="card">Món đã chín. Bấm <b>Bê ra bàn</b> để hoàn tất. Nếu chưa muốn bê, bạn vẫn có thể thao tác trong 5 giây.</p><button class="btn pink" id="serveBtn" onclick="serveMeal()">🍽️ Bê ra bàn ngay</button>`);
+    let n=5;c.serveTimer=setInterval(()=>{n--;if($('serveBtn'))$('serveBtn').textContent=`🍽️ Bê ra bàn ngay (${n}s)`;if(n<=0){clearInterval(c.serveTimer);c.serveTimer=null;if(S.cooking)fireReset()}},1000);return;
+  }
+  renderCookStep();
+}
+async function serveMeal(){
+  const c=S.cooking;if(!c)return;
+  if(c.serveTimer){clearInterval(c.serveTimer);c.serveTimer=null}
+  S.cooking=null;effect('love',4);effect('happy',4);effect('trust',2);changeTime(1);hud();
+  await routine('table');
+  show(`<h2>🍽️ Đã bê món ra bàn</h2><div class="card">Bữa cơm gia đình hoàn thành. Không nhận tiền — đây là đồ ăn cho hai người ❤️</div>${btn('🥢 Ăn cùng nhau','eatMeal()')}`)
+}
+async function eatMeal(){if(S.scene!=='home')returnHomeScene();effect('love',3);effect('happy',5);effect('anger',-2);changeTime(20);hud();toast('🍜 Bữa tối ngon lành ❤️');await routine('table')}
+function fireReset(){if(S.cooking){if(S.cooking.timer)clearInterval(S.cooking.timer);if(S.cooking.serveTimer)clearInterval(S.cooking.serveTimer);S.cooking=null}effect('anger',5);effect('happy',-3);hud();toast('😅 Món nguội mất rồi — không cháy nhà đâu!');setTimeout(()=>fridge(),250)}
+function chores(){const list=[['dish','🍽️ Rửa bát','girl','💦'],['laundry','👕 Giặt quần áo','boy','🫧'],['trash','🗑️ Đổ rác','girl','🗑️'],['floor','🧹 Lau nhà','boy','🧹']];show('<h2>6. 🧹 Việc nhà</h2><p>Chạm vào việc — NPC sẽ đi tới đúng chỗ, thực hiện hành động rồi mới hoàn thành.</p>'+list.map(([k,x,w,fxi])=>`<button class="choice" onclick="doChore('${k}','${w}','${fxi}')">${S.chores[k]?'☑️':'⬜'} ${x}</button>`).join('')+'<p class="card">Độ sạch nhà: '+S.clean+'%</p>')}
+async function doChore(k,who,icon){if(S.chores[k]||S.busy)return;closeModal();if(S.scene!=='home')returnHomeScene();S.busy=true;const pos={dish:[68,61],laundry:[78,75],trash:[15,62],floor:[55,72]}[k];const labels={dish:'Đang rửa bát...',laundry:'Đang giặt quần áo...',trash:'Đang mang rác đi...',floor:'Đang lau nhà...'};try{await moveNPC(who,pos[0],pos[1]);const c=$(who);if(c)c.classList.add('working');const fxEl=document.createElement('div');fxEl.className='homeAction';fxEl.textContent=icon+' '+labels[k];fxEl.style.left=Math.min(76,pos[0])+'%';fxEl.style.top=Math.max(8,pos[1]-12)+'%';$('world').appendChild(fxEl);await waitMs(4500);fxEl.remove();if(c)c.classList.remove('working');S.chores[k]=true;S.clean=clamp(S.clean+5);effect('happy',2);effect('anger',-2);changeTime(8);hud();say(k==='dish'?'Rửa bát xong! 💦':k==='laundry'?'Quần áo giặt xong rồi! 🫧':k==='trash'?'Đổ rác xong 😎':'Nhà sạch rồi! 🧹',who);chores()}finally{S.busy=false}}
+function live(){homeSchedule();show(`<h2>🏠 Hoạt động tự do</h2><p>Chọn một hoạt động. Bạn có thể ở đó khoảng <b>1 phút</b>, còn người yêu sẽ tự quyết định việc của họ.</p><div class="cards"><button class="choice" onclick="startFreeActivity('cook')">🍳 Nấu nướng tự do<br><small>Ở bếp 1 phút</small></button><button class="choice" onclick="startFreeActivity('tv')">📺 Xem TV tự do<br><small>Ngồi sofa 1 phút</small></button><button class="choice" onclick="coupleTalk()">💬 Tâm sự</button></div>`)}
+function startFreeActivity(type){if(S.scene!=='home')return;closeModal();if(S.freeActive)return toast('Đang có một hoạt động');S.freeActive={type,remain:60,partnerAction:'Đang tự do'};S.busy=true;const pos=type==='cook'?[30,47]:[43,55];moveNPC(S.player,pos[0],pos[1]);if(type==='tv')tvOn();else toast('🍳 Bạn đang nấu nướng tự do');setTimeout(()=>freeActivityLoop(),850)}
+async function freeActivityLoop(){if(!S.freeActive)return;const a=S.freeActive;const c=$(S.player);if(c)c.classList.add('working');const title=a.type==='cook'?'🍳 Đang nấu nướng':'📺 Đang xem TV';const panel=document.createElement('div');panel.className='homeAction';panel.id='freeActivityHUD';panel.style.left='3%';panel.style.top='4%';panel.innerHTML=`${title}<div class="freeTimer">60s</div><div class="aiLog" id="aiLog">🤖 Người yêu đang tự quyết định...</div>`;$('world').appendChild(panel);let last=Date.now();let elapsed=0;while(S.freeActive&&elapsed<60){await waitMs(1000);if(!S.freeActive)break;elapsed++;a.remain=60-elapsed;const t=$('freeActivityHUD');if(t){t.querySelector('.freeTimer').textContent=a.remain+'s';}if(elapsed%7===0)await partnerAI();}if(panel.parentNode)panel.remove();if(c)c.classList.remove('working');S.freeActive=null;S.busy=false;if(a.type==='tv'){$('.tv-screen').style.display='none';}effect('happy',3);effect('love',2);changeTime(60);hud();toast('⏱️ Hoạt động tự do kết thúc');homeSchedule()}
+async function partnerAI(){if(!S.partner||S.scene!=='home'||S.h>=7&&S.h<11||S.h>=14&&S.h<17)return;const choices=['tv','cook','table','pet','tidy','talk'];const pick=choices[Math.floor(Math.random()*choices.length)];const log=$('aiLog');const p=S.partner;if(pick==='tv'){await moveNPC(p,57,57,'Em xem TV một chút nhé 📺');tvOn();if(log)log.textContent='🤖 Người yêu tự chọn: xem TV';}else if(pick==='cook'){await moveNPC(p,23,49,'Để em phụ bếp 😋');if(log)log.textContent='🤖 Người yêu tự chọn: phụ nấu ăn';}else if(pick==='table'){await moveNPC(p,61,68,'Em ngồi chờ cơm ❤️');if(log)log.textContent='🤖 Người yêu tự chọn: ngồi bàn ăn';}else if(pick==='pet'){await moveNPC(p,70,68,'Miu ơi, lại đây nào 🐾');await petMove(70,65);if(log)log.textContent='🤖 Người yêu tự chọn: chơi với thú cưng';}else if(pick==='tidy'){const k=Object.keys(S.chores).find(x=>!S.chores[x]);if(k){const pos={dish:[68,61],laundry:[78,75],trash:[15,62],floor:[55,72]}[k];await moveNPC(p,pos[0],pos[1],'Để em dọn một chút 🧹');S.chores[k]=true;S.clean=clamp(S.clean+4);if(log)log.textContent='🤖 Người yêu tự chọn: dọn dẹp';}}else{await moveNPC(p,55,58,'Hôm nay ở nhà vui ghê ❤️');effect('love',1);if(log)log.textContent='🤖 Người yêu tự chọn: tâm sự';}}
+function coupleTalk(){effect('love',5);effect('trust',4);effect('happy',4);hud();say('Hôm nay của anh/em thế nào?',S.partner);toast('💬 Hai người nói chuyện với nhau')}
+const contacts={love:{name:'❤️ Người yêu',avatar:'👩',messages:[['Em: Anh đang làm gì đấy?','Anh: Anh đang ở nhà nè.'],['Em: Sao rep lâu thế? Ai vừa nhắn cho anh vậy? 😤','Anh: Không có ai đâu 😅'],['Em: Tối nay có nấu gì cho em không?','Anh: Có chứ ❤️']]},best:{name:'🧑 Bạn thân',avatar:'🧑',messages:[['Bạn: Tối nay đá bóng không?','Anh: Để xem lịch đã.'],['Bạn: Ông có người yêu rồi quên anh em à 😂','Anh: Không quên!']]},friend:{name:'👩 Bạn khác giới',avatar:'👩',messages:[['Bạn: Mai đi cà phê không?','Anh: Để tôi xem đã.'],['Bạn: Nhớ mang laptop nhé.','Anh: Ok.']]},family:{name:'👪 Gia đình',avatar:'👪',messages:[['Mẹ: Cuối tuần về ăn cơm nhé.','Con: Dạ.'],['Mẹ: Nhớ gọi cho mẹ.','Con: Vâng ạ.']]},coworker:{name:'💼 Đồng nghiệp',avatar:'🧑‍💼',messages:[['Đồng nghiệp: Mai họp 8h nhé.','Ok.'],['Đồng nghiệp: Gửi giúp file nhé.','Được.']]}};
+function phone(){show(`<h2>2. 📱 Điện thoại</h2><p>Tin nhắn đến bất chợt. Có nhiều người nhắn, không chỉ người yêu.</p><div class="cards"><button class="choice" onclick="inbox()">💬 Tin nhắn ${S.unread?'<span class="notif">'+S.unread+'</span>':''}</button><button class="choice" onclick="social()">📸 MXH</button><button class="choice" onclick="petMenu()">🐾 Thú cưng</button><button class="choice" onclick="finance()">🏦 Ngân hàng</button><button class="choice" onclick="status()">📊 Trạng thái</button><button class="choice" onclick="characterMenu()">👤 Nhân vật</button></div>`)}
+function inbox(){show(`<h2>3. 💬 Tin nhắn</h2>${Object.entries(contacts).map(([k,c])=>`<button class="choice" onclick="chat('${k}')">${c.avatar} <b>${c.name}</b>${S.inbox[k].length?'<span class="notif" style="float:right">'+S.inbox[k].length+'</span>':''}</button>`).join('')}`)}
+function chat(k){const c={...contacts[k]};if(k==='love')c.name='❤️ '+S.partnerName;const arr=S.inbox[k];let text=c.messages[S.messageSeq%c.messages.length];if(arr.length)text=arr.shift();S.unread=Math.max(0,S.unread-1);show(`<h2>${c.avatar} ${c.name}</h2><div class="chat"><div class="bubble">${text[0]}</div><div class="bubble me">${text[1]}</div></div><div style="display:flex;gap:6px;margin-top:8px"><input id="chatInput" maxlength="120" placeholder="Nhập tin nhắn..." style="flex:1;padding:11px;border:2px solid #dac4a4;border-radius:10px;font-size:13px"><button class="btn pink" style="width:90px;margin-top:0" onclick="sendMessage('${k}')">Gửi</button></div>${k==='love'?`<p><b>Phản hồi nhanh:</b></p>${btn('❤️ Anh chỉ nói chuyện với em.','replyLove("good")','choice')}${btn('😅 Bạn thôi mà.','replyLove("soft")','choice')}${btn('🙄 Đang bận, lát nói.','replyLove("bad")','choice')}`:''}${btn('⬅️ Danh sách','inbox()')}`)}
+function sendMessage(k){const input=$('chatInput');const text=(input?.value||'').trim();if(!text)return toast('Viết gì đó trước đã 😅');if(k==='love'){const low=text.toLowerCase();if(/(cà phê|caphe|đi chơi|tối nay)/.test(low)){effect('anger',4);effect('trust',-1)}else if(/(yêu|nhớ|thương|ăn chưa|nấu|về chưa)/.test(low)){effect('love',3);effect('trust',2);effect('anger',-2)}else effect('trust',1)}else effect('trust',1);S.messageSeq++;changeTime(2);hud();toast('📤 Đã gửi tin nhắn');chat(k)}
+function replyLove(t){if(t==='good'){effect('trust',5);effect('love',3);effect('anger',-6)}if(t==='soft'){effect('trust',2);effect('anger',-1)}if(t==='bad'){effect('trust',-5);effect('anger',7)}changeTime(5);hud();toast(t==='bad'?'😤 Người yêu bắt đầu nghi ngờ':'❤️ Tin tưởng tăng');chat('love')}
+function genericReply(k){effect('trust',1);changeTime(2);hud();toast('Đã trả lời '+contacts[k].name);chat(k)}
+function randomMessage(){const keys=Object.keys(contacts);const k=keys[Math.floor(Math.random()*keys.length)];const c={...contacts[k]};if(k==='love')c.name='❤️ '+S.partnerName;const m=c.messages[Math.floor(Math.random()*c.messages.length)];S.inbox[k].push(m);S.unread++;fx('📱',82,15);toast('📱 '+c.name+' vừa nhắn');}
+function social(){const p=posts[S.socialIndex%posts.length];show(`<h2>📸 Mạng xã hội</h2><div class="post"><b>${p[0]}</b><p>${p[1]}</p><small>${p[2]}</small></div>${btn('❤️ Thả tim','effect("love",1);hud();toast("Đã thả tim")','pink')}${btn('💬 Bình luận','effect("happy",1);hud();toast("Đã bình luận")','choice')}${btn('➡️ Lướt bài tiếp','socialNext()','btn')}`)}
+function socialNext(){S.socialIndex++;changeTime(2);social()}
+const tasks=[['email','📧 Xử lý email',3],['report','📄 Làm báo cáo',3],['meeting','👥 Họp online',2]];
+function work(){if(S.scene==='home'){setScene('office','🏢 VĂN PHÒNG',`<div class="office"><div class="officeDesk desk1"></div><div class="officeDesk desk2"></div><div class="officeDesk desk3"></div><div class="officePC pc1"></div><div class="officePC pc2"></div><div class="officePC pc3"></div><div class="officeNPC" style="left:12%;bottom:29%">🧑‍💼</div><div class="officeNPC" style="left:43%;bottom:29%">🧑‍💻</div><div class="officeNPC" style="right:12%;bottom:29%">👩‍💼</div></div>`)}show(`<h2>7. 💼 Đi làm</h2><p>⏱️ Mỗi nhiệm vụ kéo dài 5–10 giây.</p><p>Năng lượng: <b>${S.energy}%</b></p>${tasks.map(t=>`<button class="choice" onclick="doWorkReal('${t[0]}','${t[1]}',${t[2]})">${t[1]} <span style="float:right">${S.work[t[0]]}/${t[2]}</span></button>`).join('')}<p class="card">Lịch đối phương: ${S.h>=7&&S.h<11||S.h>=14&&S.h<17?'đang ở văn phòng':'đã về nhà'}</p>`)}
+function doWorkReal(k,label,max){if(S.energy<8)return toast('Hết năng lượng 😵');let sec=5+Math.floor(Math.random()*6);show(`<h2>🏢 ${label}</h2><p>Đang làm việc...</p><div class="taskbar"><i id="workbar" style="width:100%"></i></div><b id="worksec">${sec}s</b>`);let n=sec;const iv=setInterval(()=>{n--;if($('worksec'))$('worksec').textContent=n+'s';if($('workbar'))$('workbar').style.width=(n/sec*100)+'%';if(n<=0){clearInterval(iv);S.work[k]=Math.min(max,S.work[k]+1);S.energy=clamp(S.energy-8);changeTime(sec);if(S.work.email>=3&&S.work.report>=3&&S.work.meeting>=2){S.money+=900000;S.finance=clamp(S.finance+5);S.work={email:0,report:0,meeting:0};toast('💰 Hoàn thành ca +900.000đ')}else toast('✅ Hoàn thành '+label);hud();work()}},1000)}
+const dates=[['🍜 Quán ăn','food',300000,10,'Anh chọn món, em chọn quán nhé!'],['🎬 Rạp phim','cinema',500000,8,'Ai được chọn phim? Người cầm ví quyết định 😂'],['🌳 Công viên','park',200000,7,'Đi bộ 20 phút mà nói chuyện 2 tiếng.'],['☕ Cà phê','cafe',150000,6,'Cà phê hay drama? Hôm nay chọn cả hai.']];
+function date(){show(`<h2>9. ❤️ Hẹn hò</h2><p>Chọn địa điểm — mỗi nơi có background riêng.</p><div class="cards">${dates.map((d,i)=>`<div class="card"><b>${d[0]}</b><br>${fmt(d[2])}<p>${d[4]}</p><button class="btn pink" onclick="goDate(${i})">Đi</button></div>`).join('')}</div>`)}
+async function goDate(i){const d=dates[i];if(S.money<d[2])return toast('Không đủ tiền 😅');S.money-=d[2];effect('love',d[3]);effect('trust',3);effect('happy',5);changeTime(60);setScene('date','❤️ '+d[0],`<div class="dateScene ${d[1]}"><div class="dateLight"></div><div class="dateObj dateTable"></div><div class="dateObj dateBench"></div><div class="dateScreen"></div><div class="dateTree"></div><div class="dateNPC dateBoy">🧑</div><div class="dateNPC dateGirl">👩</div></div>`);await waitMs(400);toast('❤️ Hai người đã tới nơi');show(`<h2>${d[0]}</h2><div class="card">${d[4]}<br><b>❤️ +${d[3]} · 🤝 +3 · 🏠 +5</b></div>${btn('💬 Tâm sự','effect("love",2);effect("trust",2);hud();toast("Buổi hẹn vui hơn ❤️")')}`)}
+function characterMenu(){show(`<h2>👤 Nhân vật</h2><p>Đặt tên riêng cho người yêu và thú cưng. Tên sẽ được dùng trong điện thoại, lời thoại và bảng thú cưng.</p><div class="card"><b>❤️ Người yêu</b><input id="partnerNameInput" value="${S.partnerName}" maxlength="18" placeholder="Tên người yêu" style="width:100%;margin-top:7px;padding:10px;border:2px solid #dac4a4;border-radius:10px;font-size:14px"><button class="btn pink" onclick="saveNames('partner')">💾 Lưu tên người yêu</button></div><div class="card"><b>🐾 Thú cưng</b><input id="petNameInput" value="${S.pet.name}" maxlength="18" placeholder="Tên thú cưng" style="width:100%;margin-top:7px;padding:10px;border:2px solid #dac4a4;border-radius:10px;font-size:14px"><button class="btn pink" onclick="saveNames('pet')">💾 Lưu tên thú cưng</button></div>${btn('👨 Chơi nhân vật nam','setGender(\"boy\")','choice')}${btn('👩 Chơi nhân vật nữ','setGender(\"girl\")','choice')}`)}
+function saveNames(type){const input=$(type==='partner'?'partnerNameInput':'petNameInput');const name=(input?.value||'').trim();if(!name)return toast('Tên không được để trống 😅');if(type==='partner')S.partnerName=name;else S.pet.name=name;hud();characterMenu();toast(type==='partner'?'❤️ Đã đặt tên người yêu':'🐾 Đã đặt tên thú cưng')}
+function setGender(g){S.player=g;S.partner=g==='boy'?'girl':'boy';closeModal();toast(g==='boy'?'👨 Bạn là nam — người yêu nữ đi làm theo ca.':'👩 Bạn là nữ — người yêu nam đi làm theo ca.');homeSchedule();}
+function petMenu(){show(`<h2>🐾 ${S.pet.name}</h2><div class="petPanel"><div class="petStat">🍗 Đói<br><b>${S.pet.hunger}/100</b></div><div class="petStat">😊 Vui<br><b>${S.pet.happy}/100</b></div><div class="petStat">🧼 Sạch<br><b>${S.pet.clean}/100</b></div><div class="petStat">⚡ Năng lượng<br><b>${S.pet.energy}/100</b></div></div><h3>🍖 Thức ăn</h3><div class="cards"><div class="card">🥣 Hạt khô<br>Kho: <b>${S.pet.food.dry}</b>${btn('Cho ăn','petFeed(\"dry\")','choice')}</div><div class="card">🥫 Pate<br>Kho: <b>${S.pet.food.wet}</b>${btn('Cho ăn','petFeed(\"wet\")','choice')}</div><div class="card">🦴 Bánh thưởng<br>Kho: <b>${S.pet.food.treat}</b>${btn('Cho ăn','petFeed(\"treat\")','choice')}</div></div>${btn('🎾 Chơi','petAction("play")','choice')}${btn('🧼 Tắm','petAction("clean")','choice')}${btn('🐾 Gọi lại','petFollow()','choice')}${btn('🛒 Mua thức ăn cho thú cưng','shopPetFood()','gold')}`)}
+function petFeed(kind){if((S.pet.food[kind]||0)<=0)return toast('🍖 Hết thức ăn này — vào Cửa hàng mua thêm');S.pet.food[kind]--;const gain={dry:16,wet:22,treat:10}[kind];S.pet.hunger=clamp(S.pet.hunger+gain);S.pet.happy=clamp(S.pet.happy+(kind==='treat'?8:4));hud();toast(`🐾 ${S.pet.name} ăn ngon lành`);petMenu()}
+function shopPetFood(){show(`<h2>🐾 Cửa hàng thú cưng</h2><p>Thức ăn mua tại Cửa hàng sẽ được đưa thẳng vào kho thú cưng.</p><div class="cards"><div class="card">🥣 Hạt khô<br>${fmt(45000)}<button class="btn pink" onclick="buyPetFood('dry',45000)">Mua 1</button></div><div class="card">🥫 Pate<br>${fmt(60000)}<button class="btn pink" onclick="buyPetFood('wet',60000)">Mua 1</button></div><div class="card">🦴 Bánh thưởng<br>${fmt(30000)}<button class="btn pink" onclick="buyPetFood('treat',30000)">Mua 1</button></div></div>`)}
+function buyPetFood(k,cost){if(S.money<cost)return toast('Không đủ tiền 😅');S.money-=cost;S.pet.food[k]=(S.pet.food[k]||0)+1;hud();toast('🐾 Đã mua thức ăn cho '+S.pet.name);shopPetFood()}
+async function petAction(a){closeModal();if(a==='feed'){S.pet.hunger=clamp(S.pet.hunger+20);S.pet.happy=clamp(S.pet.happy+4);toast('🐾 '+S.pet.name+' ăn ngon lành')}if(a==='play'){S.pet.happy=clamp(S.pet.happy+12);S.pet.energy=clamp(S.pet.energy-8);await petMove(55,65);toast('🎾 '+S.pet.name+' chạy quanh nhà')}if(a==='clean'){S.pet.clean=clamp(S.pet.clean+25);toast('🧼 '+S.pet.name+' sạch sẽ rồi')}fx('❤️',78,70);hud()}
+async function petMove(l,t){const p=$('pet');p.style.left=l+'%';p.style.top=t+'%';await waitMs(900)}
+function petFollow(){closeModal();petMove(48,72);toast('🐾 '+S.pet.name+' chạy theo bạn')}
+function petTick(){S.pet.hunger=clamp(S.pet.hunger-1);S.pet.energy=clamp(S.pet.energy+1);S.pet.clean=clamp(S.pet.clean-1);if(S.pet.hunger<25||S.pet.clean<30)toast('🐾 '+S.pet.name+' đang cần bạn');}
+
+const upgradeData={
+ sofa:{name:'🛋️ Sofa',cost:[0,500000,900000],max:3,stat:'happy'},
+ tv:{name:'📺 TV',cost:[0,700000,1200000],max:3,stat:'happy'},
+ kitchen:{name:'🍳 Bếp',cost:[0,800000,1500000],max:3,stat:'love'},
+ fridge:{name:'🧊 Tủ lạnh',cost:[0,600000,1100000],max:3,stat:'finance'},
+ bed:{name:'🛏️ Giường',cost:[0,900000,1800000],max:3,stat:'happy'}
+};
+function shop(){
+ const foods=[['rice','🍚 Gạo',30000],['veg','🥬 Rau',25000],['fish','🐟 Cá',70000],['meat','🥩 Thịt',90000],['shrimp','🦐 Tôm',110000],['egg','🥚 Trứng',30000],['noodle','🍜 Mì',15000]];
+ show(`<h2>🛒 Cửa hàng</h2><p><b>Mua thực phẩm chỉ thực hiện tại đây.</b> Tủ lạnh chỉ dùng để xem kho. Muốn nấu, hãy chạm vào BẾP trong nhà.</p><h3>🥬 Cửa hàng thực phẩm</h3><div class="cards">${foods.map(x=>`<div class="card"><b>${x[1]}</b><br>Trong kho: <b>${S.inventory[x[0]]}</b><br>${fmt(x[2])}<button class="btn pink" onclick="buyFood('${x[0]}',${x[2]})">🛒 Mua 1</button></div>`).join('')}</div><h3>🐾 Thức ăn thú cưng</h3><div class="cards"><div class="card">🥣 Hạt khô<br>Kho: <b>${S.pet.food.dry}</b><br>${fmt(45000)}<button class="btn pink" onclick="buyPetFood('dry',45000)">🛒 Mua</button></div><div class="card">🥫 Pate<br>Kho: <b>${S.pet.food.wet}</b><br>${fmt(60000)}<button class="btn pink" onclick="buyPetFood('wet',60000)">🛒 Mua</button></div><div class="card">🦴 Bánh thưởng<br>Kho: <b>${S.pet.food.treat}</b><br>${fmt(30000)}<button class="btn pink" onclick="buyPetFood('treat',30000)">🛒 Mua</button></div></div><h3>🏠 Nâng cấp nhà</h3><div class="cards">${Object.entries(upgradeData).map(([k,d])=>{const lv=S.upgrades[k],cost=d.cost[lv]||0;return `<div class="card"><b>${d.name}</b><br>Cấp ${lv}/${d.max}<br>${lv<d.max?'Nâng cấp: '+fmt(cost):'ĐÃ TỐI ĐA'}<button class="btn gold" ${lv>=d.max?'disabled':''} onclick="upgrade('${k}')">⬆️ ${lv<d.max?'Nâng cấp':'Tối đa'}</button></div>`}).join('')}</div>`)
+}
+function upgrade(k){const d=upgradeData[k],lv=S.upgrades[k],cost=d.cost[lv];if(lv>=d.max)return toast('Đã tối đa ⭐');if(S.money<cost)return toast('Chưa đủ tiền 😅');S.money-=cost;S.upgrades[k]++;effect(d.stat,4);effect('finance',-2);hud();visualUpgrade(k);fx('⬆️',55,55);toast(`${d.name} đã được thay bằng phiên bản mới`);shop()}
+const HOME_OBJECTS=[{id:'kitchen',name:'🍳 BẾP',idx:0},{id:'fridge',name:'🧊 TỦ LẠNH',idx:1},{id:'tv',name:'📺 TIVI',idx:2},{id:'sofa',name:'🛋️ SOFA',idx:3},{id:'table',name:'🍚 BÀN ĂN',idx:4},{id:'plant',name:'🌿 CÂY CẢNH',idx:5},{id:'petarea',name:'🐾 KHU THÚ CƯNG',idx:6},{id:'bed',name:'🛏️ GIƯỜNG',idx:7}];
+function decorateHomeObjects(){const all=document.querySelectorAll('#room .asset');HOME_OBJECTS.forEach(o=>{const e=all[o.idx];if(!e)return;e.dataset.object=o.id;e.dataset.objectName=o.name;let label=e.querySelector('.assetLabel');if(!label){label=document.createElement('div');label.className='assetLabel';e.appendChild(label)}label.textContent=o.name;applyObjectLevel(o.id,e)})}
+function applyObjectLevel(k,e){const level=S.upgrades[k]||1;e.classList.remove('skin2','skin3');e.dataset.level=level;if(level===2)e.classList.add('skin2');if(level>=3)e.classList.add('skin3');let badge=e.querySelector('.assetLv');if(['kitchen','fridge','tv','sofa','bed'].includes(k)){if(!badge){badge=document.createElement('div');badge.className='assetLv';e.appendChild(badge)}badge.textContent='Cấp '+level}else if(badge)badge.remove()}
+function visualUpgrade(k){const e=document.querySelector(`#room .asset[data-object="${k}"]`);if(!e)return;e.classList.add('upgrade-ready');applyObjectLevel(k,e);setTimeout(()=>e.classList.remove('upgrade-ready'),1200)}
+function finance(){
+ show(`<h2>8. 💰 Tài chính</h2><div class="cards">
+ <div class="card">💵 Tiền mặt<br><b>${fmt(S.money)}</b></div>
+ <div class="card">📈 Chỉ số tài chính<br><b>${S.finance}/100</b></div></div>
+ <button class="choice" onclick="budget('save')">🐷 Tiết kiệm 300.000đ → +3 tài chính</button>
+ <button class="choice" onclick="budget('fun')">🍰 Chi 150.000đ cho người yêu → +5 hạnh phúc</button>
+ <button class="choice" onclick="budget('bill')">💡 Trả hóa đơn 400.000đ → +4 tin tưởng</button>`);
+}
+function budget(k){
+ if(k==='save'){if(S.money<300000)return toast('Không đủ tiền');S.money-=300000;effect('finance',3)}
+ if(k==='fun'){if(S.money<150000)return toast('Không đủ tiền');S.money-=150000;effect('happy',5);effect('love',2)}
+ if(k==='bill'){if(S.money<400000)return toast('Không đủ tiền');S.money-=400000;effect('trust',4);effect('happy',2)}
+ hud();finance();
+}
+function progress(){
+ show(`<h2>14. 📈 Tiến trình game</h2>
+ <div class="card"><b>Chương 1 — MỚI YÊU</b><br>Hẹn hò, nhắn tin ${S.love>=50?'✅':''}</div>
+ <div class="card"><b>Chương 2 — YÊU LÂU</b><br>Ghen tuông, xây dựng tin tưởng ${S.trust>=60?'✅':''}</div>
+ <div class="card"><b>Chương 3 — SỐNG CHUNG</b><br>Nhà cửa, việc nhà, tài chính ${S.happy>=60?'✅':''}</div>
+ <div class="card"><b>Chương 4 — HÔN NHÂN</b><br>Trách nhiệm ${S.trust>=80?'🔓 Đã mở':'🔒 Chưa mở'}</div>
+ <div class="card"><b>Chương 5 — GIA ĐÌNH</b><br>Cuộc sống lâu dài ${S.love>=90&&S.trust>=90?'🔓 Đã mở':'🔒 Chưa mở'}</div>`);
+}
+function status(){
+ show(`<h2>15. 📊 Thanh trạng thái</h2>`+
+ [['❤️ Tình yêu',S.love],['🤝 Tin tưởng',S.trust],['😤 Giận / Căng thẳng',S.anger],['💰 Tài chính',S.finance],['🏠 Hạnh phúc',S.happy],['⚡ Năng lượng',S.energy]].map(x=>`<p>${x[0]} <b style="float:right">${x[1]}</b></p><div class="taskbar"><i style="width:${x[1]}%;background:${x[0].startsWith('😤')?'#e66d78':'#e77da5'}"></i></div>`).join(''));
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+ ({home:()=>{closeModal();toast('🏠 Về nhà')},phone,work,date,shop}[b.dataset.tab])();
+});
+$('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+$('world').insertAdjacentHTML('beforeend','<div id="roomFX"></div><div id="speech"></div>');
+init();hud();homeSchedule();toast('🏠 Nhà đã sẵn sàng — NPC có lịch, tin nhắn bất chợt và thú cưng');
+setTimeout(()=>routine('idle'),600);
+setInterval(()=>{ if(Math.random()<0.62) randomMessage(); },9000);
+setInterval(()=>{ if(S.scene==='home' && Math.random()<0.45){ const spots=[[72,74],[82,65],[58,76],[28,68]]; const q=spots[Math.floor(Math.random()*spots.length)]; petMove(q[0],q[1]); }},7000);
+setInterval(()=>{
+ changeTime(2);
+ homeSchedule();
+ petTick();
+ if(S.energy<100 && S.h>=7 && S.h<18)S.energy=clamp(S.energy+1);
+ // autonomous couple routine: NPCs no longer stand frozen
+ const slot=Math.floor((Date.now()/1000)/7)%6;
+ if(slot!==S.lastRoutine){
+   S.lastRoutine=slot;
+   const scenes=['cook','tv','table','idle','tv','table'];
+   if(scenes[slot]!=='idle' && !S.busy && !S.cooking)routine(scenes[slot]);
+ }
+},2000);
+/* ==================== V20: HÀI + TREND + ACTION ENGINE ==================== */
+S.v20 = { eventCooldown:0, eventCount:0, lastEvent:'', free:null, actionBusy:false, trendIndex:0, lastPartnerAction:0 };
+const V20_ORIG_SHOP = window.shop;
+const V20_ORIG_UPGRADE = window.upgrade;
+
+const V20_OBJECTS = {
+ kitchen:{label:'🍳 BẾP', spot:[31,47], action:'cook', jokes:['Hôm nay mình nấu ăn như đầu bếp 5 sao.','...5 sao Google Maps thì có.'], lv:['Bếp cơ bản','Bếp hiện đại','Bếp xịn']},
+ fridge:{label:'🧊 TỦ LẠNH', spot:[43,46], action:'fridge', jokes:['Mở tủ lạnh kiểm tra tài sản.','Còn trứng. Và một chút hy vọng.'], lv:['Tủ lạnh mini','Tủ lạnh 2 cửa','Tủ lạnh cao cấp']},
+ tv:{label:'📺 TIVI', spot:[72,42], action:'tv', jokes:['Xem một tập thôi nhé.','Một tập sau... trời sáng luôn.'], lv:['TV thường','Smart TV','TV màn hình lớn']},
+ sofa:{label:'🛋️ SOFA', spot:[61,60], action:'sofa', jokes:['Ngồi xuống 5 phút.','5 phút của người trưởng thành = 45 phút.'], lv:['Sofa thường','Sofa êm','Sofa VIP']},
+ table:{label:'🍚 BÀN ĂN', spot:[76,62], action:'table', jokes:['Bữa cơm gia đình bắt đầu.','Không có đồ ăn thì đây là bàn họp.'], lv:['Bàn gỗ','Bàn đẹp','Bàn cao cấp']},
+ bed:{label:'🛏️ GIƯỜNG', spot:[24,82], action:'bed', jokes:['Ngủ sớm hôm nay.','Kế hoạch thất bại sau 3 phút lướt điện thoại.'], lv:['Giường thường','Giường êm','Giường cao cấp']},
+ plant:{label:'🌿 CÂY CẢNH', spot:[12,73], action:'plant', jokes:['Cây vẫn sống.','Đúng là người duy nhất không đòi hỏi gì.']},
+ petarea:{label:'🐾 KHU THÚ CƯNG', spot:[85,76], action:'pet', jokes:['Boss đang chờ phục vụ.','Trong nhà này ai mới là chủ?']}
+};
+
+function v20Toast(t){toast(t);}
+function v20Say(text,who='girl',ms=2200){
+  say(text,who,ms);
+  const c=$(who); if(c) { c.dataset.actionText=text; }
+}
+function v20FX(e,x=50,y=50){fx(e,x,y);}
+
+function v20ObjectName(k){ return V20_OBJECTS[k]?.label || k; }
+function v20ObjectLevel(k){ return S.upgrades[k] || 1; }
+function v20ObjectCard(k){
+ const o=V20_OBJECTS[k], lv=v20ObjectLevel(k), names=o.lv||['Cơ bản','Hiện đại','Cao cấp'];
+ return `<div class="v20ObjectCard"><b>${o.label}</b><span> Cấp ${lv}</span><small>${names[lv-1]||names[names.length-1]}</small></div>`;
+}
+
+function v20Move(who,left,top,text){
+  return moveNPC(who,left,top,text);
+}
+
+async function v20DoObject(k){
+  if(S.scene!=='home') returnHomeScene();
+  if(S.v20.actionBusy) return toast('⏳ Đang làm việc, chờ một chút...');
+  S.v20.actionBusy=true;
+  const o=V20_OBJECTS[k];
+  const who=S.player==='boy'?'boy':'girl';
+  const other=S.partner;
+  try{
+    if(k==='kitchen'){
+      await v20Move(who,31,48,'Để mình vào bếp!');
+      v20FX('🔥',34,48); v20Say(o.jokes[0],who,1600);
+      setTimeout(()=>v20Say(o.jokes[1],other,1800),1200);
+      show(`<h2>🍳 ${S.player==='boy'?'Bếp của anh':'Bếp của em'}</h2><p class="card">${v20ObjectCard('kitchen')}</p><p>Đây là nơi duy nhất để bắt đầu nấu ăn.</p>${btn('🍜 Nấu mì','v20KitchenMenu()','pink')}${btn('🍳 Trứng rau','v20StartRecipe(1)','choice')}`);
+    } else if(k==='fridge'){
+      await v20Move(who,43,46,'Để xem tủ lạnh còn gì...');v20FX('🧊',45,43);
+      fridge();
+    } else if(k==='tv'){
+      await v20Move(who,63,56,'Bật TV nha.'); await v20Move(other,58,59,'Em ngồi đây.'); tvOn();
+      v20FX('📺',72,40); show(`<h2>📺 TIVI</h2><p class="card">${v20ObjectCard('tv')}</p>${btn('😂 Nhường remote','effect("happy",3);effect("love",2);hud();v20TrendLine("remote");','pink')}${btn('😤 Tranh remote','effect("anger",5);effect("trust",-2);hud();v20TrendLine("remoteFight")','choice')}${btn('📺 Xem tự do 1 phút','v20FreeActivity("tv")','green')}`);
+    } else if(k==='sofa'){
+      await v20Move(who,58,59,'Ngồi đây 5 phút thôi...');
+      v20FX('🛋️',60,58); show(`<h2>🛋️ SOFA</h2><p class="card">${v20ObjectCard('sofa')}</p>${btn('🧘 Ngồi thư giãn 1 phút','v20FreeActivity("sofa")','green')}${btn('💬 Tâm sự','v20CoupleTalk()','pink')}`);
+    } else if(k==='table'){
+      await v20Move(who,72,65,'Tới bàn ăn nào.');v20FX('🍚',75,62);
+      show(`<h2>🍚 BÀN ĂN</h2><p class="card">${v20ObjectCard('table')}</p>${btn('🥢 Ăn cùng nhau','eatMeal()','pink')}`);
+    } else if(k==='bed'){
+      await v20Move(who,25,82,'Mình ngủ sớm hôm nay...');v20FX('💤',25,76);
+      show(`<h2>🛏️ GIƯỜNG</h2><p class="card">${v20ObjectCard('bed')}</p>${btn('😴 Ngủ','sleep()','pink')}${btn('🛌 Nghỉ 1 phút','v20FreeActivity("bed")','green')}`);
+    } else if(k==='plant'){
+      await v20Move(who,12,73,'Cây ơi cố lên.');v20FX('🌱',13,68);effect('happy',1);hud();v20Say('Ít nhất cây không hỏi: bao giờ cưới?',other);toast('🌿 Cây được chăm sóc');
+    } else if(k==='petarea'){
+      await v20Move(who,82,75,'Boss ơi!');await petMove(74,72);v20FX('🐾',78,70);petMenu();
+    }
+  } finally { S.v20.actionBusy=false; }
+}
+
+function v20KitchenMenu(){
+  closeModal();
+  show(`<h2>🍳 BẾP — CHỌN MÓN</h2><p class="card">🧊 Tủ lạnh chỉ chứa nguyên liệu. Muốn nấu, phải đứng tại BẾP.</p>${btn('🍜 Mì trứng rau','v20StartRecipe(0)','pink')}${btn('🍳 Trứng rau','v20StartRecipe(1)','choice')}${btn('🥚 Trứng đơn giản','v20StartRecipe(2)','choice')}`);
+}
+function v20StartRecipe(i){
+  const recipes=[
+   {name:'🍜 Mì trứng rau',need:{noodle:1,egg:1,veg:1},steps:[['🔥 Làm nóng bếp',5],['💧 Đun nước',4],['🍜 Cho mì + trứng + rau',4],['🍽️ Bê ra bàn',3]]},
+   {name:'🍳 Trứng rau',need:{egg:2,veg:1},steps:[['🔥 Làm nóng bếp',5],['🍳 Chiên trứng',4],['🥬 Cho rau',3],['🍽️ Bê ra bàn',3]]},
+   {name:'🥚 Trứng đơn giản',need:{egg:1},steps:[['🔥 Làm nóng bếp',4],['🍳 Chiên trứng',4],['🍽️ Bê ra bàn',3]]}
+  ];
+  const r=recipes[i];
+  for(const k in r.need){if((S.inventory[k]||0)<r.need[k])return toast('🧊 Thiếu nguyên liệu — vào Cửa hàng mua thêm');}
+  for(const k in r.need)S.inventory[k]-=r.need[k];
+  S.cooking={recipe:r,step:0,remain:r.steps[0][1],deadline:0};
+  closeModal(); v20Say('Hôm nay nấu món này mà không cháy nhé.',S.player,1800); renderCookStep();
+}
+
+function v20CoupleTalk(){
+ closeModal();
+ const mood=S.anger>55?'😤':S.happy>75?'😂':S.energy<30?'🥱':'🙂';
+ const lines=S.anger>55?['Anh nói chuyện đàng hoàng coi.','Em bình tĩnh, anh đang nói mà 😅']:S.happy>75?['Hôm nay vui ghê 😂','Ừ, trừ lúc nhìn tài khoản ngân hàng.']:S.energy<30?['Buồn ngủ chưa?','Rồi. Nhưng điện thoại chưa cho phép.']:['Hôm nay ổn không?','Ổn, miễn đừng hỏi tiền.'];
+ v20Say(lines[0],S.partner,1700);setTimeout(()=>v20Say(lines[1],S.player,1700),900);
+ effect('love',2);effect('trust',1);effect('happy',2);hud();v20FX(mood,50,48);toast('💬 Một cuộc trò chuyện rất đời');
+}
+
+function v20FreeActivity(type){
+ closeModal();
+ if(S.v20.free){return toast('⏳ Bạn đang có hoạt động rồi');}
+ const labels={tv:'📺 Xem TV',sofa:'🛋️ Ngồi sofa',bed:'🛌 Nghỉ ngơi'};
+ const start=Date.now(); S.v20.free={type,start,end:start+60000}; S.busy=true;
+ const who=S.player==='boy'?'boy':'girl'; const other=S.partner;
+ if(type==='tv'){tvOn();v20Move(who,63,56,'Xem một chút thôi...');v20Move(other,58,59,'Ừ, xem đi.');}
+ else if(type==='sofa'){v20Move(who,58,59,'Ngồi nghỉ một lát...');}
+ else {v20Move(who,25,82,'Nằm một chút...');}
+ const layer=document.createElement('div');layer.id='v20Free';layer.innerHTML=`<div class="v20FreeTitle">${labels[type]}</div><div class="v20FreeBar"><i></i></div><div class="v20FreeTime">60s</div><button>✖ Kết thúc</button>`;$('world').appendChild(layer);
+ layer.querySelector('button').onclick=()=>v20EndFree('manual');
+ v20FreeTick();
+}
+function v20FreeTick(){
+ const f=S.v20.free, el=$('v20Free'); if(!f||!el)return;
+ const remain=Math.max(0,Math.ceil((f.end-Date.now())/1000)); const pct=Math.max(0,remain/60*100);
+ const bar=el.querySelector('i');if(bar)bar.style.width=pct+'%';const tm=el.querySelector('.v20FreeTime');if(tm)tm.textContent=remain+'s';
+ if(remain<=0){v20EndFree('done');return;} setTimeout(v20FreeTick,500);
+}
+function v20EndFree(reason){
+ const f=S.v20.free;if(!f)return;S.v20.free=null;S.busy=false;$('v20Free')?.remove();
+ effect('happy',3);effect('energy',reason==='done'?3:1);changeTime(reason==='done'?5:1);hud();toast(reason==='done'?'⏰ Một phút trôi qua — thời gian chạy tiếp!':'Hoạt động đã kết thúc');
+}
+
+const V20_TRENDS=[
+ ['💬','“Ăn gì cũng được”','Câu nói khiến người nghe phải tự chịu trách nhiệm với lựa chọn của mình.'],
+ ['🫠','“Ổn mà...”','Một câu nói rất bình thường. Cho đến khi nhìn chỉ số 😤.'],
+ ['📱','“5 phút thôi”','Năm phút sau: vẫn đang lướt.'],
+ ['💸','“Mua cái này có cần không?”','Không cần. Nhưng đã bấm thanh toán.'],
+ ['🧠','“Tôi có kế hoạch”','Kế hoạch: mở điện thoại.'],
+ ['😂','“Để mai tính”','Ngày mai cũng đang bận.'],
+ ['🫡','“Rồi rồi, anh biết rồi”','Một câu nói có nguy cơ mở khóa drama.']
+];
+function v20TrendLine(type){
+ const map={remote:['Anh nhường remote mà.','Thế em xem gì cũng được à?','Được. Nhưng anh đừng than.'],remoteFight:['Remote là vật vô tri. Tình cảm mới là thứ có vấn đề.']};
+ const arr=map[type]||['Cuộc sống đang loading...']; const line=arr[Math.floor(Math.random()*arr.length)];v20Say(line,S.partner,1900);toast('😂 Trend tình huống: '+line);
+}
+function v20Social(){
+ const p=V20_TRENDS[S.v20.trendIndex%V20_TRENDS.length];
+ show(`<h2>📸 MXH — TREND HÔM NAY</h2><div class="post v20TrendPost"><div class="trendTag">${p[0]} TREND</div><h3>${p[1]}</h3><p>${p[2]}</p><small>💬 1.2K bình luận · ❤️ ${120+S.v20.trendIndex*37}</small><hr><p>💬 Bình luận nổi bật:</p><div class="card">“Tôi chỉ vào xem một chút...”</div><div class="card">“Nghe quen không? 😭”</div></div>${btn('❤️ Thả tim','effect("happy",1);hud();toast("❤️ Đã thả tim")','pink')}${btn('💬 Bình luận','effect("love",1);hud();toast("💬 Bình luận của bạn đã lên")','choice')}${btn('➡️ Bài tiếp','S.v20.trendIndex++;v20Social()','btn')}`);
+}
+
+const V20_EVENTS=[
+ {id:'wifi',need:()=>S.scene==='home',title:'📶 WIFI DỞ CHỨNG',text:'Wi-Fi tự nhiên yếu đúng lúc cần nó nhất.',lines:['Không phải Wi-Fi yếu. Nó đang suy nghĩ.','Tắt mở modem đi... niềm tin vào công nghệ.'],fx:'📶'},
+ {id:'emptyfridge',need:()=>S.scene==='home'&&Object.values(S.inventory).reduce((a,b)=>a+b,0)<=5,title:'🧊 TỦ LẠNH TRỐNG',text:'Mở tủ lạnh và phát hiện hiện thực.',lines:['Còn gì ăn không?','Còn. Còn niềm hy vọng.'],fx:'🫠'},
+ {id:'money',need:()=>S.scene==='home'&&S.money<800000,title:'💸 TÀI KHOẢN CẢNH BÁO',text:'Số dư đang nhìn bạn bằng ánh mắt thất vọng.',lines:['Mình nghèo tạm thời thôi.','Tạm thời của anh kéo dài hơi lâu.'],fx:'💸'},
+ {id:'pet',need:()=>S.scene==='home'&&S.pet.hunger<30,title:'🐾 BOSS ĐÒI ĂN',text:'Thú cưng nhìn bạn. Bạn nhìn thú cưng. Cả hai đều hiểu.',lines:['Boss đang đói.','Boss có quyền biểu tình.'],fx:'🐾'},
+ {id:'lazy',need:()=>S.scene==='home'&&S.energy<25,title:'🥱 HẾT PIN CON NGƯỜI',text:'Năng lượng thấp nhưng điện thoại vẫn 100%.',lines:['Đi ngủ đi.','Lát nữa.'],fx:'🥱'}
+];
+function v20RandomEvent(){
+ if(S.v20.eventCooldown>0){S.v20.eventCooldown--;return;}
+ if(S.scene!=='home'||S.v20.free||S.v20.actionBusy)return;
+ if(Math.random()>0.18)return;
+ const available=V20_EVENTS.filter(e=>e.need());if(!available.length)return;
+ const e=available[Math.floor(Math.random()*available.length)];S.v20.eventCooldown=4;S.v20.eventCount++;S.v20.lastEvent=e.id;
+ const who=S.partner;v20FX(e.fx,50,42);v20Say(e.lines[0],who,1700);setTimeout(()=>v20Say(e.lines[1],S.player,1700),900);toast(e.title+' — '+e.text);
+}
+
+const V20_ROUTINES=[
+ {type:'kitchen',at:[31,48],say:'Để anh/em xem bếp hôm nay có ổn không.'},
+ {type:'tv',at:[63,56],say:'Xem một chút thôi nha.'},
+ {type:'table',at:[72,65],say:'Tới bàn xem có gì ăn nào.'},
+ {type:'petarea',at:[82,75],say:'Boss ơi, lại đây.'},
+ {type:'sofa',at:[58,59],say:'Ngồi nghỉ một lát.'}
+];
+async function v20PartnerRoutine(){
+ if(S.scene!=='home'||S.v20.free||S.v20.actionBusy||S.cooking)return;
+ if(S.h>=7&&S.h<11){return;} // đi làm buổi sáng
+ if(S.h>=14&&S.h<17){return;}
+ if(Math.random()>0.48)return;
+ const r=V20_ROUTINES[Math.floor(Math.random()*V20_ROUTINES.length)];
+ const who=S.partner; S.v20.actionBusy=true;
+ try{
+   await v20Move(who,r.at[0],r.at[1],r.say);
+   if(r.type==='tv'){tvOn();v20FX('📺',70,40);}
+   if(r.type==='kitchen'){v20FX('🍳',32,46);}
+   if(r.type==='table'){v20FX('🍚',73,62);}
+   if(r.type==='petarea'){await petMove(74,72);v20FX('🐾',78,70);}
+   if(r.type==='sofa'){v20FX('🛋️',60,57);}
+ } finally {S.v20.actionBusy=false;}
+}
+
+function v20Chore(k,who){
+ closeModal(); if(S.scene!=='home')returnHomeScene(); if(S.chores[k])return toast('☑️ Việc này đã xong');
+ const pos={dish:[68,61],laundry:[78,75],trash:[15,62],floor:[55,72]}[k]; const action={dish:'🍽️',laundry:'👕',trash:'🗑️',floor:'🧹'}[k];
+ S.busy=true; moveNPC(who,pos[0],pos[1],action+' Bắt đầu làm nhé!').then(()=>{
+   v20FX(action,pos[0],pos[1]);
+   let n=3; const iv=setInterval(()=>{v20FX(action,pos[0]+Math.random()*4-2,pos[1]+Math.random()*4-2);n--;if(n<=0){clearInterval(iv);S.chores[k]=true;S.clean=clamp(S.clean+5);effect('happy',2);effect('anger',-2);changeTime(8);S.busy=false;hud();toast('✅ Đã hoàn thành: '+action);chores();}},500);
+ });
+}
+
+function v20RebuildHotspots(){
+ const hs=$('hotspots'); if(!hs)return; hs.innerHTML='';
+ const add=(x,y,w,h,fn)=>hit(x,y,w,h,fn);
+ add(5,90,112,112,()=>v20DoObject('kitchen'));
+ add(110,90,82,112,()=>v20DoObject('fridge'));
+ add(204,62,126,105,()=>v20DoObject('tv'));
+ add(204,105,126,105,()=>v20DoObject('sofa'));
+ add(200,218,160,132,()=>v20DoObject('table'));
+ add(1,371,177,109,()=>v20DoObject('bed'));
+ add(1,260,100,130,()=>v20DoObject('plant'));
+ add(250,360,75,80,()=>v20DoObject('petarea'));
+ // Không còn mục “11. Sống cùng nhau” đè lên đồ vật.
+}
+
+function v20RefreshLabels(){
+ decorateHomeObjects();
+ document.querySelectorAll('#room .asset').forEach((e,i)=>{if(e.dataset.object){e.title=e.dataset.objectName||'';}});
+}
+
+function v20Upgrade(k){
+ const d=upgradeData[k],lv=S.upgrades[k],cost=d.cost[lv];
+ if(lv>=d.max)return toast('⭐ Đã tối đa');
+ if(S.money<cost)return toast('💸 Chưa đủ tiền — đi làm thêm nhé');
+ S.money-=cost;S.upgrades[k]++;effect(d.stat,4);effect('finance',-2);hud();visualUpgrade(k);v20FX('✨',55,55);toast(`${d.name} cấp ${S.upgrades[k]} — ngoại hình đã thay tại đúng vị trí!`);setTimeout(()=>v20RefreshLabels(),50);V20_ORIG_SHOP();
+}
+
+function v20Shop(){
+ V20_ORIG_SHOP();
+ setTimeout(()=>{
+   const sheet=$('sheet'); if(!sheet)return;
+   sheet.insertAdjacentHTML('afterbegin',`<div class="v20ShopBanner"><b>🏠 ĐỒ VẬT CỐ ĐỊNH</b><br><small>Mua/nâng cấp chỉ thay ngoại hình tại đúng vị trí — NPC không bị mất điểm tương tác.</small></div>`);
+ },0);
+}
+
+function v20Install(){
+ document.title='YÊU NHAU CÓ GÌ VUI? — V20';
+ // thay các function chính bằng bản V20
+ window.shop=v20Shop; window.upgrade=v20Upgrade; window.social=v20Social;
+ // Chores được thay bằng hành động có animation thật
+ window.chores=function(){const list=[['dish','🍽️ Rửa bát','girl'],['laundry','👕 Giặt quần áo','boy'],['trash','🗑️ Đổ rác','girl'],['floor','🧹 Lau nhà','boy']];show('<h2>🧹 VIỆC NHÀ</h2><p class="card">NPC sẽ đi tới đúng vị trí rồi thực hiện hành động.</p>'+list.map(([k,x,w])=>`<button class="choice" onclick="v20Chore('${k}','${w}')">${S.chores[k]?'☑️':'☐'} ${x}</button>`).join('')+'<p class="card">Độ sạch nhà: '+S.clean+'%</p>')};
+ // routine mới, vẫn tương thích với các hệ thống cũ
+ window.routine=async function(scene='idle'){
+   if(S.scene!=='home'||S.v20.free||S.v20.actionBusy)return;
+   if(scene==='cook'){return v20Move(S.partner,31,48,'Để anh/em xem bếp một chút.').then(()=>v20FX('🍳',32,46));}
+   if(scene==='tv'){return Promise.all([v20Move(S.partner,63,56,'Xem TV một chút nha.'),v20Move(S.player,58,59,'Ừ, xem đi.')]).then(()=>{tvOn();v20FX('📺',70,40);});}
+   if(scene==='table'){return v20Move(S.partner,72,65,'Tới bàn xem có gì ăn nào.').then(()=>v20FX('🍚',73,62));}
+   if(scene==='bed')return v20DoObject('bed');
+   if(scene==='fight'){await v20Move('girl',65,51,'Anh giải thích đi! 😤');await v20Move('boy',33,51,'Khoan... khoan...');return;}
+   return v20PartnerRoutine();
+ };
+ // Rebuild interaction layer after original init has run.
+ v20RebuildHotspots();v20RefreshLabels();
+ // Remove old live action remnants if any are visible.
+ document.querySelectorAll('.hot').forEach(b=>b.setAttribute('aria-label','Tương tác đồ vật'));
+ // extra trend button on phone via delegation
+ const oldPhone=window.phone; window.phone=function(){oldPhone();setTimeout(()=>{const s=$('sheet');if(s)s.insertAdjacentHTML('beforeend',btn('🔥 Trend hôm nay','v20Social()','choice'));},0)};
+ // Ensure partner AI and events tick independently.
+ setInterval(()=>v20RandomEvent(),5000);
+ setInterval(()=>{if(S.scene==='home'&&!S.v20.free&&!S.v20.actionBusy)v20PartnerRoutine()},11000);
+ toast('✨ V20 đã sẵn sàng — đồ vật, hành động, AI, trend và sự kiện hoạt động');
+}
+
+v20Install();
+
+
+/* V20 cooking/fridge safety overrides */
+function v20Fridge(){
+  show(`<h2>🧊 TỦ LẠNH</h2><p class="card">Tủ lạnh chỉ dùng để xem kho. Muốn mua đồ → CỬA HÀNG. Muốn nấu → BẾP.</p><div class="cards">${[['rice','🍚 Gạo'],['veg','🥬 Rau'],['fish','🐟 Cá'],['meat','🥩 Thịt'],['shrimp','🦐 Tôm'],['egg','🥚 Trứng'],['noodle','🍜 Mì']].map(x=>`<div class="card">${x[1]}<br><b>${S.inventory[x[0]]}</b></div>`).join('')}</div>${btn('🛒 Mở Cửa hàng','V20_ORIG_SHOP()','gold')}${btn('🍳 Đi tới Bếp','v20DoObject("kitchen")','pink')}`);
+}
+function v20RenderCookStep(){
+ const c=S.cooking;if(!c)return;const step=c.recipe.steps[c.step];
+ show(`<h2>🍳 ${c.recipe.name}</h2><p><b>${step[0]}</b></p><div class="taskbar"><i id="cookbar" style="width:100%"></i></div><p>Còn <b id="cooktime">${step[1]}</b> giây</p><p class="card">NPC vẫn có thể tự hoạt động quanh nhà trong lúc bếp chạy.</p><button class="btn pink" id="cookWait">⏳ Bắt đầu bước</button>`);
+ $('cookWait').onclick=()=>v20RunCookTimer();
+}
+function v20RunCookTimer(){
+ const c=S.cooking;if(!c)return;const step=c.recipe.steps[c.step];let remain=step[1];const b=$('cookWait');if(b)b.disabled=true;
+ const iv=setInterval(()=>{remain--;if($('cooktime'))$('cooktime').textContent=remain;if($('cookbar'))$('cookbar').style.width=(remain/step[1]*100)+'%';if(remain<=0){clearInterval(iv);v20FinishCookStep()}},1000);
+}
+function v20FinishCookStep(){
+ const c=S.cooking;if(!c)return;c.step++;
+ if(c.step>=c.recipe.steps.length){
+   S.cooking=null;effect('love',4);effect('happy',4);effect('trust',2);changeTime(2);hud();
+   v20Move(S.player,72,65,'Món xong rồi, bê ra bàn thôi.').then(()=>{v20FX('🍽️',74,62);show(`<h2>🍽️ ${c.recipe.name} hoàn thành!</h2><div class="card">Không có “cháy nhà, reset game”. Món ăn hoàn thành bình thường 😎</div>${btn('🥢 Ăn cùng nhau','eatMeal()','pink')}`)});
+   return;
+ }
+ v20RenderCookStep();
+}
+function v20InstallCooking(){
+ window.fridge=v20Fridge;
+ window.cook=()=>v20DoObject('kitchen');
+ window.renderCookStep=v20RenderCookStep;
+ window.runCookTimer=v20RunCookTimer;
+ window.finishCookStep=v20FinishCookStep;
+}
+v20InstallCooking();
+
+
+/* ==================== V21: SIMULATION REWORK ==================== */
+S.partnerName=S.partnerName||'Người yêu';
+S.readyMeal=S.readyMeal||null;
+S.chatThreads=S.chatThreads||{};
+S.v21=S.v21||{activity:null,cookingTick:null,work:null,date:null};
+
+function v21InjectWorldUI(){
+  if(!$('v21Bowl')) $('world').insertAdjacentHTML('beforeend','<div id="v21Bowl" class="v21Bowl" title="Bát thức ăn — chạm để cho thú cưng ăn">🍚</div>');
+  if(!$('v21CookGlow')) $('world').insertAdjacentHTML('beforeend','<div id="v21CookGlow" class="v21CookingGlow" style="display:none">🔥</div>');
+  if(!$('v21TVState')) $('world').insertAdjacentHTML('beforeend','<div id="v21TVState" class="v21TVState">📺</div>');
+  $('v21Bowl').onclick=()=>v21FeedDirect();
+}
+function v21FeedDirect(){
+  if((S.pet.food.dry||0)+(S.pet.food.wet||0)+(S.pet.food.treat||0)<=0)return toast('🍖 Bát trống — vào Cửa hàng mua thức ăn cho '+S.pet.name);
+  const kind=S.pet.food.wet>0?'wet':S.pet.food.dry>0?'dry':'treat';
+  const gain={dry:16,wet:22,treat:10}[kind];S.pet.food[kind]--;S.pet.hunger=clamp(S.pet.hunger+gain);S.pet.happy=clamp(S.pet.happy+4);hud();
+  petMove(77,78);v21FX('🍖',79,75);v21Say('Có đồ ăn rồi! 😋',S.partner,1500);toast('🐾 '+S.pet.name+' đã ăn '+(kind==='wet'?'pate':kind==='dry'?'hạt khô':'bánh thưởng'));
+}
+function v21SetObjectLabels(){
+  decorateHomeObjects();
+  document.querySelectorAll('#room .asset[data-object]').forEach(e=>{
+    const l=e.querySelector('.assetLabel');if(l){l.style.top='50%';l.style.left='50%';l.style.transform='translate(-50%,-50%)';}
+  });
+}
+function v21RoomLayout(){
+  const map={
+    kitchen:['3%','21%','25%','18%'],fridge:['32%','21%','17%','18%'],tv:['65%','17%','28%','17%'],sofa:['58%','33%','36%','20%'],table:['65%','53%','29%','15%'],plant:['4%','58%','18%','15%'],petarea:['76%','66%','19%','17%'],bed:['4%','77%','40%','17%']
+  };
+  document.querySelectorAll('#room .asset[data-object]').forEach(e=>{const m=map[e.dataset.object];if(m){e.style.left=m[0];e.style.top=m[1];e.style.width=m[2];e.style.height=m[3];}});
+  v21SetObjectLabels();
+}
+function v21ActivityDock(title,text,ms,done){
+  document.getElementById('v21Activity')?.remove();
+  const el=document.createElement('div');el.id='v21Activity';el.className='v21Activity';el.innerHTML=`<div class="row"><span>⏳</span><div><b>${title}</b><br><small id="v21ActText">${text}</small></div><button>Hủy</button></div>`;$('world').appendChild(el);
+  const end=Date.now()+ms;el.querySelector('button').onclick=()=>{el.remove();done&&done(true)};
+  const tick=()=>{if(!el.isConnected)return;const r=Math.max(0,Math.ceil((end-Date.now())/1000));const t=$('v21ActText');if(t)t.textContent=text+' · '+r+'s';if(r<=0){el.remove();done&&done(false);return}setTimeout(tick,500)};tick();
+}
+
+function v21StartCooking(i){
+ const rs=[
+  {name:'🍜 Mì trứng rau',need:{noodle:1,egg:1,veg:1},steps:[['🔥 Làm nóng bếp',6],['💧 Đun nước',5],['🍜 Cho mì + trứng + rau',5],['🍽️ Hoàn thiện',4]]},
+  {name:'🍳 Trứng rau',need:{egg:2,veg:1},steps:[['🔥 Làm nóng bếp',5],['🍳 Chiên trứng',5],['🥬 Cho rau',4],['🍽️ Hoàn thiện',4]]},
+  {name:'🥚 Trứng đơn giản',need:{egg:1},steps:[['🔥 Làm nóng bếp',4],['🍳 Chiên trứng',5],['🍽️ Hoàn thiện',4]]}
+ ];
+ const r=rs[i];if(!r)return;if(S.cooking)return toast('🍳 Bếp đang nấu '+S.cooking.recipe.name+' — bạn có thể đi làm việc khác.');
+ for(const k in r.need)if((S.inventory[k]||0)<r.need[k])return toast('🧊 Thiếu nguyên liệu — vào Cửa hàng mua thêm');
+ for(const k in r.need)S.inventory[k]-=r.need[k];
+ closeModal();S.cooking={recipe:r,step:0,remain:r.steps[0][1],started:Date.now(),timer:null};
+ v21RunCooking();toast('🍳 Bếp đã bắt đầu nấu — bạn có thể sang TIVI/đi làm việc khác');
+}
+function v21RunCooking(){
+ const c=S.cooking;if(!c||c.timer)return;
+ $('v21CookGlow').style.display='block';
+ const step=c.recipe.steps[c.step];let remain=step[1];
+ c.timer=setInterval(()=>{
+   if(!S.cooking){clearInterval(c.timer);c.timer=null;return}
+   remain--;c.remain=remain;
+   if(remain<=0){clearInterval(c.timer);c.timer=null;c.step++;if(c.step>=c.recipe.steps.length){S.readyMeal=c.recipe.name;S.cooking=null;$('v21CookGlow').style.display='none';v21FX('🍽️',31,35);toast('🍽️ '+c.recipe.name+' đã xong! Bếp vẫn hoạt động xong xuôi, không reset.');return}v21RunCooking();}
+ },1000);
+}
+function v21Kitchen(){
+ if(S.cooking){toast('🍳 '+S.cooking.recipe.name+' đang nấu — bước '+(S.cooking.step+1)+'/'+S.cooking.recipe.steps.length);return;}
+ show(`<h2>🍳 BẾP</h2><p class="card">Chọn món để bắt đầu. Sau khi bấm nấu, <b>bếp sẽ tự nấu ở nền</b>. Bạn có thể đóng bảng và đi bật TV, chơi với thú cưng hoặc làm việc.</p><div class="cards">${[['🍜 Mì trứng rau','0'],['🍳 Trứng rau','1'],['🥚 Trứng đơn giản','2']].map(x=>`<button class="choice" onclick="v21StartCooking(${x[1]})">${x[0]}</button>`).join('')}</div>`);
+}
+
+function v21Object(k){
+ if(k==='kitchen')return v21Kitchen();
+ if(k==='fridge')return v20Fridge();
+ if(k==='tv')return v21StartTV();
+ if(k==='sofa')return v21StartActivity('sofa','🛋️ Ngồi sofa',60000);
+ if(k==='table'){if(!S.readyMeal)return toast('🍚 Bàn ăn đang chờ món — hãy nấu ở BẾP trước');return v21StartMeal();}
+ if(k==='bed')return v21StartActivity('bed','🛌 Nghỉ ngơi',60000);
+ if(k==='plant'){const who=S.player;v21Move(who,12,66,'Tưới cây một chút.').then(()=>{v21FX('💧',12,64);effect('happy',1);hud();toast('🌿 Cây được chăm sóc')});return;}
+ if(k==='petarea')return petMenu();
+}
+function v21StartTV(){
+ const who=S.player;v21Move(who,66,38,'Bật TV nào.');tvOn();$('v21TVState').style.display='block';
+ v21FX('📺',72,32);v21StartActivity('tv','📺 Đang xem TV',60000);
+}
+function v21StartActivity(type,title,ms){
+ if(S.v21.activity)return toast('⏳ Bạn đang '+S.v21.activity.title.toLowerCase());
+ const who=S.player;S.v21.activity={type,title};
+ const pos={tv:[66,39],sofa:[59,49],bed:[20,78]}[type];if(pos)v21Move(who,pos[0],pos[1]);
+ v21ActivityDock(title,'Đang diễn ra',ms,()=>{S.v21.activity=null;if(type==='tv'){$('v21TVState').style.display='none';}changeTime(1);effect('happy',2);hud();toast('⏰ '+title+' kết thúc');});
+}
+function v21StartMeal(){
+ if(S.v21.activity)return toast('Bạn đang bận');S.readyMeal=null;v21Move(S.player,72,58,'Món ngon tới rồi.');v21Move(S.partner,78,58,'Ăn thôi!').then(()=>{effect('happy',4);effect('love',3);changeTime(20);hud();v21FX('❤️',76,55);toast('🍽️ Hai người vừa ăn cùng nhau');});
+}
+
+function v21CanWork(){const t=S.h*60+S.m;return (t>=8*60&&t<11*60+30)||(t>=13*60+30&&t<17*60+30)}
+function v21CanDate(){const t=S.h*60+S.m;return t>=17*60+30&&t<22*60}
+function v21Work(){
+ if(!v21CanWork())return toast(S.h*60+S.m<8*60?'💼 Văn phòng chưa mở — 08:00 mới bắt đầu.':'💼 Hết giờ làm — văn phòng đóng cửa lúc 17:30.');
+ if(S.energy<12)return toast('🥱 Năng lượng quá thấp — nghỉ một chút trước đã.');
+ setScene('office','🏢 VĂN PHÒNG',`<div class="office"><div class="officeDesk desk1"></div><div class="officeDesk desk2"></div><div class="officeDesk desk3"></div><div class="officePC pc1"></div><div class="officePC pc2"></div><div class="officePC pc3"></div><div class="officeNPC" style="left:12%;bottom:29%">🧑‍💼</div><div class="officeNPC" style="left:43%;bottom:29%">🧑‍💻</div><div class="officeNPC" style="right:12%;bottom:29%">👩‍💼</div><div id="v21WorkPlayer" style="position:absolute;left:42%;bottom:39%;font-size:34px;z-index:6">${S.player==='boy'?'👨🏻':'👩🏻'}</div><div class="v21WorkPanel"><h3>💼 Ca làm việc · ${String(S.h).padStart(2,'0')}:${String(S.m).padStart(2,'0')}</h3><div class="v21Tasks">${tasks.map(t=>`<button class="v21Task" onclick="v21DoWork('${t[0]}','${t[1]}',${t[2]})">${t[1]}<br><small>${S.work[t[0]]}/${t[2]}</small></button>`).join('')}</div><div class="v21WorkStatus" id="v21WorkStatus">Chọn một việc. Không còn bong bóng che màn hình.</div><div class="v21WorkProgress"><i id="v21WorkProgress"></i></div></div></div>`);
+}
+function v21DoWork(k,label,max){
+ if(!v21CanWork())return toast('💼 Đã hết giờ làm. Ca làm dừng tại 17:30.');
+ if(S.v21.work)return toast('⏳ Bạn đang làm '+S.v21.work.label);
+ const sec=6+Math.floor(Math.random()*4);S.v21.work={k,label,max,end:Date.now()+sec*1000};
+ const p=$('v21WorkPlayer');if(p){p.textContent=S.player==='boy'?'👨🏻‍💻':'👩🏻‍💻';p.style.animation='workBob .35s steps(2,end) infinite'}
+ const st=$('v21WorkStatus');if(st)st.textContent='Đang '+label.toLowerCase()+'...';
+ const tick=()=>{if(!S.v21.work)return;const r=Math.max(0,S.v21.work.end-Date.now());const bar=$('v21WorkProgress');if(bar)bar.style.width=(100-r/(sec*1000)*100)+'%';if(r<=0){const w=S.v21.work;S.v21.work=null;S.work[w.k]=Math.min(w.max,S.work[w.k]+1);S.energy=clamp(S.energy-8);changeTime(sec);hud();if(S.work.email>=3&&S.work.report>=3&&S.work.meeting>=2){S.money+=900000;S.finance=clamp(S.finance+5);S.work={email:0,report:0,meeting:0};toast('💰 Hoàn thành ca +900.000đ');}else toast('✅ '+w.label+' xong');v21Work();return;}setTimeout(tick,250)};tick();
+}
+
+const V21_DATES=[['🍜 Quán ăn','food',300000,50],['🎬 Rạp phim','cinema',500000,70],['🌳 Công viên','park',200000,45],['☕ Cà phê','cafe',150000,40]];
+function v21Date(){
+ if(!v21CanDate())return toast(S.h*60+S.m<17*60+30?'❤️ Hẹn hò nên bắt đầu từ 17:30.':'❤️ Đã muộn rồi — hẹn hò kết thúc lúc 22:00.');
+ show(`<h2>❤️ HẸN HÒ</h2><p class="card">Khung giờ hẹn hò: <b>17:30–22:00</b>. Một buổi hẹn sẽ tiêu tốn thời gian thật trong ngày.</p><div class="cards">${V21_DATES.map((d,i)=>`<div class="card"><b>${d[0]}</b><br>${fmt(d[2])}<br><small>${d[3]} phút trong game</small><button class="btn pink" onclick="v21StartDate(${i})">Đi</button></div>`).join('')}</div>`);
+}
+function v21StartDate(i){
+ if(!v21CanDate())return v21Date();const d=V21_DATES[i];if(S.money<d[2])return toast('💸 Không đủ tiền cho buổi hẹn này');if(S.v21.date)return toast('❤️ Hai người đang hẹn hò');
+ S.money-=d[2];setScene('date','❤️ '+d[0],`<div class="dateScene ${d[1]}"><div class="dateLight"></div><div class="dateObj dateTable"></div><div class="dateObj dateBench"></div><div class="dateScreen"></div><div class="dateTree"></div><div class="dateNPC dateBoy">🧑</div><div class="dateNPC dateGirl">👩</div><div class="v21DatePanel"><b>❤️ ${d[0]} · Hai người đang ở đây</b><div class="dateActions"><button onclick="v21DateAction('talk')">💬 Tâm sự</button><button onclick="v21DateAction('fun')">😂 Làm gì vui</button><button onclick="v21DateAction('end')">🏠 Về nhà</button></div><small id="v21DateStatus">Không phải bảng chọn — hai người đang ở địa điểm thật.</small></div></div>`);S.v21.date={i,end:Date.now()+45000};v21DateTick();hud();
+}
+function v21DateAction(a){if(!S.v21.date)return;if(a==='end'){S.v21.date=null;returnHomeScene();return}if(a==='talk'){effect('love',3);effect('trust',2);v21FX('💬',50,45);v21Say('Nói chuyện một chút cũng vui.',S.partner,1600)}else{effect('happy',3);v21FX('😂',50,45);v21Say('Ít nhất hôm nay không ai hỏi: “Ăn gì?”,',S.partner,1600)}hud()}
+function v21DateTick(){const d=S.v21.date;if(!d)return;const r=d.end-Date.now();if(r<=0){S.v21.date=null;changeTime(45);effect('love',4);effect('trust',2);effect('happy',5);hud();toast('❤️ Buổi hẹn kết thúc — hai người về nhà');returnHomeScene();}setTimeout(v21DateTick,500)}
+
+function v21Escape(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function v21Reply(k,text){const t=text.toLowerCase();if(k==='love'){if(/yêu|nhớ|thương|ăn|ngủ|về|nhà/.test(t))return 'Ừ, nghe cũng hợp lý đó ❤️';if(/đi chơi|cà phê|phim|hẹn/.test(t))return 'Được, nhưng xem giờ trước nhé 😌';if(/tiền|mua|đắt/.test(t))return 'Tài khoản của mình đang cần được tôn trọng 😂';if(/xin lỗi|sorry/.test(t))return 'Thôi được, nói chuyện đàng hoàng là được.';return 'Ừ, em đọc rồi. Kể tiếp đi.';}if(k==='best')return /đi|đá|chơi|game/.test(t)?'Có mặt! Nhưng ông bao nhé 😂':'Ông nói tiếp đi, tôi đang nghe.';if(k==='family')return /về|ăn|mẹ|ba/.test(t)?'Ừ, nhớ rồi. Để con sắp xếp nhé.':'Dạ, con đọc rồi ạ.';if(k==='coworker')return /họp|file|việc|báo cáo/.test(t)?'Ok, tôi xử lý trong ca này.':'Đã nhận thông tin.';return 'Ok 😄 để tôi xem rồi trả lời.';}
+function v21OpenChat(k){
+ const c=contacts[k];if(!S.chatThreads[k])S.chatThreads[k]=[];const th=S.chatThreads[k];if(!th.length){const base=c.messages[0];th.push({from:'them',text:base[0]});th.push({from:'me',text:base[1]});}
+ const render=()=>{const thread=S.chatThreads[k];show(`<h2>${c.avatar} ${k==='love'?S.partnerName:c.name.replace(/^\S+\s/,'')}</h2><div class="v21Thread">${thread.map(m=>`<div class="v21Bubble ${m.from==='me'?'me':''}">${v21Escape(m.text)}</div>`).join('')}</div><div class="v21Compose"><input id="v21ChatInput" maxlength="240" placeholder="Nhắn bất cứ điều gì..." onkeydown="if(event.key==='Enter')v21SendChat('${k}')"><button onclick="v21SendChat('${k}')">Gửi</button></div><p class="v21Typing" id="v21Typing"></p>${btn('⬅️ Danh sách','v21Inbox()','choice')}`);const thEl=$('v21Thread');if(thEl)thEl.scrollTop=thEl.scrollHeight;};render();}
+function v21SendChat(k){const inp=$('v21ChatInput');const text=(inp?.value||'').trim();if(!text)return;S.chatThreads[k].push({from:'me',text});inp.value='';changeTime(1);hud();v21OpenChat(k);const typing=$('v21Typing');if(typing)typing.textContent='Đang soạn...';setTimeout(()=>{const reply=v21Reply(k,text);S.chatThreads[k].push({from:'them',text:reply});effect(k==='love'?'trust':'happy',1);hud();v21OpenChat(k);},700+Math.random()*700);}
+function v21Inbox(){show(`<h2>💬 TIN NHẮN</h2><p class="card">Không còn bị khóa theo mẫu. Bạn có thể tự viết tin nhắn bất kỳ.</p><div class="v21ChatList">${Object.entries(contacts).map(([k,c])=>`<button class="choice" onclick="v21OpenChat('${k}')">${c.avatar} <b>${k==='love'?S.partnerName:c.name}</b></button>`).join('')}</div>`)}
+function v21Phone(){show(`<h2>📱 ĐIỆN THOẠI</h2><div class="cards">${btn('💬 Tin nhắn','v21Inbox()','choice')}${btn('📸 MXH / Trend','v20Social()','choice')}${btn('🐾 Thú cưng','petMenu()','choice')}${btn('🏦 Ngân hàng','finance()','choice')}${btn('📊 Trạng thái','status()','choice')}${btn('👤 Nhân vật','characterMenu()','choice')}</div>`)}
+
+function v21Rebuild(){
+ v21InjectWorldUI();v21RoomLayout();
+ const hs=$('hotspots');hs.innerHTML='';
+ const add=(x,y,w,h,fn)=>hit(x,y,w,h,fn);
+ add(2,90,105,105,()=>v21Object('kitchen'));add(108,90,80,105,()=>v21Object('fridge'));add(200,55,145,100,()=>v21Object('tv'));add(200,125,145,100,()=>v21Object('sofa'));add(200,220,150,125,()=>v21Object('table'));add(1,370,185,110,()=>v21Object('bed'));add(1,270,105,110,()=>v21Object('plant'));add(250,340,100,110,()=>v21Object('petarea'));
+ window.work=v21Work;window.date=v21Date;window.phone=v21Phone;window.chat=v21OpenChat;window.sendMessage=(k)=>v21SendChat(k);
+ window.cook=v21Kitchen;window.startCooking=v21StartCooking;window.v20StartRecipe=v21StartCooking;
+ document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');const tab=b.dataset.tab;if(tab==='home'){returnHomeScene();}else if(tab==='phone')v21Phone();else if(tab==='work')v21Work();else if(tab==='date')v21Date();else if(tab==='shop')shop();};});
+}
+function v21Install(){
+ v21Rebuild();
+ setInterval(()=>{if(S.cooking&&!S.cooking.timer)v21RunCooking();},1000);
+ setInterval(()=>{if(S.scene==='home'&&S.pet.hunger<35&&!S.v21.activity){v21Say('Boss đang nhìn cái bát trống...',S.partner,1500);}},15000);
+ toast('✨ V21: phòng rộng hơn · hành động chạy nền · giờ làm/hẹn hò đúng lịch · nhắn tin tự do');
+}
+v21Install();
+
+
+/* V21.1 persistent cooking status */
+function v21CookStatus(){
+ let e=$('v21CookHUD');
+ if(!e){$('world').insertAdjacentHTML('beforeend','<div id="v21CookHUD" class="v21Activity" style="top:2%;bottom:auto;left:3%;right:auto;max-width:58%;display:none"><div class="row"><span>🔥</span><div><b>BẾP đang nấu</b><br><small id="v21CookHUDText"></small></div></div></div>');e=$('v21CookHUD');}
+ if(!S.cooking){e.style.display='none';return;}
+ e.style.display='block';const c=S.cooking,st=c.recipe.steps[c.step];$('v21CookHUDText').textContent=`${c.recipe.name} · ${st[0]} · còn ${Math.max(0,c.remain)}s`;
+}
+const _v21RunCooking=v21RunCooking;
+v21RunCooking=function(){
+ _v21RunCooking();
+ v21CookStatus();
+};
+const _v21StartCooking=v21StartCooking;
+v21StartCooking=function(i){
+ _v21StartCooking(i);
+ if(S.cooking){v21Move(S.player,31,46);v21CookStatus();}
+};
+setInterval(v21CookStatus,500);
+
+
+
+/* ==================== V22: 20-FEATURE LIFE SIM EXPANSION ==================== */
+S.v22=S.v22||{
+  weather:'☀️ Nắng',weatherKey:'sun',
+  needs:{hunger:76,fun:72,hygiene:86},
+  relationshipMemory:[],
+  notifications:[],
+  socialLikes:{},
+  wardrobe:'casual',
+  wallet:0,
+  rentDue:3,
+  bills:0,
+  visitor:null,
+  commute:'walk',
+  achievements:[],
+  stats:{cooks:0,dates:0,work:0,messages:0,petFeeds:0,chores:0},
+  lastDay:S.day,
+  autoEventAt:0,
+  lastNeedTick:Date.now(),
+  weatherAt:Date.now(),
+  logs:[]
+};
+S.v22.needs=S.v22.needs||{hunger:76,fun:72,hygiene:86};
+S.v22.relationshipMemory=S.v22.relationshipMemory||[];S.v22.notifications=S.v22.notifications||[];S.v22.socialLikes=S.v22.socialLikes||{};S.v22.achievements=S.v22.achievements||[];S.v22.logs=S.v22.logs||[];
+
+const V22_FEATURES=[
+'1. Nhu cầu nhân vật: đói/vui/vệ sinh',
+'2. Chu kỳ ngày/đêm trực quan',
+'3. Thời tiết thay đổi',
+'4. Lịch sinh hoạt theo giờ',
+'5. NPC tự chọn hoạt động',
+'6. Bộ nhớ quan hệ',
+'7. Sự kiện bất ngờ',
+'8. Khách ghé nhà',
+'9. Hệ thống hóa đơn + tiền nhà',
+'10. Phương tiện di chuyển',
+'11. Tủ đồ/thay phong cách',
+'12. Tin nhắn thông báo bất chợt',
+'13. MXH có like/bình luận',
+'14. Nhật ký cuộc sống',
+'15. Thành tựu',
+'16. Chăm thú cưng tự động',
+'17. Công việc có cấp độ',
+'18. Hẹn hò có sự kiện riêng',
+'19. Tương tác đồ vật theo nhu cầu',
+'20. Lưu/khôi phục tiến trình'
+];
+
+function v22Log(t){S.v22.logs.unshift(`${String(S.h).padStart(2,'0')}:${String(S.m).padStart(2,'0')} — ${t}`);S.v22.logs=S.v22.logs.slice(0,30);}
+function v22Float(t,x=50,y=35){const e=document.createElement('div');e.className='v22-float';e.textContent=t;e.style.left=x+'%';e.style.top=y+'%';$('world').appendChild(e);setTimeout(()=>e.remove(),2200)}
+function v22Night(){let n=document.getElementById('v22Night');if(!n){$('world').insertAdjacentHTML('afterbegin','<div id="v22Night" class="v22-night"></div>');n=$('v22Night')}const t=S.h+S.m/60;n.style.background=(t>=19||t<6)?'rgba(25,31,75,.32)':(t>=17.5?'rgba(80,80,130,.12)':'rgba(25,31,75,0)');}
+function v22WeatherTick(){if(Date.now()<S.v22.weatherAt+90000)return;S.v22.weatherAt=Date.now();const arr=[['☀️ Nắng','sun'],['⛅ Có mây','cloud'],['🌧️ Mưa','rain'],['🌤️ Mát trời','cool']];const w=arr[Math.floor(Math.random()*arr.length)];S.v22.weather=w[0];S.v22.weatherKey=w[1];v22Log('Thời tiết: '+w[0]);v22Float(w[0],70,8);}
+function v22WeatherUI(){let e=$('v22Weather');if(!e){$('world').insertAdjacentHTML('beforeend','<div id="v22Weather" class="v22-weather"></div>');e=$('v22Weather')}e.textContent=S.v22.weather;}
+function v22NeedsTick(){const now=Date.now();if(now-S.v22.lastNeedTick<15000)return;S.v22.lastNeedTick=now;S.v22.needs.hunger=clamp(S.v22.needs.hunger-1);S.v22.needs.fun=clamp(S.v22.needs.fun-1);S.v22.needs.hygiene=clamp(S.v22.needs.hygiene-(S.h>=22?0:0.5));if(S.scene==='home'&&S.v22.needs.hunger<25)v22Float('🍚 Tôi đói...',52,40);if(S.scene==='home'&&S.v22.needs.fun<20)v22Float('🥱 Chán quá...',50,55);}
+function v22NeedEffect(){const n=S.v22.needs; if(n.hunger<20)effect('happy',-1); if(n.fun<20)effect('happy',-1); if(n.hygiene<20)effect('trust',-1);}
+function v22ActivityNeed(type){if(type==='eat'){S.v22.needs.hunger=clamp(S.v22.needs.hunger+28);S.v22.needs.fun=clamp(S.v22.needs.fun+3)}if(type==='tv'){S.v22.needs.fun=clamp(S.v22.needs.fun+20)}if(type==='bath'){S.v22.needs.hygiene=clamp(S.v22.needs.hygiene+25)}if(type==='pet'){S.v22.needs.fun=clamp(S.v22.needs.fun+10)}}
+function v22NeedsPanel(){show(`<h2>📊 NHU CẦU HẰNG NGÀY</h2><div class="v22-mini"><b>🍚 Đói</b>${Math.round(S.v22.needs.hunger)}/100<div class="v22-progress"><i style="width:${S.v22.needs.hunger}%"></i></div></div><div class="v22-mini"><b>😂 Giải trí</b>${Math.round(S.v22.needs.fun)}/100<div class="v22-progress"><i style="width:${S.v22.needs.fun}%"></i></div></div><div class="v22-mini"><b>🧼 Vệ sinh</b>${Math.round(S.v22.needs.hygiene)}/100<div class="v22-progress"><i style="width:${S.v22.needs.hygiene}%"></i></div></div><p class="card">Các nhu cầu giảm dần theo thời gian và ảnh hưởng đến tâm trạng.</p>`)}
+
+function v22Schedule(){const t=S.h*60+S.m;let act='🏠 Ở nhà';if(t>=7*60&&t<11*60)act='💼 Đi làm buổi sáng';else if(t>=11*60&&t<13*60+30)act='🍜 Nghỉ trưa';else if(t>=13*60+30&&t<17*60+30)act='💼 Đi làm buổi chiều';else if(t>=17*60+30&&t<22*60)act='❤️ Thời gian hẹn hò';else if(t>=22*60)act='🌙 Đêm';return act;}
+function v22ClockRules(){v22Night();v22WeatherTick();v22WeatherUI();const t=S.h*60+S.m;if(t>=22*60&&S.v21?.activity?.type==='work'){S.v21.work=null;toast('🌙 Đã 22:00 — ca làm đã kết thúc.');returnHomeScene();}if(S.day!==S.v22.lastDay){S.v22.lastDay=S.day;v22DailyReset();}}
+function v22DailyReset(){S.chores={dish:false,laundry:false,trash:false,floor:false};S.v22.bills+=50000;S.v22.rentDue--;v22Log('Bắt đầu ngày mới');if(S.v22.rentDue<=0){S.v22.rentDue=3;S.v22.bills+=500000;v22Log('Đến kỳ tiền nhà +500.000đ');}v22Float('🌅 Ngày mới!',48,12);}
+
+function v22ObjectInteraction(k){
+ if(k==='kitchen'&&S.cooking){v22Float('🔥 Bếp đang nấu — không cần bấm lại!',28,38);return}
+ if(k==='tv'){S.v22.needs.fun=clamp(S.v22.needs.fun+2);return v21StartTV();}
+ if(k==='sofa'){S.v22.needs.fun=clamp(S.v22.needs.fun+8);return v21StartActivity('sofa','🛋️ Ngồi sofa',60000);}
+ if(k==='bed'){S.v22.needs.hygiene=clamp(S.v22.needs.hygiene+3);return v21StartActivity('bed','🛌 Nghỉ ngơi',60000);}
+ if(k==='table'){if(!S.readyMeal)return v22Float('🍚 Chưa có món ăn — qua BẾP nấu nhé',50,55);v22ActivityNeed('eat');return v21StartMeal();}
+ if(k==='petarea'){v22ActivityNeed('pet');return petMenu();}
+ if(k==='plant'){S.v22.needs.fun=clamp(S.v22.needs.fun+2);return v21Object('plant');}
+ return v21Object(k);
+}
+
+function v22Visitor(){if(S.scene!=='home'||S.v22.visitor)return;const names=['🧑 Bạn thân','👩 Đồng nghiệp','🧑 Hàng xóm','👵 Người thân'];const n=names[Math.floor(Math.random()*names.length)];S.v22.visitor=n;const e=$('v22Visitor');if(e){e.style.display='block';e.textContent=n}v22Float('🔔 Có khách ghé nhà!',42,20);v22Log(n+' ghé chơi');}
+function v22VisitorAction(){if(!S.v22.visitor)return toast('Không có khách');const n=S.v22.visitor;effect('happy',3);effect('trust',1);changeTime(10);v22Log('Tiếp khách: '+n);S.v22.visitor=null;const e=$('v22Visitor');if(e)e.style.display='none';toast('👋 '+n+' vừa về');}
+function v22Bills(){show(`<h2>💡 HÓA ĐƠN & TIỀN NHÀ</h2><div class="v22-grid"><div class="v22-mini"><b>🏠 Tiền nhà</b>${S.v22.rentDue} ngày nữa</div><div class="v22-mini"><b>💡 Hóa đơn</b>${fmt(S.v22.bills)}</div></div>${btn('💳 Thanh toán tất cả','v22PayBills()','gold')}<p class="card">Nếu để quá hạn, chỉ số tài chính và hạnh phúc sẽ giảm.</p>`)}
+function v22PayBills(){const c=S.v22.bills;if(S.money<c)return toast('💸 Không đủ tiền');S.money-=c;S.v22.bills=0;effect('finance',3);effect('happy',2);hud();v22Log('Đã thanh toán hóa đơn '+fmt(c));v22Bills();}
+function v22Transport(){show(`<h2>🛵 DI CHUYỂN</h2><p class="card">Phương tiện thay đổi thời gian di chuyển.</p>${[['walk','🚶 Đi bộ','0đ',12],['bike','🚲 Xe đạp','250000đ',7],['scooter','🛵 Xe máy','900000đ',4]].map(x=>`<button class="v22-choice" onclick="v22SetTransport('${x[0]}',${x[3]})">${x[1]} — ${x[2]}<span class="v22-badge">${S.v22.commute===x[0]?'ĐANG DÙNG':''}</span></button>`).join('')}`)}
+function v22SetTransport(k,time){if(k==='bike'&&S.money<250000)return toast('Cần 250.000đ để mua xe đạp');if(k==='scooter'&&S.money<900000)return toast('Cần 900.000đ để mua xe máy');if(k==='bike'&&S.v22.commute!=='bike'){S.money-=250000}if(k==='scooter'&&S.v22.commute!=='scooter'){S.money-=900000}S.v22.commute=k;hud();toast('🛵 Đã chọn phương tiện');v22Transport();}
+function v22Wardrobe(){show(`<h2>👕 TỦ ĐỒ</h2><p>Trang phục thay đổi phản ứng khi đi làm/hẹn hò.</p>${[['casual','👕 Đời thường'],['office','👔 Công sở'],['date','✨ Hẹn hò'],['sport','🏃 Thể thao']].map(x=>`<button class="v22-choice" onclick="v22SetWardrobe('${x[0]}')">${x[1]} ${S.v22.wardrobe===x[0]?'✅':''}</button>`).join('')}`)}
+function v22SetWardrobe(k){S.v22.wardrobe=k;v22Log('Đổi trang phục: '+k);toast('👕 Đã đổi trang phục');v22Wardrobe();}
+function v22Memory(t){S.v22.relationshipMemory.unshift({day:S.day,text:t});S.v22.relationshipMemory=S.v22.relationshipMemory.slice(0,12);}
+function v22MemoryMenu(){show(`<h2>🧠 KỶ NIỆM</h2>${S.v22.relationshipMemory.length?S.v22.relationshipMemory.map(x=>`<div class="card">Ngày ${x.day}: ${v21Escape(x.text)}</div>`).join(''):'<div class="card">Chưa có kỷ niệm đặc biệt.</div>'}`)}
+
+const V22_SOCIAL=[
+ ['📱','Người ta bảo “ăn gì cũng được” là quyền tự do. Cho tới khi phải chọn món.','😂 3 người đồng cảm','Ăn gì cũng được = câu hỏi khó nhất ngày nay.'],
+ ['☕','Định uống cà phê 15 phút. Hai tiếng sau vẫn đang ngồi kể chuyện.','❤️ 8 người thích','Thời gian chỉ là một khái niệm.'],
+ ['💼','Sếp: “Việc này đơn giản lắm.”','😵 17 người thích','Câu nói khiến dân văn phòng mất ngủ.'],
+ ['🐾','Boss: “Cho tôi ăn.” Người: “Đợi chút.” Boss: *nhìn bằng ánh mắt nhân sinh*','🐾 12 người thích','Mối quan hệ quyền lực đã rõ.'],
+ ['❤️','Người yêu hỏi: “Anh có nghe em nói không?”','💀 31 người thích','Sai lầm chiến thuật.']
+];
+function v22Social(){show(`<h2>📸 MXH HÔM NAY</h2><p class="card">Feed thay đổi theo ngày. Bạn có thể thả tim và bình luận.</p>${V22_SOCIAL.map((p,i)=>`<div class="v22-feed"><b>${p[0]} ${p[1]}</b><div class="comment">${p[2]}</div><div class="comment">${p[3]}</div><button class="v22-choice" onclick="v22Like(${i})">❤️ ${S.v22.socialLikes[i]||0} Thích</button></div>`).join('')}`)}
+function v22Like(i){S.v22.socialLikes[i]=(S.v22.socialLikes[i]||0)+1;S.v22.needs.fun=clamp(S.v22.needs.fun+2);v22Log('Thả tim một bài trên MXH');v22Social();}
+function v22LifeLog(){show(`<h2>📔 NHẬT KÝ CUỘC SỐNG</h2><div class="v22-log">${S.v22.logs.length?S.v22.logs.map(x=>`<div>${v21Escape(x)}</div>`).join(''):'Chưa có hoạt động.'}</div>`)}
+
+const V22_ACH=[['first_cook','👨‍🍳 Bếp trưởng','Nấu món đầu tiên'],['three_dates','❤️ Có hẹn','Đi 3 buổi hẹn'],['pet_friend','🐾 Bạn của boss','Cho thú cưng ăn 5 lần'],['work_hard','💼 Người lớn','Hoàn thành 5 nhiệm vụ'],['clean_home','🧹 Nhà sạch','Làm đủ 4 việc nhà'],['social','📱 Người online','Thả tim 5 bài'],['save_money','💰 Biết giữ tiền','Có hơn 5 triệu'],['survive_day','🌅 Một ngày bình thường','Sống qua một ngày']];
+function v22Achievements(){let html='<h2>🏆 THÀNH TỰU</h2>';for(const a of V22_ACH){const ok=S.v22.achievements.includes(a[0]);html+=`<div class="card">${ok?'🏆':'🔒'} <b>${a[1]}</b><br><small>${a[2]}</small></div>`}show(html)}
+function v22CheckAchievements(){const st=S.v22.stats;const checks=[['first_cook',st.cooks>=1],['three_dates',st.dates>=3],['pet_friend',st.petFeeds>=5],['work_hard',st.work>=5],['clean_home',st.chores>=4],['social',Object.values(S.v22.socialLikes).reduce((a,b)=>a+b,0)>=5],['save_money',S.money>=5000000],['survive_day',S.day>=2]];for(const [id,ok] of checks){if(ok&&!S.v22.achievements.includes(id)){S.v22.achievements.push(id);v22Float('🏆 Thành tựu mới!',50,25);v22Log('Mở khóa thành tựu '+id);}}}
+
+function v22RandomEvent(){if(S.scene!=='home'||Date.now()<S.v22.autoEventAt)return;if(Math.random()>0.10)return;S.v22.autoEventAt=Date.now()+45000;const ev=[
+ ()=>{v22Float('📦 Shipper tới giao hàng',55,20);effect('happy',1);v22Log('Có đơn hàng giao tới');},
+ ()=>{v22Float('📶 Wi-Fi chập chờn...',48,32);S.v22.needs.fun=clamp(S.v22.needs.fun-3);v22Log('Wi-Fi chập chờn');},
+ ()=>{v22Float('💸 Vừa nhớ ra một khoản chi',50,30);S.v22.bills+=30000;v22Log('Phát sinh 30.000đ');},
+ ()=>v22Visitor(),
+ ()=>{v22Float('🐾 Miu tự đi tìm bát',65,70);petMove(78,76);}
+];ev[Math.floor(Math.random()*ev.length)]();}
+
+function v22PartnerAI(){if(S.scene!=='home'||S.v21?.activity||S.v21?.work)return;const t=S.h*60+S.m;if(t>=7*60&&t<11*60||t>=13*60+30&&t<17*60+30){homeSchedule();return;}const n=S.v22.needs;if(n.hunger<35){v22Move(S.partner,31,46,'Hình như đói rồi...');return}if(n.fun<30){v22Move(S.partner,62,55,'Xem gì đó giải trí thôi.');return}if(S.pet.hunger<30){petMove(78,76);v22Say('Miu, ăn thôi nào.',S.partner,1400);return}const acts=['tv','sofa','table','plant'];const a=acts[Math.floor(Math.random()*acts.length)];if(a==='tv')v21StartTV();else if(a==='sofa')v21StartActivity('sofa','🛋️ Ngồi sofa',30000);else if(a==='table'&&S.readyMeal)v21StartMeal();else v21Object('plant');}
+
+function v22Save(){try{const copy=JSON.parse(JSON.stringify(S));delete copy.v21?.work;delete copy.v21?.activity;delete copy.cooking;localStorage.setItem('yeu_nhau_v22_save',JSON.stringify(copy));toast('💾 Đã lưu game trên thiết bị');v22Log('Đã lưu tiến trình');}catch(e){toast('Không thể lưu trên thiết bị')}}
+function v22Load(){try{const raw=localStorage.getItem('yeu_nhau_v22_save');if(!raw)return toast('Chưa có bản lưu');const data=JSON.parse(raw);Object.assign(S,data);S.cooking=null;S.v21=S.v21||{};S.v21.work=null;S.v21.activity=null;hud();v22RoomRefresh();toast('📂 Đã khôi phục tiến trình');}catch(e){toast('Bản lưu không hợp lệ')}}
+function v22RoomRefresh(){v21RoomLayout();v22Night();v22WeatherUI();v22CookStatus();}
+function v22Settings(){show(`<h2>⚙️ HỆ THỐNG</h2>${btn('💾 Lưu game','v22Save()','gold')}${btn('📂 Tải game','v22Load()','choice')}${btn('📊 Nhu cầu','v22NeedsPanel()','choice')}${btn('🧠 Kỷ niệm','v22MemoryMenu()','choice')}${btn('📔 Nhật ký','v22LifeLog()','choice')}${btn('🏆 Thành tựu','v22Achievements()','choice')}${btn('💡 Hóa đơn','v22Bills()','choice')}${btn('🛵 Phương tiện','v22Transport()','choice')}${btn('👕 Tủ đồ','v22Wardrobe()','choice')}`)}
+
+function v22WorkStartGuard(){if(!v21CanWork()){v21Work();return}v21Work();}
+function v22DateStartGuard(){v21Date();}
+function v22Phone(){show(`<h2>📱 ĐIỆN THOẠI</h2><div class="v22-grid">${btn('💬 Tin nhắn','v21Inbox()','choice')}${btn('📸 MXH / Trend','v22Social()','choice')}${btn('🐾 Thú cưng','petMenu()','choice')}${btn('🏦 Ngân hàng','finance()','choice')}${btn('📊 Nhu cầu','v22NeedsPanel()','choice')}${btn('🧠 Kỷ niệm','v22MemoryMenu()','choice')}${btn('📔 Nhật ký','v22LifeLog()','choice')}${btn('⚙️ Hệ thống','v22Settings()','choice')}</div>`)}
+
+function v22Install(){
+ document.title='YÊU NHAU CÓ GÌ VUI? — V22';
+ v21Rebuild();
+ // rebuild object hotspots to use the richer need-aware interactions
+ const hs=$('hotspots');hs.innerHTML='';const add=(x,y,w,h,fn)=>hit(x,y,w,h,fn);
+ add(2,90,105,105,()=>v22ObjectInteraction('kitchen'));add(108,90,80,105,()=>v22ObjectInteraction('fridge'));add(200,55,145,100,()=>v22ObjectInteraction('tv'));add(200,125,145,100,()=>v22ObjectInteraction('sofa'));add(200,220,150,125,()=>v22ObjectInteraction('table'));add(1,370,185,110,()=>v22ObjectInteraction('bed'));add(1,270,185,110,()=>v22ObjectInteraction('plant'));add(250,340,100,110,()=>v22ObjectInteraction('petarea'));
+ v21InjectWorldUI();
+ if(!$('v22Visitor'))$('world').insertAdjacentHTML('beforeend','<div id="v22Visitor" class="v22-vis">🧑</div>');$('v22Visitor').onclick=v22VisitorAction;
+ if(!$('v22PetBowl'))$('world').insertAdjacentHTML('beforeend','<div id="v22PetBowl" class="v22-petbowl">🥣</div>');$('v22PetBowl').onclick=v21FeedDirect;
+ if(!$('v22Night'))$('world').insertAdjacentHTML('afterbegin','<div id="v22Night" class="v22-night"></div>');
+ if(!$('v22Weather'))$('world').insertAdjacentHTML('beforeend','<div id="v22Weather" class="v22-weather"></div>');
+ window.phone=v22Phone;window.work=v22WorkStartGuard;window.date=v22DateStartGuard;
+ document.querySelectorAll('nav button').forEach(b=>{b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');const tab=b.dataset.tab;if(tab==='home')returnHomeScene();else if(tab==='phone')v22Phone();else if(tab==='work')v22WorkStartGuard();else if(tab==='date')v22DateStartGuard();else if(tab==='shop')shop();}});
+ v22RoomRefresh();
+ v22Log('V22 bắt đầu — 20 hệ thống cuộc sống được kích hoạt');
+ setInterval(()=>{v22NeedsTick();v22NeedEffect();v22ClockRules();v22CheckAchievements();},2000);
+ setInterval(()=>v22RandomEvent(),7000);
+ setInterval(()=>{if(S.scene==='home'&&!S.v21?.activity&&!S.v21?.work)v22PartnerAI()},18000);
+ setInterval(()=>{if(S.scene==='home'&&Math.random()<.12)v22Visitor()},45000);
+ setInterval(()=>{if(S.scene==='home'&&S.pet.hunger<45&&Math.random()<.35){petMove(78,76);v22Float('🐾 '+S.pet.name+' đang chờ ăn',72,70)}},12000);
+ setInterval(()=>{if(S.h>=22&&S.h<24&&S.v21?.work){S.v21.work=null;returnHomeScene();toast('🌙 Đã 22:00 — công việc kết thúc.') }},3000);
+ toast('🚀 V22: 20 tính năng cuộc sống đã bật');
+}
+v22Install();
+
+
+
+/* ================= V22.1: CONNECT THE 20 SYSTEMS TO GAMEPLAY ================= */
+(function(){
+  // 1) Cooking now records a real life event and achievement progress.
+  const _cook=v21StartCooking;
+  window.v21StartCooking=function(i){
+    const before=S.cooking;
+    _cook(i);
+    if(!before && S.cooking){S.v22.stats.cooks++;v22Memory('Hai người đã bắt đầu nấu '+S.cooking.recipe.name);v22Log('Bắt đầu nấu '+S.cooking.recipe.name);}
+  };
+  window.startCooking=window.v21StartCooking;
+
+  // 2) Eating is remembered and affects daily needs.
+  const _meal=v21StartMeal;
+  window.v21StartMeal=function(){
+    _meal();
+    v22ActivityNeed('eat');
+    v22Memory('Cùng nhau ăn một bữa cơm.');
+    v22Log('Hai người ăn cùng nhau');
+  };
+
+  // 3) Free TV/sofa activities feed the fun need.
+  const _activity=v21StartActivity;
+  window.v21StartActivity=function(type,title,ms){
+    _activity(type,title,ms);
+    if(type==='tv'||type==='sofa')v22ActivityNeed('tv');
+  };
+
+  // 4) Pet feeding is now a counted, memorable activity.
+  const _petFeed=petFeed;
+  window.petFeed=function(kind){
+    const before=S.pet.food?.[kind]||0;
+    _petFeed(kind);
+    if(before>(S.pet.food?.[kind]||0)){S.v22.stats.petFeeds++;v22Memory('Cho '+S.pet.name+' ăn.');v22Log('Cho thú cưng ăn');}
+  };
+
+  // 5) Work has levels and the work scene remains clean instead of speech bubbles.
+  window.v22DoWork=function(k,label,max){
+    if(!v21CanWork())return toast('💼 Đã hết giờ làm. Ca làm dừng tại 17:30.');
+    if(S.v21.work)return toast('⏳ Bạn đang làm '+S.v21.work.label);
+    if(S.energy<12)return toast('🥱 Năng lượng quá thấp — nghỉ một chút trước đã.');
+    const level=1+Math.floor((S.v22.stats.work||0)/5);
+    const sec=Math.max(4,8-level);
+    S.v21.work={k,label,max,end:Date.now()+sec*1000,level};
+    const p=$('v21WorkPlayer');if(p){p.textContent=S.player==='boy'?'👨🏻‍💻':'👩🏻‍💻';p.style.animation='workBob .35s steps(2,end) infinite'}
+    const st=$('v21WorkStatus');if(st)st.textContent=`Đang ${label.toLowerCase()} · Cấp nghề ${level}`;
+    const tick=()=>{
+      if(!S.v21.work)return;
+      const r=Math.max(0,S.v21.work.end-Date.now());const bar=$('v21WorkProgress');if(bar)bar.style.width=(100-r/(sec*1000)*100)+'%';
+      if(r<=0){
+        const w=S.v21.work;S.v21.work=null;S.work[w.k]=Math.min(w.max,S.work[w.k]+1);S.v22.stats.work++;S.energy=clamp(S.energy-8);changeTime(sec);v22Log('Hoàn thành: '+w.label);v22Memory('Một ngày làm việc hoàn thành.');
+        if(S.work.email>=3&&S.work.report>=3&&S.work.meeting>=2){const pay=900000+Math.max(0,level-1)*100000;S.money+=pay;S.finance=clamp(S.finance+5);S.work={email:0,report:0,meeting:0};toast('💰 Hoàn thành ca +'+fmt(pay));}else toast('✅ '+w.label+' xong');hud();v21Work();v22CheckAchievements();return;
+      }
+      setTimeout(tick,250);
+    };tick();
+  };
+  window.v21DoWork=window.v22DoWork;
+
+  // 6) Date scenes gain distinct micro-events and count toward relationship progress.
+  const _date=v21StartDate;
+  window.v21StartDate=function(i){
+    _date(i);
+    if(S.v21.date){S.v22.stats.dates++;const d=V21_DATES[i];v22Memory('Buổi hẹn tại '+d[0]+'.');v22Log('Bắt đầu hẹn hò: '+d[0]);setTimeout(()=>{if(S.scene==='date'){const lines=['🍿 Phim vừa hay vừa buồn cười.','☕ Hai người nói chuyện lâu hơn dự kiến.','😂 Một tình huống ngớ ngẩn xảy ra.','❤️ Hôm nay hợp nhau bất ngờ.'];v22Float(lines[Math.floor(Math.random()*lines.length)],34,28);}},1200);}
+  };
+
+  // 7) Free-form messages create memories and notifications.
+  const _send=v21SendChat;
+  window.v21SendChat=function(k){
+    const inp=$('v21ChatInput');const text=(inp?.value||'').trim();if(text)v22Memory('Nhắn với '+(k==='love'?S.partnerName:k)+': '+text.slice(0,50));S.v22.stats.messages++;_send(k);v22Log('Gửi tin nhắn');
+  };
+
+  // 8) Random incoming notifications are visible and persist until opened.
+  function v22Incoming(){
+    const keys=['love','best','family','coworker'];const k=keys[Math.floor(Math.random()*keys.length)];
+    const msgs={love:'Em: Tối nay mình ăn gì? 😭',best:'Bạn: Online không ông?',family:'Mẹ: Cuối tuần nhớ về nhé.',coworker:'Đồng nghiệp: Mai nhớ họp nhé.'};
+    S.v22.notifications.push({k,text:msgs[k],time:S.h+':'+String(S.m).padStart(2,'0')});S.v22.notifications=S.v22.notifications.slice(-8);S.unread=(S.unread||0)+1;toast('📩 Tin nhắn mới: '+msgs[k]);v22Log('Tin nhắn mới từ '+k);
+  }
+  window.v22Notifications=function(){show('<h2>🔔 THÔNG BÁO</h2>'+(S.v22.notifications.length?S.v22.notifications.slice().reverse().map(n=>`<div class="card">${v21Escape(n.text)}<br><small>${n.time}</small></div>`).join(''):'<div class="card">Không có thông báo mới.</div>'))};
+
+  // 9) Add notification center to phone.
+  const _phone=v22Phone;
+  window.v22Phone=function(){_phone();setTimeout(()=>{const s=$('sheet');if(s)s.insertAdjacentHTML('beforeend',btn('🔔 Thông báo '+(S.v22.notifications.length?`(${S.v22.notifications.length})`:''),'v22Notifications()','choice'));},0)};
+
+  // 10) Daily schedule is shown in the phone as a real plan.
+  function v22Plan(){show(`<h2>🗓️ LỊCH HÔM NAY</h2><div class="v22-grid"><div class="v22-mini"><b>07:00–08:00</b>🏠 Chuẩn bị ngày mới</div><div class="v22-mini"><b>08:00–11:30</b>💼 Làm việc</div><div class="v22-mini"><b>11:30–13:30</b>🍜 Nghỉ trưa</div><div class="v22-mini"><b>13:30–17:30</b>💼 Làm việc</div><div class="v22-mini"><b>17:30–22:00</b>❤️ Hẹn hò / đời sống</div><div class="v22-mini"><b>22:00+</b>🌙 Nghỉ ngơi</div></div><p class="card">Hiện tại: <b>${v22Schedule()}</b></p>`)}
+  const oldSettings=v22Settings;
+  window.v22Settings=function(){oldSettings();setTimeout(()=>{const s=$('sheet');if(s)s.insertAdjacentHTML('beforeend',btn('🗓️ Lịch hôm nay','v22Plan()','choice'));},0)};
+
+  // 11) Use wardrobe in job/date flavor.
+  const oldWork=window.v22WorkStartGuard;
+  window.v22WorkStartGuard=function(){if(!v21CanWork())return oldWork();if(S.v22.wardrobe!=='office')v22Float('👔 Đi làm mà mặc đồ thường? Mai mốt sếp nói chuyện nhé 😂',48,20);oldWork();};
+  const oldDate=window.v22DateStartGuard;
+  window.v22DateStartGuard=function(){if(!v21CanDate())return oldDate();if(S.v22.wardrobe!=='date')v22Float('✨ Hẹn hò mà mặc đồ ở nhà cũng được... nhưng hơi liều 😂',45,20);oldDate();};
+
+  // 12) Commute actually consumes different travel time before an outing.
+  const oldDateStart=window.v21StartDate;
+  window.v21StartDate=function(i){
+    const before=S.h*60+S.m;oldDateStart(i);if(S.scene==='date'){const savings={walk:0,bike:3,scooter:6}[S.v22.commute]||0;if(savings){changeTime(-savings);hud();v22Log('Phương tiện giúp tiết kiệm '+savings+' phút di chuyển');}}};
+
+  // 13) Home visitor can be invited for a mini conversation rather than just disappearing.
+  const oldVisitor=v22VisitorAction;
+  window.v22VisitorAction=function(){oldVisitor();v22Memory('Có khách ghé nhà.');};
+
+  // 14) Housework increments life stats.
+  const oldChore=window.v20Chore;
+  window.v20Chore=function(k,who){const before=S.chores[k];oldChore(k,who);setTimeout(()=>{if(!before&&S.chores[k]){S.v22.stats.chores++;v22Memory('Hoàn thành việc nhà.');v22Log('Hoàn thành việc nhà');}},5200);};
+
+  // 15) Pet has an autonomous hunger reaction already; make it remember successful feeding.
+  // 16) Needs can be satisfied by the corresponding objects without opening menus.
+  // 17) TV/sofa/bed remain persistent activities and don't block cooking.
+  // 18) Weather influences outdoor dates.
+  const oldDateAction=v21DateAction;
+  window.v21DateAction=function(a){if(a==='fun'&&S.v22.weatherKey==='rain'){v22Float('🌧️ Mưa rồi! Đổi sang hoạt động trong nhà nhé.',45,25);effect('happy',-1)}else oldDateAction(a);};
+  // 19) Save/restore also stores all 20 feature states.
+  // 20) A compact version card explains what was added, not just hidden functionality.
+  window.v22About=function(){show('<h2>🚀 V22 — 20 TÍNH NĂNG</h2>'+V22_FEATURES.map(x=>`<div class="card">${x}</div>`).join(''))};
+  const oldSettings2=window.v22Settings;
+  window.v22Settings=function(){oldSettings2();setTimeout(()=>{const s=$('sheet');if(s)s.insertAdjacentHTML('beforeend',btn('🚀 Xem 20 tính năng','v22About()','choice'));},0)};
+
+  setInterval(()=>{if(Math.random()<0.07&&S.scene!=='date'&&S.scene!=='office')v22Incoming()},30000);
+})();
+
+</script></body></html>
